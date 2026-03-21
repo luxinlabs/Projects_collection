@@ -116,107 +116,150 @@ export default function Home() {
         <FontAwesomeIcon icon={isDarkMode ? faSun : faMoon} size="lg" />
       </button>
 
+      {/* Hero Section with Full-Screen Background */}
       <div
-        id="main_content"
-        className="flex flex-col mt-5 md:mt-0 max-w-3xl h-fit md:h-[80vh] items-center justify-center"
+        id="hero_section"
+        className="relative w-full min-h-screen flex items-center justify-center overflow-hidden"
       >
-        <div
-          id="picture_name_links"
-          className="flex flex-row flex-wrap justify-center"
-        >
-          <div id="picture" className="rounded-2xl">
-            <Image
-              title="Picture"
-              src={profile_picture}
-              alt="Profile Picture"
-              priority={true}
-              className="rounded-2xl w-52 md:w-80"
-            />
-          </div>
-          <div id="name_links" className="py-2 px-5 flex flex-col items-center">
-            <div
-              id="name"
-              className="text-center text-5xl md:text-9xl md:text-left w-80"
-            >
-              Luxin Zhang
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/Golden Bridge.png"
+            alt="Golden Gate Bridge Background"
+            fill={true}
+            priority={true}
+            style={{ objectFit: "cover" }}
+            className="brightness-90"
+          />
+          {/* Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/50" />
+        </div>
+
+        {/* Content Container */}
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 py-20">
+          <div className="flex flex-col lg:flex-row items-center justify-start gap-16">
+            {/* Left Side - Profile Picture */}
+            <div className="flex-shrink-0">
+              <div className="relative group">
+                <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-3xl blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse" />
+                <Image
+                  title="Luxin Zhang"
+                  src={profile_picture}
+                  alt="Profile Picture"
+                  priority={true}
+                  className="relative rounded-3xl w-80 h-80 md:w-96 md:h-96 lg:w-[450px] lg:h-[450px] object-cover border-4 border-white shadow-2xl"
+                  width={450}
+                  height={450}
+                />
+              </div>
             </div>
-            <div
-              id="links"
-              className={`w-52 md:w-full m-2 flex flex-row justify-between rounded-xl border-4 p-2 md:p-5 ${
-                isDarkMode ? "border-white" : "border-black"
-              }`}
-            >
-              <a href="https://www.linkedin.com/in/luxin-zhang-96777b192/">
-                <FontAwesomeIcon
-                  icon={faLinkedin}
-                  size="2x"
-                  className={`transition ${
-                    isDarkMode
-                      ? "text-white hover:text-emerald-300"
-                      : "text-black hover:text-emerald-300"
-                  }`}
-                />
-              </a>
-              <a href="https://github.com/luxinlabs">
-                <FontAwesomeIcon
-                  icon={faGithub}
-                  size="2x"
-                  className={`transition ${
-                    isDarkMode
-                      ? "text-white hover:text-emerald-300"
-                      : "text-black hover:text-emerald-300"
-                  }`}
-                />
-              </a>
-              <a href="mailto:philomela.zhang@gmail.com">
-                <FontAwesomeIcon
-                  icon={faEnvelope}
-                  size="2x"
-                  className={`transition ${
-                    isDarkMode
-                      ? "text-white hover:text-emerald-300"
-                      : "text-black hover:text-emerald-300"
-                  }`}
-                />
-              </a>
-              <a href="SDE_Luxin_1027.pdf">
-                <FontAwesomeIcon
-                  icon={faFile}
-                  size="2x"
-                  className={`transition ${
-                    isDarkMode
-                      ? "text-white hover:text-emerald-300"
-                      : "text-black hover:text-emerald-300"
-                  }`}
-                />
-              </a>
+
+            {/* Right Side - Name, Title, and Links */}
+            <div className="flex-1 text-center lg:text-left lg:ml-12">
+              {/* Name */}
+              <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-white mb-4 tracking-tight">
+                Luxin Zhang
+              </h1>
+
+              {/* Title/Tagline */}
+              <div className="text-2xl md:text-3xl lg:text-4xl font-light text-emerald-300 mb-8">
+                Software Engineer & AI Builder
+              </div>
+
+              {/* About Text */}
+              <div className="text-lg md:text-xl text-gray-100 leading-relaxed mb-8 max-w-3xl">
+                <p className="mb-4">
+                  Software Engineer in the cybersecurity space and a
+                  founder-minded builder focused on designing and shipping
+                  real-world, production-grade AI systems.
+                </p>
+                <p className="mb-4">
+                  I specialize in full-stack development and secure system
+                  design, with experience building scalable applications that
+                  integrate AI, data systems, and security principles. My
+                  background includes computer vision and AI algorithms, evolved
+                  into building intelligent, security-aware systems that operate
+                  reliably in real-world environments.
+                </p>
+                <p>
+                  Passionate about AI-driven security, agentic systems, and
+                  autonomous workflows where intelligent agents can reason,
+                  detect, and act within complex systems.
+                </p>
+              </div>
+
+              {/* Social Links */}
+              <div className="flex flex-row justify-center lg:justify-start gap-4 mb-8">
+                <a
+                  href="https://www.linkedin.com/in/luxin-zhang-96777b192/"
+                  className="group relative"
+                >
+                  <div className="relative bg-gray-800/80 backdrop-blur-sm p-4 rounded-full border-2 border-gray-600 hover:border-gray-400 hover:bg-gray-700/80 transition-all duration-300 hover:scale-110 shadow-lg">
+                    <FontAwesomeIcon
+                      icon={faLinkedin}
+                      size="2x"
+                      className="text-white"
+                    />
+                  </div>
+                </a>
+                <a
+                  href="https://github.com/luxinlabs"
+                  className="group relative"
+                >
+                  <div className="relative bg-gray-800/80 backdrop-blur-sm p-4 rounded-full border-2 border-gray-600 hover:border-gray-400 hover:bg-gray-700/80 transition-all duration-300 hover:scale-110 shadow-lg">
+                    <FontAwesomeIcon
+                      icon={faGithub}
+                      size="2x"
+                      className="text-white"
+                    />
+                  </div>
+                </a>
+                <a
+                  href="mailto:philomela.zhang@gmail.com"
+                  className="group relative"
+                >
+                  <div className="relative bg-gray-800/80 backdrop-blur-sm p-4 rounded-full border-2 border-gray-600 hover:border-gray-400 hover:bg-gray-700/80 transition-all duration-300 hover:scale-110 shadow-lg">
+                    <FontAwesomeIcon
+                      icon={faEnvelope}
+                      size="2x"
+                      className="text-white"
+                    />
+                  </div>
+                </a>
+                <a href="SDE_Luxin_1027.pdf" className="group relative">
+                  <div className="relative bg-gray-800/80 backdrop-blur-sm p-4 rounded-full border-2 border-gray-600 hover:border-gray-400 hover:bg-gray-700/80 transition-all duration-300 hover:scale-110 shadow-lg">
+                    <FontAwesomeIcon
+                      icon={faFile}
+                      size="2x"
+                      className="text-white"
+                    />
+                  </div>
+                </a>
+              </div>
+
+              {/* CTA Button */}
+              <div className="flex justify-center lg:justify-start">
+                <a
+                  href="#projects"
+                  className="group relative inline-flex items-center gap-3 px-8 py-4 text-lg font-semibold"
+                >
+                  <div className="absolute inset-0 bg-white rounded-xl blur group-hover:blur-lg transition duration-300 opacity-50" />
+                  <div className="relative bg-white px-8 py-4 rounded-xl text-black border-2 border-white hover:bg-gray-100 transition-all duration-300 hover:scale-105 font-bold">
+                    Explore My Projects
+                    <span className="ml-2 inline-block transition-transform duration-300 group-hover:translate-x-1">
+                      →
+                    </span>
+                  </div>
+                </a>
+              </div>
             </div>
           </div>
         </div>
-        <div id="about_text" className="px-4 text-left w-full md:pt-4">
-          <hr
-            className={`border-2 w-full my-1 ${
-              isDarkMode ? "border-white" : "border-black"
-            }`}
-          />
-          Hi! I&apos;m an MEng in Electrical & Computer Engineering (ECE)
-          student at Duke. I am focused on full-stack development, web
-          application development, and I also have experience in image
-          algorithms(clarity, sharpness, noise), and AI algorithms. I enjoy
-          exploring cutting-edge technologies! Please feel free to explore some
-          of my past projects!
-          <hr
-            className={`border-2 w-full my-1 ${
-              isDarkMode ? "border-white" : "border-black"
-            }`}
-          />
+
+        {/* Scroll Down Indicator */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10">
+          <Arrow />
         </div>
-      </div>
-      <div
-        id="down_arrow"
-        className="flex flex-row justify-center my-3 h-fit md:h-[20vh]"
-      >
-        <Arrow />
       </div>
       <div
         id="projects"
