@@ -1,5 +1,63 @@
 {
   "AI Projects": {
+    "aria": {
+      "name": "ARIA - Autonomous Reasoning & Intelligence for Ads",
+      "imagePath": "/projectImages/ARIA.png",
+      "tools": ["SwiftUI", "FastAPI"],
+      "description": "The Automatic multi-agent Advertisement Systems involving ARIA (Autonomous Revenue Intelligence Agent) is an AI-powered advertising optimization system that autonomously manages multi-platform ad campaigns through continuous experimentation, learning, and adaptation. The system uses LangGraph orchestration to coordinate specialized agents that observe signals, generate strategies, create content, optimize audiences, allocate budgets, execute campaigns, and evaluate results.",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/ARIA",
+        "YouTube": "https://youtu.be/qsWVrh6A5_U"
+      }
+    },
+    "neurora": {
+      "name": "NEURORA - Parkinson's & Alzheimer's Motor and Cognitive Monitoring",
+      "imagePath": "/projectImages/Neurora.png",
+      "tools": ["SwiftUI", "FastAPI"],
+      "description": "NEURORA is an iPad-first therapeutic application that uses mandala drawing and Apple Pencil telemetry to monitor motor and cognitive symptoms for early detection and progression tracking of Parkinson's disease and Alzheimer's disease, providing gentle AI-powered insights for patients, caregivers, and clinicians.",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/NEURORA"
+      }
+    },
+    "Hypothesisatlas": {
+      "name": "Hypothesis Atlas - AI-Powered Evidence Mapping for Biotech Research",
+      "imagePath": "/projectImages/Hypothesis Atlas.png",
+      "tools": ["Docker", "Groq API", "Node.js", "Redis"],
+      "description": "A biotech research evidence mapping platform that automatically discovers, analyzes, and visualizes scientific knowledge from multiple sources including peer-reviewed papers, datasets, and social signals.",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/VALUTCARE",
+        "Youtube": "https://www.youtube.com/watch?v=LY6aVIurVaM"
+      }
+    },
+    "VaultCare": {
+      "name": "VaultCare - Secure, Autonomous Voice-Based Medical Appointment Scheduler",
+      "imagePath": "/projectImages/ValutCare.png",
+      "tools": ["Yutori API", "ElevenLabs", "Macroscope", "Retool"],
+      "description": "VaultCare is a hackathon-ready MVP that demonstrates how to build a voice-based medical appointment scheduler where Protected Health Information (PHI) never enters the LLM. The system treats all LLM reasoning as untrusted compute and proves PHI isolation through comprehensive compliance replay",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/VALUTCARE",
+        "Youtube": "https://www.youtube.com/watch?v=LY6aVIurVaM"
+      }
+    },
+    "CHRONOS": {
+      "name": "CHRONOS - Multi-Agent Collaboration Platform",
+      "imagePath": "/projectImages/CHRONOS.png",
+      "tools": ["Docker", "Google Maps", "Python", "MongoDB"],
+      "description": "CHRONOS is an open-source multi-agent collaboration platform that enables AI agents to discover each other by skills, share structured context safely, propose actions, debate decisions, and resolve conflicts through enforceable AI Court rulings",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/CHRONOS",
+        "Youtube": "https://youtu.be/VJjZhec9wCE"
+      }
+    },
+    "citypulseai": {
+      "name": "CityPulse AI - Real-Time Urban Crisis Intelligence Platform",
+      "imagePath": "/projectImages/CityPulse.png",
+      "tools": ["SnowLeopard", "Google Maps", "Python", "Node.js"],
+      "description": "AI-powered emergency response system that analyzes San Francisco's real-time crisis data using natural language queries.",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/CityPulseAI"
+      }
+    },
     "buildbenchai": {
       "name": "BuildBench AI - Make housing affordable by bringing AI-powered cost transparency to construction",
       "imagePath": "/projectImages/BuildBench AI.png",
