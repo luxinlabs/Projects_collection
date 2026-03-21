@@ -420,9 +420,10 @@ export default function Home() {
                 </div>
 
                 {/* Projects Grid - Responsive: 1 col mobile, 2 cols tablet, 3-4 cols desktop */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                  {Object.entries(projects).map(
-                    ([id, project], projectIndex) => (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                  {Object.entries(projects)
+                    .slice(0, 4)
+                    .map(([id, project], projectIndex) => (
                       <div
                         key={id}
                         className={`rounded-2xl p-4 border-2 shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:-translate-y-2 ${
@@ -468,9 +469,27 @@ export default function Home() {
                           )}
                         </div>
                       </div>
-                    ),
-                  )}
+                    ))}
                 </div>
+
+                {/* View All Button */}
+                {Object.keys(projects).length > 4 && (
+                  <div className="mt-8 flex justify-center">
+                    <a
+                      href={`/category/${encodeURIComponent(category)}`}
+                      className={`group relative inline-flex items-center gap-3 px-8 py-4 text-lg font-semibold rounded-xl border-2 transition-all duration-300 hover:scale-105 ${
+                        isDarkMode
+                          ? "bg-gray-700 border-gray-600 text-white hover:bg-gray-600 hover:border-emerald-400"
+                          : "bg-white border-gray-300 text-black hover:bg-gray-50 hover:border-emerald-500"
+                      }`}
+                    >
+                      View All {Object.keys(projects).length} Projects
+                      <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">
+                        →
+                      </span>
+                    </a>
+                  </div>
+                )}
               </div>
             ),
           )
