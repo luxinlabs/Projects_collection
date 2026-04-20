@@ -2,12 +2,78 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer utilities {
-  .bgc {
-    background-color: aquamarine;
-  }
+body {
+  width: 100%;
+}
+
+html[data-theme="dark"] {
+  --app-bg: #000000;
+  --app-surface: #111111;
+  --app-surface-2: #1a1a1a;
+  --app-text: #ffffff;
+  --app-muted: #b3b3b3;
+  --app-border: #2f2f2f;
+}
+
+html[data-theme="light"] {
+  --app-bg: #ffffff;
+  --app-surface: #f5f5f5;
+  --app-surface-2: #ebebeb;
+  --app-text: #0a0a0a;
+  --app-muted: #4f4f4f;
+  --app-border: #d4d4d4;
 }
 
 body {
-  width: 100%;
+  background-color: var(--app-bg);
+  color: var(--app-text);
+}
+
+@layer utilities {
+  .theme-page {
+    background-color: var(--app-bg);
+    color: var(--app-text);
+  }
+
+  .theme-surface {
+    background-color: var(--app-surface);
+  }
+
+  .theme-surface-2 {
+    background-color: var(--app-surface-2);
+  }
+
+  .theme-border {
+    border-color: var(--app-border);
+  }
+
+  .theme-muted {
+    color: var(--app-muted);
+  }
+
+  .theme-nav-link {
+    border: 1px solid var(--app-border);
+    background-color: var(--app-surface);
+    color: var(--app-text);
+  }
+
+  .theme-nav-link:hover {
+    background-color: var(--app-surface-2);
+  }
+
+  .theme-toggle {
+    border: 1px solid var(--app-border);
+    background-color: var(--app-surface);
+    color: var(--app-text);
+  }
+
+  .theme-toggle:hover {
+    background-color: var(--app-surface-2);
+  }
+
+  .theme-input {
+    border: 1px solid var(--app-border);
+    background-color: var(--app-surface);
+    color: var(--app-text);
+  }
 }

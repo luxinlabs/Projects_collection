@@ -3,6 +3,7 @@ import Image from "next/image";
 import projectData from "../../projects.json" assert { type: "json" };
 import Link from "next/link";
 import TechChip from "./TechChip";
+import SidebarNav from "../../SidebarNav";
 
 import { Project } from "../../Project";
 import LinkChip from "./LinkChip";
@@ -51,7 +52,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata(
   { params }: ProjectPageProps,
-  parent: ResolvingMetadata
+  parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const id = params.projectName;
   const project = projects[id];
@@ -80,8 +81,28 @@ export default function ProjectPage({ params }: ProjectPageProps) {
   const path = project.imagePath;
 
   return (
-    <div className="p-1">
+    <div className="p-1 pt-16 md:pt-0">
+      <SidebarNav />
+
       <title>{project.name}</title>
+      <div className="max-w-[1200px] mx-auto px-4 pt-6">
+        <div className="flex items-center gap-3">
+          <Link
+            href="/"
+            className="inline-flex items-center justify-center h-9 w-9 rounded-full border border-slate-300 text-slate-700 hover:text-black hover:border-emerald-500 transition-colors"
+            aria-label="Back to home"
+          >
+            ←
+          </Link>
+          <Link
+            href="/projects"
+            className="text-emerald-600 hover:text-emerald-500 font-semibold"
+          >
+            Back to Projects
+          </Link>
+        </div>
+      </div>
+
       <div id="title" className="flex flex-row justify-center p-10">
         <h1 className="text-5xl">{project.name}</h1>
       </div>
@@ -107,6 +128,13 @@ export default function ProjectPage({ params }: ProjectPageProps) {
             id="information"
             className="max-w-[500px] flex flex-col justify-between mx-5"
           >
+            {project.award && (
+              <div className="mb-4 flex justify-center">
+                <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg border border-yellow-300/50 inline-block">
+                  {project.award}
+                </div>
+              </div>
+            )}
             <h2 className="text-center text-3xl pb-4">Description</h2>
             <p className="px-2">{project.description}</p>
             <h2 className="text-center text-3xl py-2">Tools Used</h2>
@@ -125,13 +153,6 @@ export default function ProjectPage({ params }: ProjectPageProps) {
             </div>
           </div>
         </div>
-      </div>
-      <div id="back" className="flex flex-row justify-center">
-        <Link href="/#projects">
-          <span className="text-8xl transition hover:opacity-50 hover:cursor-pointer">
-            &larr;
-          </span>
-        </Link>
       </div>
     </div>
   );

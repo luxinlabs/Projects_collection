@@ -15,8 +15,12 @@
       "imagePath": "/projectImages/Neurora.png",
       "tools": ["SwiftUI", "FastAPI"],
       "description": "NEURORA is an iPad-first therapeutic application that uses mandala drawing and Apple Pencil telemetry to monitor motor and cognitive symptoms for early detection and progression tracking of Parkinson's disease and Alzheimer's disease, providing gentle AI-powered insights for patients, caregivers, and clinicians.",
+      "award": "🏆 Grand Prize Winner - Groq x Cerebral Valley Hackathon",
       "links": {
-        "GitHub": "https://github.com/luxinlabs/NEURORA"
+        "GitHub": "https://github.com/luxinlabs/NEURORA",
+        "Devpost": "https://devpost.com/software/neurora",
+        "Published Chapter": "https://www.amazon.com/dp/B0GW4ZF725/",
+        "YouTube": ""
       }
     },
     "Hypothesisatlas": {
@@ -54,8 +58,11 @@
       "imagePath": "/projectImages/CityPulse.png",
       "tools": ["SnowLeopard", "Google Maps", "Python", "Node.js"],
       "description": "AI-powered emergency response system that analyzes San Francisco's real-time crisis data using natural language queries.",
+      "award": "🏆 Second Prize - SnowLeopard AI Hackathon",
       "links": {
-        "GitHub": "https://github.com/luxinlabs/CityPulseAI"
+        "GitHub": "https://github.com/luxinlabs/CityPulseAI",
+        "LinkedIn": "https://www.linkedin.com/feed/update/urn:li:activity:7407297552469061633/?originTrackingId=9u1iSJcmY%2BDdDmEwu9j1eA%3D%3D",
+        "YouTube": ""
       }
     },
     "buildbenchai": {
@@ -79,9 +86,11 @@
         "Next.js Frontend + Express Backend"
       ],
       "description": "PatchPilot is an autonomous debugging engineer that runs entirely inside an E2B sandbox. It reads your bug description or stack trace, analyzes your codebase, searches Exa for real-world fixes, generates a patch, validates it by running your tests, and finally opens a production-ready Pull Request through GitHub MCP, everything is all automatically!",
+      "award": "🏆 Honorable Mention - Build MCP Agents Hackathon",
       "links": {
         "Project Page": "https://shipyardhq.tech/projects/13c2b438-5c02-4a05-beab-6382a3e9f3dd",
-        "Demo": "https://www.youtube.com/watch?v=8YT_FqrF8IE"
+        "Demo": "https://www.youtube.com/watch?v=8YT_FqrF8IE",
+        "YouTube": ""
       }
     },
     "autolabdrive": {
@@ -170,9 +179,12 @@
       "imagePath": "/projectImages/Generative_AI.jpg",
       "tools": ["OpenAI API", "Chrome Developer API", "Node.js", "HTML", "CSS"],
       "description": "Built a functional Chrome Extension that can offer real values to those learning a new language and those with limited general reading proficiency.",
+      "award": "🏆 People's Favorite & Education Track Winner - Duke Generative AI Hackathon",
       "links": {
         "GitHub": "https://github.com/luxinlabs/Duke-Generative-AI-Hackathon",
-        "Demo": "https://drive.google.com/file/d/1HfHUEJCdbSzjYPXQirbS_wk1x7fzbgA_/view?usp=sharing"
+        "Devpost": "https://devpost.com/software/elucidate-ycvbs5",
+        "Demo": "https://drive.google.com/file/d/1HfHUEJCdbSzjYPXQirbS_wk1x7fzbgA_/view?usp=sharing",
+        "YouTube": ""
       }
     },
     "math585": {

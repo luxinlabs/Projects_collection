@@ -17,7 +17,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="light">
+      <Script id="theme-init">
+        {`
+          (function () {
+            try {
+              var saved = localStorage.getItem('theme');
+              var theme = saved === 'dark' ? 'dark' : 'light';
+              document.documentElement.setAttribute('data-theme', theme);
+            } catch (e) {
+              document.documentElement.setAttribute('data-theme', 'light');
+            }
+          })();
+        `}
+      </Script>
       <Script src="https://www.googletagmanager.com/gtag/js?id=G-SXQD77EZKP" />
       <Script id="google-analytics">
         {`

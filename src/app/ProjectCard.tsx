@@ -96,6 +96,12 @@ export default function ProjectCard(props: ProjectCardProps) {
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
                 className="h-full"
               />
+              {/* Award Badge */}
+              {props.project.award && (
+                <div className="absolute top-3 left-3 z-20 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg backdrop-blur-sm border border-yellow-300/50">
+                  {props.project.award}
+                </div>
+              )}
             </motion.div>
 
             {/* Gradient overlay on hover */}
