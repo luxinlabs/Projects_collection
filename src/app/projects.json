@@ -1,5 +1,24 @@
 {
   "AI Projects": {
+    "callmetomorrow": {
+      "name": "Call Me Tomorrow - Future-Self Voice Agent",
+      "imagePath": "/projectImages/callmetomorrow.png",
+      "tools": [
+        "Pipecat",
+        "Twilio",
+        "NVIDIA Nemotron 3 Super",
+        "NV-Embed-v2",
+        "ChromaDB",
+        "SQLite",
+        "Gradium TTS",
+        "FastAPI"
+      ],
+      "description": "Call Me Tomorrow lets Pipecat + Nemotron voice agents dial your future self, pulling from layered memory (ChromaDB + SQLite) to open with vivid scenes, weave in your fears, and deliver 30/90/365-day action plans, then auto-improves via Cekura eval loops.",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/call-me-tomorrow",
+        "YouTube": "https://youtu.be/84UB4T1J5Ck"
+      }
+    },
     "aria": {
       "name": "ARIA - Autonomous Reasoning & Intelligence for Ads",
       "imagePath": "/projectImages/ARIA.png",
@@ -93,6 +112,139 @@
         "YouTube": ""
       }
     },
+    "warden": {
+      "name": "Warden - Zero-Trust Runtime Security Firewall for Agentic AI",
+      "imagePath": "/projectImages/Warden.png",
+      "tools": [
+        "FastAPI",
+        "LangChain",
+        "AutoGen",
+        "OpenAI SDK",
+        "MCP",
+        "PostgreSQL",
+        "WebSockets",
+        "Canvas"
+      ],
+      "description": "Warden sits between agentic AI systems and the outside world, combining taint tracking, provenance ledgers, a neuro-symbolic supervisor, and a three-phase tool firewall to block prompt injection, tool hallucination, and unauthorized operations in real time while keeping memory writes clean and auditable.",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/Warden",
+        "Devpost": "https://devpost.com/software/warden-ny9uwa",
+        "YouTube": "https://www.youtube.com/watch?v=R4tJ-J2YGYI"
+      }
+    },
+    "vigil": {
+      "name": "Vigil - Always Watching Your AI Stack",
+      "imagePath": "/projectImages/Vigil.png",
+      "tools": [
+        "FastAPI",
+        "Python",
+        "React",
+        "Vite",
+        "Node.js",
+        "Tailwind CSS",
+        "WebSockets",
+        "SQLite"
+      ],
+      "description": "Vigil combines SupplyGuard and AlignGuard modules to scan AI supply chains for .pth backdoors, credential harvesters, and C2 traffic while simultaneously catching prompt-injection attempts before they reach multi-agent pipelines, delivering a real-time behavioral security dashboard born from the March 2026 LiteLLM attack.",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/Vigil",
+        "YouTube": "https://youtu.be/7s0qLKQ8hn0"
+      }
+    },
+    "cardsmart": {
+      "name": "CardSmart - Real-Time Credit Card Advisor",
+      "imagePath": "/projectImages/CardSmart.png",
+      "tools": [
+        "React",
+        "Tailwind CSS",
+        "FastAPI",
+        "SQLAlchemy",
+        "SQLite",
+        "n8n",
+        "Minimax API",
+        "Docker Compose"
+      ],
+      "description": "CardSmart pairs a FastAPI backend, React dashboard, and n8n orchestration to recommend the smartest credit card for each purchase, monitor weekly budget burn, and surface personalized rewards using Minimax LLM reasoning and promo-matching workflows.",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/CardSmart",
+        "YouTube": "https://youtu.be/gn0sXmLYXlc"
+      }
+    },
+    "demoxa": {
+      "name": "Demoxa - AI-Powered Automated Demo Generator",
+      "imagePath": "/projectImages/Demoxa.png",
+      "tools": [
+        "Next.js",
+        "Node.js",
+        "Playwright",
+        "Gemini 2.0 Flash",
+        "Tailwind CSS",
+        "TypeScript"
+      ],
+      "description": "Demoxa parses your README with Gemini, plans a DemoScript, then drives your live app via a vision-based computer-use agent running on Playwright to record professional walkthrough videos with optional manual capture fallback and live monitoring.",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/Demoxa",
+        "YouTube": "https://www.youtube.com/watch?v=FtIgFf54Y6o"
+      }
+    },
+    "eclat": {
+      "name": "Éclat - SeedDance AI Ad Studio",
+      "imagePath": "/projectImages/Eclat.png",
+      "tools": [
+        "Next.js",
+        "TypeScript",
+        "Tailwind CSS",
+        "Vision AI",
+        "Serverless Media Pipeline"
+      ],
+      "description": "Éclat with SeedDance turns curated product stills plus a short brand brief into 12-shot art-directed storyboards and cinema-grade 9:16 ads, preserving exact packaging while auto-publishing optimized cuts to TikTok Shop, Instagram Reels, and YouTube Shorts in ~90 seconds.",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/Eclat",
+        "YouTube": "https://youtu.be/2Tf0wY5YvJU"
+      }
+    },
+    "supportbrain": {
+      "name": "SupportBrain - Autonomous Support Engineer",
+      "imagePath": "/projectImages/SupportBrain.png",
+      "tools": [
+        "Next.js 14",
+        "TypeScript",
+        "Tailwind CSS",
+        "PostgreSQL + pgvector",
+        "Prisma",
+        "Anthropic Claude",
+        "OpenAI Embeddings",
+        "Hyperspell",
+        "Nia MCP",
+        "PatchPilot"
+      ],
+      "description": "SupportBrain ingests customer mail, runs dual memory layers, fans out to Hyperspell + Nia for cross-source context, classifies CODE_BUG vs inquiry, opens GitHub issues with PatchPilot-ready context, and can even ship PRs—closing the full support loop instead of stopping at a reply.",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/SupportBrain",
+        "YouTube": "https://youtu.be/z1zkPfTkJTs"
+      }
+    },
+    "vaultbrain": {
+      "name": "VaultBrain - Collaborative VC Brain",
+      "imagePath": "/projectImages/ValutBrain.png",
+      "tools": [
+        "React",
+        "Vite",
+        "Tailwind CSS",
+        "Bun",
+        "Express.js",
+        "SQLite",
+        "GStack",
+        "GBrain",
+        "The Hog"
+      ],
+      "description": "VaultBrain stitches GStack agents, GBrain persistence, and The Hog signals into a living VC brain so partners drop decks/emails, agents extract structured entities with provenance, scan live web intelligence, and keep a shared Brain Book timeline without humans typing CRM fields.",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/VaultBrain",
+        "YouTube": "https://youtu.be/U4U3HtcOFBQ"
+      }
+    },
+
     "autolabdrive": {
       "name": "AutoLabDrive - Self-Envolving Multi-Agent Autodriviing research syetem",
       "imagePath": "/projectImages/AutoLabDrive.png",
