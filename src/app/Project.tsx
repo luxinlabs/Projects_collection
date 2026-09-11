@@ -4,5 +4,6 @@ export interface Project {
   tools: string[];
   description: string;
   award?: string;
+  subtitle?: string;
   links: { [key: string]: string };
 }

@@ -11,6 +11,7 @@ const navItems = [
   { href: "/projects", label: "Projects" },
   { href: "/open-source", label: "Open Source" },
   { href: "/articles", label: "Articles" },
+  { href: "/judge", label: "Judge" },
 ];
 
 export default function SidebarNav() {

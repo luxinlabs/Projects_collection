@@ -1,0 +1,534 @@
+{
+  "AI Projects": {
+    "callmetomorrow": {
+      "subtitle": "Voices",
+      "name": "Call Me Tomorrow - Future-Self Voice Agent",
+      "imagePath": "/projectImages/callmetomorrow.png",
+      "tools": [
+        "Pipecat",
+        "Twilio",
+        "NVIDIA Nemotron 3 Super",
+        "NV-Embed-v2",
+        "ChromaDB",
+        "SQLite",
+        "Gradium TTS",
+        "FastAPI"
+      ],
+      "description": "Call Me Tomorrow lets Pipecat + Nemotron voice agents dial your future self, pulling from layered memory (ChromaDB + SQLite) to open with vivid scenes, weave in your fears, and deliver 30/90/365-day action plans, then auto-improves via Cekura eval loops.",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/call-me-tomorrow",
+        "YouTube": "https://youtu.be/84UB4T1J5Ck"
+      }
+    },
+    "aria": {
+      "subtitle": "Advertisement",
+      "name": "ARIA - Autonomous Reasoning & Intelligence for Ads",
+      "imagePath": "/projectImages/ARIA.png",
+      "tools": ["SwiftUI", "FastAPI"],
+      "description": "The Automatic multi-agent Advertisement Systems involving ARIA (Autonomous Revenue Intelligence Agent) is an AI-powered advertising optimization system that autonomously manages multi-platform ad campaigns through continuous experimentation, learning, and adaptation. The system uses LangGraph orchestration to coordinate specialized agents that observe signals, generate strategies, create content, optimize audiences, allocate budgets, execute campaigns, and evaluate results.",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/ARIA",
+        "YouTube": "https://youtu.be/qsWVrh6A5_U"
+      }
+    },
+    "neurora": {
+      "subtitle": "Award-winning",
+      "name": "NEURORA - Parkinson's & Alzheimer's Motor and Cognitive Monitoring",
+      "imagePath": "/projectImages/Neurora.png",
+      "tools": ["SwiftUI", "FastAPI"],
+      "description": "NEURORA is an iPad-first therapeutic application that uses mandala drawing and Apple Pencil telemetry to monitor motor and cognitive symptoms for early detection and progression tracking of Parkinson's disease and Alzheimer's disease, providing gentle AI-powered insights for patients, caregivers, and clinicians.",
+      "award": "🏆 Grand Prix - Innovart 2026",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/NEURORA",
+        "Devpost": "https://innovart2026.devpost.com/",
+        "Published Chapter": "https://www.amazon.com/dp/B0GW4ZF725/",
+        "YouTube": ""
+      }
+    },
+    "Hypothesisatlas": {
+      "subtitle": "Award-winning",
+      "name": "Hypothesis Atlas - AI-Powered Evidence Mapping for Biotech Research",
+      "imagePath": "/projectImages/Hypothesis Atlas.png",
+      "tools": ["Docker", "Groq API", "Node.js", "Redis"],
+      "description": "A biotech research evidence mapping platform that automatically discovers, analyzes, and visualizes scientific knowledge from multiple sources including peer-reviewed papers, datasets, and social signals.",
+      "award": "🏆 3rd Prize - Disrupt Bio",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/VALUTCARE",
+        "Youtube": "https://www.youtube.com/watch?v=LY6aVIurVaM"
+      }
+    },
+    "VaultCare": {
+      "subtitle": "Voices",
+      "name": "VaultCare - Secure, Autonomous Voice-Based Medical Appointment Scheduler",
+      "imagePath": "/projectImages/ValutCare.png",
+      "tools": ["Yutori API", "ElevenLabs", "Macroscope", "Retool"],
+      "description": "VaultCare is a hackathon-ready MVP that demonstrates how to build a voice-based medical appointment scheduler where Protected Health Information (PHI) never enters the LLM. The system treats all LLM reasoning as untrusted compute and proves PHI isolation through comprehensive compliance replay",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/VALUTCARE",
+        "Youtube": "https://www.youtube.com/watch?v=LY6aVIurVaM"
+      }
+    },
+    "CHRONOS": {
+      "subtitle": "Others",
+      "name": "CHRONOS - Multi-Agent Collaboration Platform",
+      "imagePath": "/projectImages/CHRONOS.png",
+      "tools": ["Docker", "Google Maps", "Python", "MongoDB"],
+      "description": "CHRONOS is an open-source multi-agent collaboration platform that enables AI agents to discover each other by skills, share structured context safely, propose actions, debate decisions, and resolve conflicts through enforceable AI Court rulings",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/CHRONOS",
+        "Youtube": "https://youtu.be/VJjZhec9wCE"
+      }
+    },
+    "citypulseai": {
+      "subtitle": "Award-winning",
+      "name": "CityPulse AI - Real-Time Urban Crisis Intelligence Platform",
+      "imagePath": "/projectImages/CityPulse.png",
+      "tools": ["SnowLeopard", "Google Maps", "Python", "Node.js"],
+      "description": "AI-powered emergency response system that analyzes San Francisco's real-time crisis data using natural language queries.",
+      "award": "🏆 2nd Prize - Ship Agents Fast with Snow Leopard: The Operational Data Hackathon",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/CityPulseAI",
+        "LinkedIn": "https://www.linkedin.com/feed/update/urn:li:activity:7407297552469061633/?originTrackingId=9u1iSJcmY%2BDdDmEwu9j1eA%3D%3D",
+        "YouTube": ""
+      }
+    },
+    "buildbenchai": {
+      "subtitle": "Others",
+      "name": "BuildBench AI - Make housing affordable by bringing AI-powered cost transparency to construction",
+      "imagePath": "/projectImages/BuildBench AI.png",
+      "tools": ["Apify Actors", "TypeScript", "Groq LLM"],
+      "description": "BuildBench AI's mission is to structurally lower the cost of housing by giving small and mid-size builders the same data and decision tools as the biggest developers—so every new home is designed and built at the lowest safe cost, not the highest guess.",
+      "links": {
+        "Production": "https://bench-build-ai.vercel.app/"
+      }
+    },
+    "patchpilot": {
+      "subtitle": "Award-winning",
+      "name": "PatchPilot - Autonomous debugging engineer with Real PRs",
+      "imagePath": "/projectImages/Home Page.png",
+      "tools": [
+        "E2B Sandbox",
+        "GitHub MCP",
+        "Exa MCP",
+        "Groq LLM",
+        "Node.js Agent Runtime",
+        "Next.js Frontend + Express Backend"
+      ],
+      "description": "PatchPilot is an autonomous debugging engineer that runs entirely inside an E2B sandbox. It reads your bug description or stack trace, analyzes your codebase, searches Exa for real-world fixes, generates a patch, validates it by running your tests, and finally opens a production-ready Pull Request through GitHub MCP, everything is all automatically!",
+      "award": "🏆 Honorable Mention - Build MCP Agents Hackathon",
+      "links": {
+        "Project Page": "https://shipyardhq.tech/projects/13c2b438-5c02-4a05-beab-6382a3e9f3dd",
+        "Demo": "https://www.youtube.com/watch?v=8YT_FqrF8IE",
+        "YouTube": ""
+      }
+    },
+    "warden": {
+      "subtitle": "Safety",
+      "name": "Warden - Zero-Trust Runtime Security Firewall for Agentic AI",
+      "imagePath": "/projectImages/Warden.png",
+      "tools": [
+        "FastAPI",
+        "LangChain",
+        "AutoGen",
+        "OpenAI SDK",
+        "MCP",
+        "PostgreSQL",
+        "WebSockets",
+        "Canvas"
+      ],
+      "description": "Warden sits between agentic AI systems and the outside world, combining taint tracking, provenance ledgers, a neuro-symbolic supervisor, and a three-phase tool firewall to block prompt injection, tool hallucination, and unauthorized operations in real time while keeping memory writes clean and auditable.",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/Warden",
+        "Devpost": "https://devpost.com/software/warden-ny9uwa",
+        "YouTube": "https://www.youtube.com/watch?v=R4tJ-J2YGYI"
+      }
+    },
+    "vigil": {
+      "subtitle": "Safety",
+      "name": "Vigil - Always Watching Your AI Stack",
+      "imagePath": "/projectImages/Vigil.png",
+      "tools": [
+        "FastAPI",
+        "Python",
+        "React",
+        "Vite",
+        "Node.js",
+        "Tailwind CSS",
+        "WebSockets",
+        "SQLite"
+      ],
+      "description": "Vigil combines SupplyGuard and AlignGuard modules to scan AI supply chains for .pth backdoors, credential harvesters, and C2 traffic while simultaneously catching prompt-injection attempts before they reach multi-agent pipelines, delivering a real-time behavioral security dashboard born from the March 2026 LiteLLM attack.",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/Vigil",
+        "YouTube": "https://youtu.be/7s0qLKQ8hn0"
+      }
+    },
+    "cardsmart": {
+      "subtitle": "Special",
+      "name": "CardSmart - Real-Time Credit Card Advisor",
+      "imagePath": "/projectImages/CardSmart.png",
+      "tools": [
+        "React",
+        "Tailwind CSS",
+        "FastAPI",
+        "SQLAlchemy",
+        "SQLite",
+        "n8n",
+        "Minimax API",
+        "Docker Compose"
+      ],
+      "description": "CardSmart pairs a FastAPI backend, React dashboard, and n8n orchestration to recommend the smartest credit card for each purchase, monitor weekly budget burn, and surface personalized rewards using Minimax LLM reasoning and promo-matching workflows.",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/CardSmart",
+        "YouTube": "https://youtu.be/gn0sXmLYXlc"
+      }
+    },
+    "demoxa": {
+      "subtitle": "Special",
+      "name": "Demoxa - AI-Powered Automated Demo Generator",
+      "imagePath": "/projectImages/Demoxa.png",
+      "tools": [
+        "Next.js",
+        "Node.js",
+        "Playwright",
+        "Gemini 2.0 Flash",
+        "Tailwind CSS",
+        "TypeScript"
+      ],
+      "description": "Demoxa parses your README with Gemini, plans a DemoScript, then drives your live app via a vision-based computer-use agent running on Playwright to record professional walkthrough videos with optional manual capture fallback and live monitoring.",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/Demoxa",
+        "YouTube": "https://www.youtube.com/watch?v=FtIgFf54Y6o"
+      }
+    },
+    "eclat": {
+      "subtitle": "Advertisement",
+      "name": "Éclat - SeedDance AI Ad Studio",
+      "imagePath": "/projectImages/Eclat.png",
+      "tools": [
+        "Next.js",
+        "TypeScript",
+        "Tailwind CSS",
+        "Vision AI",
+        "Serverless Media Pipeline"
+      ],
+      "description": "Éclat with SeedDance turns curated product stills plus a short brand brief into 12-shot art-directed storyboards and cinema-grade 9:16 ads, preserving exact packaging while auto-publishing optimized cuts to TikTok Shop, Instagram Reels, and YouTube Shorts in ~90 seconds.",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/Eclat",
+        "YouTube": "https://youtu.be/2Tf0wY5YvJU"
+      }
+    },
+    "supportbrain": {
+      "subtitle": "Memory",
+      "name": "SupportBrain - Autonomous Support Engineer",
+      "imagePath": "/projectImages/SupportBrain.png",
+      "tools": [
+        "Next.js 14",
+        "TypeScript",
+        "Tailwind CSS",
+        "PostgreSQL + pgvector",
+        "Prisma",
+        "Anthropic Claude",
+        "OpenAI Embeddings",
+        "Hyperspell",
+        "Nia MCP",
+        "PatchPilot"
+      ],
+      "description": "SupportBrain ingests customer mail, runs dual memory layers, fans out to Hyperspell + Nia for cross-source context, classifies CODE_BUG vs inquiry, opens GitHub issues with PatchPilot-ready context, and can even ship PRs—closing the full support loop instead of stopping at a reply.",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/SupportBrain",
+        "YouTube": "https://youtu.be/z1zkPfTkJTs"
+      }
+    },
+    "vaultbrain": {
+      "subtitle": "Memory",
+      "name": "VaultBrain - Collaborative VC Brain",
+      "imagePath": "/projectImages/ValutBrain.png",
+      "tools": [
+        "React",
+        "Vite",
+        "Tailwind CSS",
+        "Bun",
+        "Express.js",
+        "SQLite",
+        "GStack",
+        "GBrain",
+        "The Hog"
+      ],
+      "description": "VaultBrain stitches GStack agents, GBrain persistence, and The Hog signals into a living VC brain so partners drop decks/emails, agents extract structured entities with provenance, scan live web intelligence, and keep a shared Brain Book timeline without humans typing CRM fields.",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/VaultBrain",
+        "YouTube": "https://youtu.be/U4U3HtcOFBQ"
+      }
+    },
+
+    "autolabdrive": {
+      "subtitle": "Others",
+      "name": "AutoLabDrive - Self-Evolving Multi-Agent Autodriving research system",
+      "imagePath": "/projectImages/AutoLabDrive.png",
+      "tools": [
+        "Ddocker",
+        "Fastapi",
+        "Freepik",
+        "Python",
+        "SQLite",
+        "Typescrip"
+      ],
+      "description": "AutoLabDrive is a self-evolving AI co-pilot that analyzes real driving logs, detects scenarios, retrieves and critiques AV research, and overlays the best methods directly on video. Competing agent labs learn from each event, giving engineers a live, ever-improving research engine that reveals what truly works for their data.",
+      "links": {
+        "Project Page": "https://devpost.com/software/autolabdrive",
+        "Demo": "https://www.youtube.com/watch?v=6xLsNgibHQk"
+      }
+    },
+    "energeticgoose": {
+      "subtitle": "Web3",
+      "name": "Energetic Goose - AI-powered on-chain invoice financing platform",
+      "imagePath": "/projectImages/energetic goose screenshot.png",
+      "tools": [
+        "Centrifug",
+        "JavaScript",
+        "TypeScript",
+        "CSS",
+        "Fine-tuned AI Model",
+        "Ollama"
+      ],
+      "description": "Energetic Goose is an on-chain treasury and liquidity platform that tokenizes energy invoices into digital assets, uses AI for automated underwriting, and enables instant global payments and yield optimization through blockchain-based stablecoin finance.",
+      "links": {
+        "GitHub": "https://github.com/mochiyaki/energeticgoose",
+        "Demo": "https://drive.google.com/drive/folders/161-xAW-2Q7LDVXNi-Re-cBdM9Xmv8BvV?dmr=1&ec=wgc-drive-hero-goto"
+      }
+    },
+    "durin": {
+      "subtitle": "Web3",
+      "name": "Durin - Global cross-border credit and underwriting platform.",
+      "imagePath": "/projectImages/Durin.png",
+      "tools": [
+        "FastAPI",
+        "React",
+        "OpenAI GPT-4 (AI/LLM)",
+        "NetworkX (Graph Analysis)",
+        "SQLAlchemy + SQLite (Database)"
+      ],
+      "description": "Durin is a global risk-hedging and underwriting platform that connects users’ verified financial data worldwide to build U.S.-equivalent credit profiles, enabling cross-border credit evaluation and compliance-driven underwriting for digital banks.",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/Durin",
+        "Demo": "https://drive.google.com/file/d/12HbnhyENlHm2mMVqW9bUzIUEGEKTdGSO/view?usp=drive_linkw"
+      }
+    },
+    "saferun": {
+      "subtitle": "Safety",
+      "name": "SafeRun - visualizes cyber threats through animated AI guardians.",
+      "imagePath": "/projectImages/saferun.jpg",
+      "tools": [
+        "Daytona API",
+        "OpenAI API",
+        "PostgreSQL",
+        "OpenAI GPT-4 (AI/LLM)"
+      ],
+      "description": "SafeRun transforms traditional cybersecurity dashboards into living, story-driven experiences. It visualizes real-time threats through animated AI guardians — from calm cats to defensive mecha dogs — blending game design with serious security analytics. By turning complex data into intuitive motion and narrative, SafeRun makes cyber defense both clear and captivating.",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/SafeRun",
+        "Demo": "https://www.youtube.com/watch?v=_7NngZnz0HM"
+      }
+    },
+    "memora": {
+      "subtitle": "Memory",
+      "name": "Memora - Ask your life, get the proof",
+      "imagePath": "/projectImages/Memora.png",
+      "tools": [
+        "Tailwind CSS",
+        "Elasticsearch",
+        "Firework API",
+        "OpenAI GPT-4 (AI/LLM)",
+        "ElevenLabs API"
+      ],
+      "description": "Memora lets you ask any life-admin question by voice and get a concise answer plus the exact proof (PDFs, photos, notes). It highlights the supporting snippet, shows evidence thumbnails, and can set follow-ups (e.g., reminders before expiration). All data stays private by default.",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/Memora",
+        "Demo": "https://www.youtube.com/watch?v=wZTok2mu7Yw"
+      }
+    },
+    "elucidate": {
+      "subtitle": "Award-winning",
+      "name": "Elucidate - Real-time Translation Chrome Extension based on knowledge level",
+      "imagePath": "/projectImages/Generative_AI.jpg",
+      "tools": ["OpenAI API", "Chrome Developer API", "Node.js", "HTML", "CSS"],
+      "description": "Built a functional Chrome Extension that can offer real values to those learning a new language and those with limited general reading proficiency.",
+      "award": "🏆 People's Favorite & Education Track Winner - Duke GenAI Hackathon 2023",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/Duke-Generative-AI-Hackathon",
+        "Devpost": "https://duke-gen-ai-hack-2023.devpost.com/",
+        "Demo": "https://drive.google.com/file/d/1HfHUEJCdbSzjYPXQirbS_wk1x7fzbgA_/view?usp=sharing",
+        "YouTube": ""
+      }
+    },
+    "math585": {
+      "subtitle": "Others",
+      "name": "MERN Stack ChatGPT Clone",
+      "imagePath": "/projectImages/GPT_Clone.png",
+      "tools": [
+        "MongoDB",
+        "Express.js",
+        "React.js",
+        "Node.js",
+        "OpenAI API",
+        "RestfulAPI",
+        "Postman"
+      ],
+      "description": "Cloned ChatGPT using full-stack MERN framework that can summarize, rephrase, and translate the context.",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/MERN-ChatGPT-clone"
+      }
+    },
+    "ventured": {
+      "subtitle": "Award-winning",
+      "name": "VentureD - Disrupt Price",
+      "imagePath": "/projectImages/VentureD.png",
+      "tools": ["AI/LLM", "Business Analytics", "Pricing Strategy"],
+      "description": "VentureD is an innovative pricing disruption platform that leverages AI to optimize pricing strategies for businesses.",
+      "links": {
+        "Presentation": "https://docs.google.com/presentation/d/11sxHWNZHYqw_GILu93B9if5FGTipO0JL/edit?usp=drive_link&ouid=112569052993935365863&rtpof=true&sd=true"
+      }
+    }
+  },
+  "Full-stack Web Application": {
+    "xref": {
+      "name": "Xref - Cross Reference tool for Professor to find students",
+      "imagePath": "/projectImages/Xref.png",
+      "tools": [
+        "Django",
+        "React",
+        "RestfulAPI",
+        "SQLite Database",
+        "Docker",
+        "Nginx",
+        "HTTPS",
+        "Certbort"
+      ],
+      "description": "Led a team of 5 to build Xref, which is a full-stack cross reference platform that helps professors to track students easily, it allows uploading CSV files, manually adding student's information, and searching student based on information.",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/Xref",
+        "Documentation": "https://github.com/luxinlabs/Xref/blob/main/README.md"
+      }
+    },
+    "note": {
+      "name": "Simple Note",
+      "imagePath": "/projectImages/simpleNote.png",
+      "tools": ["Python", "Django", "React", "RestfulAPI"],
+      "description": "Developed a simple note full-stack web application using Django and React framework.",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/MyNotes_Django-React"
+      }
+    }
+  },
+  "Algorithms": {
+    "camera": {
+      "name": "Camera Algorithms - Intern at Vivo as a Software Engineer",
+      "imagePath": "/projectImages/vivo.png",
+      "tools": [
+        "Python",
+        "PyTorch",
+        "HED",
+        "Gauss Blur Algorithm",
+        "Sobel Algorithm",
+        "Laplacian Algorithm"
+      ],
+      "description": "This is my internship report at Vivo, where I was in a Software Engineer position and built the platform for camera's automation testing and implemented several carema algorithms.",
+      "links": {
+        "report": "https://drive.google.com/file/d/1c3RWb1FtcE1g08aj0RhVG1ZY_1RZggTo/view?usp=sharing"
+      }
+    }
+  },
+  "Neural Network & Statistics": {
+    "RNN-stock": {
+      "name": "Neural Network to Predict Survival with Titantic",
+      "imagePath": "/projectImages/Titanic-NN.png",
+      "tools": ["Python", "Neural Network"],
+      "description": "Predicted the survival factors(passanger id, name, cabin, fare, etc.) of Titanic with Neural Network.",
+      "links": {
+        "report": "https://drive.google.com/file/d/1x0zYzKgLPDJEAKzT0iQLyS-uBEluCNqB/view?usp=sharing"
+      }
+    },
+    "penalizedRegression": {
+      "name": "Penalized Regression with the Ames Housing Data",
+      "imagePath": "/projectImages/PenalizedRegression.png",
+      "tools": ["LASSO model", "Elastic Net model", "Ridge Regression model"],
+      "description": "Found the best tuning parameter values through cross-validation and display these values and make prediction on the testing data, report the RMSE and the Coefficient of Determination R2",
+      "links": {
+        "report": "https://drive.google.com/file/d/18hBR2wvSPN-QXUtgmls4AY6DzyPB9sW7/view?usp=sharing"
+      }
+    },
+    "randomForest": {
+      "name": "Random Forest with the Spam Data",
+      "imagePath": "/projectImages/RandomForest.png",
+      "tools": ["R", "Random Forest"],
+      "description": "Split the data randomly into training (75%) and testing (25%), first build the best random forest to predict Spam e-mails using the training data, then use the out-of-bag (OOB) data to measure its performance, and then use this random forest model to predict whether each e-mail in the testing data is Spam or not.",
+      "links": {
+        "report": "https://drive.google.com/file/d/19uhQIrPTgGVEX4_BxmxbecVloiPwaaI5/view?usp=sharing"
+      }
+    },
+    "logisticRegression": {
+      "name": "Logistic Regression",
+      "imagePath": "/projectImages/LogisticRegression.png",
+      "tools": ["R"],
+      "description": "Used all the other 8 variables to predict the binary dependent variable 'diabetes' telling us whether the subject is diabetic or not (factor with 2 levels: neg and pos). You will split the data into 80% training and 20% testing.",
+      "links": {
+        "report": "https://drive.google.com/file/d/1E2WJEu9ZE_TlU_Adz49lVwNozIML8VFA/view?usp=sharing"
+      }
+    }
+  },
+  "Game": {
+    "eceRISC": {
+      "name": "RISC Game",
+      "imagePath": "/projectImages/RISC.png",
+      "tools": ["Java", "JavaFX", "Scene Builder", "CI/CD"],
+      "description": "Built a full-stack strategy game that allows multiple players play together.",
+      "links": {
+        "GitLab": "https://gitlab.oit.duke.edu/lz211/ece651_riscgame",
+        "GitHub": "https://drive.google.com/file/d/1_fmmPCbS2iGBF_B4opu26KP-pqDhdpGI/view?usp=sharing"
+      }
+    },
+    "battleship": {
+      "name": "Battleship Game",
+      "imagePath": "/projectImages/Battleship.png",
+      "tools": ["Java", "JavaFx", "Unit test", "S.O.L.I.D"],
+      "description": "Built a full-stack web application called Battleship Game, which allows two players and one server. Players can move, attack, and perform sonar scan.",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/Battleship_",
+        "Documentation": "https://drive.google.com/file/d/1TRrIZoRgbCauzZ8nuNSCBn52dcAQWAcM/view?usp=sharing"
+      }
+    }
+  },
+  "iOS App": {
+    "travelingapp": {
+      "name": "Traveling App",
+      "imagePath": "/projectImages/travelingApp.png",
+      "tools": ["Python", "Pandas", "Matplotlib", "scikit-learn"],
+      "description": "Built a traveling app that tested on IOS The advantage of this application is that it can give you all the recommendations for Restaurants, Attractions, and Hotels separately within one search each. (Search based on Google Map API)    ",
+      "links": {
+        "GitHub": "https://github.com/luxinlabs/traveling-app/tree/main"
+      }
+    }
+  },
+  "Others": {
+    "capCup": {
+      "name": "Ice-cream is Melting before Eating",
+      "imagePath": "/projectImages/capCup.png",
+      "tools": ["Human-centered Interaction", "Prototype", "Empathy Map"],
+      "description": "This is a prototype built in EST106 to solve the problem of ice cream is easy to melt. This idea won the most vote at EST106 class.",
+      "links": {
+        "video": "https://www.youtube.com/watch?v=2Yta2X54TDI",
+        "report": "https://drive.google.com/file/d/1XntQdWhuuAoFNN7FaE9fhZj-oMec7pId/view?usp=sharing"
+      }
+    },
+    "mobike": {
+      "name": "Mobike User Portrait Analysis",
+      "imagePath": "/projectImages/Mobike.png",
+      "tools": ["Python", "Pandas", "Matplotlib"],
+      "description": "This is a Business Analysis Project for drawing the protrait of Mobike.",
+      "links": {
+        "report": "https://drive.google.com/drive/u/0/folders/1cnDHA6C8Ng7pIz0lzX02QeDEfcyWiET9"
+      }
+    }
+  }
+}

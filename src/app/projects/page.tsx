@@ -118,21 +118,76 @@ export default function ProjectsPage() {
           {Object.entries(filteredProjects).map(([category, projects]) => {
             const projectCount = Object.keys(projects).length;
 
+            // Group projects by subtitle for AI Projects category
+            const groupedBySubtitle: {
+              [subtitle: string]: [string, Project][];
+            } = {};
+            const subtitleOrder = [
+              "Award-winning",
+              "Voices",
+              "Safety",
+              "Memory",
+              "Special",
+              "Advertisement",
+              "Web3",
+              "Others",
+            ];
+
+            if (category === "AI Projects") {
+              Object.entries(projects).forEach(([id, project]) => {
+                const subtitle = project.subtitle || "Other";
+                if (!groupedBySubtitle[subtitle]) {
+                  groupedBySubtitle[subtitle] = [];
+                }
+                groupedBySubtitle[subtitle].push([id, project]);
+              });
+            }
+
+            // Sort subtitles according to the defined order
+            const sortedSubtitles = Object.keys(groupedBySubtitle).sort(
+              (a, b) => {
+                const indexA = subtitleOrder.indexOf(a);
+                const indexB = subtitleOrder.indexOf(b);
+                return (
+                  (indexA === -1 ? 999 : indexA) -
+                  (indexB === -1 ? 999 : indexB)
+                );
+              },
+            );
+
             return (
               <div key={category}>
                 <div className="theme-surface mb-6 flex items-center justify-between rounded-2xl border theme-border px-4 py-4 md:px-6">
-                  <h2 className="text-2xl md:text-3xl font-bold">
-                    {category} Projects
-                  </h2>
+                  <h2 className="text-2xl md:text-3xl font-bold">{category}</h2>
                   <span className="theme-surface-2 rounded-full border theme-border px-3 py-1 text-sm font-semibold">
                     {projectCount} Project{projectCount > 1 ? "s" : ""}
                   </span>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                  {Object.entries(projects).map(([id, project]) => (
-                    <ProjectCard key={id} id={id} project={project} />
-                  ))}
-                </div>
+
+                {/* Render with subtitles for AI Projects */}
+                {category === "AI Projects" && sortedSubtitles.length > 0 ? (
+                  <div className="space-y-12">
+                    {sortedSubtitles.map((subtitle) => (
+                      <div key={subtitle}>
+                        <h3 className="text-xl md:text-2xl font-bold mb-4 theme-muted px-2">
+                          {subtitle}
+                        </h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                          {groupedBySubtitle[subtitle].map(([id, project]) => (
+                            <ProjectCard key={id} id={id} project={project} />
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  /* Regular rendering for non-AI Projects categories */
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {Object.entries(projects).map(([id, project]) => (
+                      <ProjectCard key={id} id={id} project={project} />
+                    ))}
+                  </div>
+                )}
               </div>
             );
           })}
