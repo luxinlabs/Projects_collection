@@ -32,4 +32,12 @@ export const researchArticles: ResearchArticle[] = [
     readTime: "18 min",
     href: "/articles/hypothesis-atlas",
   },
+  {
+    title: "NEURORA: Mandala-Based Digital Phenotyping for Early Detection of Parkinson's Disease and Alzheimer's Disease in the Era of Artificial Intelligence",
+    topic: "Book Chapter",
+    summary:
+      "A book chapter exploring digital phenotyping approaches using mandala-based assessments for early detection of neurodegenerative diseases, published in 'Where Art and Technology Resonate: Binnovative Approaches to Digital Health and Wellbeing'.",
+    readTime: "25 min",
+    href: "/articles/neurora",
+  },
 ];
