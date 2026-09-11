@@ -119,7 +119,13 @@ export default function ProjectCard(props: ProjectCardProps) {
               initial="rest"
               animate={isHovered ? "hover" : "rest"}
             >
-              <div className="text-white text-sm leading-relaxed text-center line-clamp-6 mb-2">
+              <div
+                className="text-white text-sm leading-relaxed text-center line-clamp-6 mb-2"
+                style={{
+                  textShadow:
+                    "0 2px 8px rgba(0,0,0,0.8), 0 0 2px rgba(0,0,0,0.9)",
+                }}
+              >
                 {props.project.description}
               </div>
               <div className="mt-2 px-4 py-2 bg-emerald-500 text-white font-semibold rounded-full text-sm hover:bg-emerald-600 transition-colors">

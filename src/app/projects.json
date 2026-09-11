@@ -4,13 +4,7 @@
       "subtitle": "Award-winning",
       "name": "Elucidate - Real-time Translation Chrome Extension based on knowledge level",
       "imagePath": "/projectImages/Generative_AI.jpg",
-      "tools": [
-        "OpenAI API",
-        "Chrome Developer API",
-        "Node.js",
-        "HTML",
-        "CSS"
-      ],
+      "tools": ["OpenAI API", "Chrome Developer API", "Node.js", "HTML", "CSS"],
       "description": "Built a functional Chrome Extension that can offer real values to those learning a new language and those with limited general reading proficiency.",
       "award": "🏆 People's Favorite & Education Track Winner - Duke GenAI Hackathon 2023",
       "links": {
@@ -24,10 +18,7 @@
       "subtitle": "Award-winning",
       "name": "NEURORA - Parkinson's & Alzheimer's Motor and Cognitive Monitoring",
       "imagePath": "/projectImages/Neurora.png",
-      "tools": [
-        "SwiftUI",
-        "FastAPI"
-      ],
+      "tools": ["SwiftUI", "FastAPI"],
       "description": "NEURORA is an iPad-first therapeutic application that uses mandala drawing and Apple Pencil telemetry to monitor motor and cognitive symptoms for early detection and progression tracking of Parkinson's disease and Alzheimer's disease, providing gentle AI-powered insights for patients, caregivers, and clinicians.",
       "award": "🏆 Grand Prix - Innovart 2026",
       "links": {
@@ -41,12 +32,7 @@
       "subtitle": "Award-winning",
       "name": "CityPulse AI - Real-Time Urban Crisis Intelligence Platform",
       "imagePath": "/projectImages/CityPulse.png",
-      "tools": [
-        "SnowLeopard",
-        "Google Maps",
-        "Python",
-        "Node.js"
-      ],
+      "tools": ["SnowLeopard", "Google Maps", "Python", "Node.js"],
       "description": "AI-powered emergency response system that analyzes San Francisco's real-time crisis data using natural language queries.",
       "award": "🏆 2nd Prize - Ship Agents Fast with Snow Leopard: The Operational Data Hackathon",
       "links": {
@@ -59,12 +45,7 @@
       "subtitle": "Award-winning",
       "name": "Hypothesis Atlas - AI-Powered Evidence Mapping for Biotech Research",
       "imagePath": "/projectImages/Hypothesis Atlas.png",
-      "tools": [
-        "Docker",
-        "Groq API",
-        "Node.js",
-        "Redis"
-      ],
+      "tools": ["Docker", "Groq API", "Node.js", "Redis"],
       "description": "A biotech research evidence mapping platform that automatically discovers, analyzes, and visualizes scientific knowledge from multiple sources including peer-reviewed papers, datasets, and social signals.",
       "award": "🏆 3rd Prize - Disrupt Bio",
       "links": {
@@ -94,14 +75,11 @@
     },
     "ventured": {
       "subtitle": "Award-winning",
-      "name": "VentureD - Disrupt Price",
+      "name": "VentureD - Disrupt Award (First Prize)",
       "imagePath": "/projectImages/VentureD.png",
-      "tools": [
-        "AI/LLM",
-        "Business Analytics",
-        "Pricing Strategy"
-      ],
+      "tools": ["AI/LLM", "Business Analytics", "Pricing Strategy"],
       "description": "VentureD is an innovative pricing disruption platform that leverages AI to optimize pricing strategies for businesses.",
+      "award": "🏆 First Prize - Disrupt Award",
       "links": {
         "Presentation": "https://docs.google.com/presentation/d/11sxHWNZHYqw_GILu93B9if5FGTipO0JL/edit?usp=drive_link&ouid=112569052993935365863&rtpof=true&sd=true"
       }
@@ -130,12 +108,7 @@
       "subtitle": "Voices",
       "name": "VaultCare - Secure, Autonomous Voice-Based Medical Appointment Scheduler",
       "imagePath": "/projectImages/ValutCare.png",
-      "tools": [
-        "Yutori API",
-        "ElevenLabs",
-        "Macroscope",
-        "Retool"
-      ],
+      "tools": ["Yutori API", "ElevenLabs", "Macroscope", "Retool"],
       "description": "VaultCare is a hackathon-ready MVP that demonstrates how to build a voice-based medical appointment scheduler where Protected Health Information (PHI) never enters the LLM. The system treats all LLM reasoning as untrusted compute and proves PHI isolation through comprehensive compliance replay",
       "links": {
         "GitHub": "https://github.com/luxinlabs/VALUTCARE",
@@ -318,10 +291,7 @@
       "subtitle": "Advertisement",
       "name": "ARIA - Autonomous Reasoning & Intelligence for Ads",
       "imagePath": "/projectImages/ARIA.png",
-      "tools": [
-        "SwiftUI",
-        "FastAPI"
-      ],
+      "tools": ["SwiftUI", "FastAPI"],
       "description": "The Automatic multi-agent Advertisement Systems involving ARIA (Autonomous Revenue Intelligence Agent) is an AI-powered advertising optimization system that autonomously manages multi-platform ad campaigns through continuous experimentation, learning, and adaptation. The system uses LangGraph orchestration to coordinate specialized agents that observe signals, generate strategies, create content, optimize audiences, allocate budgets, execute campaigns, and evaluate results.",
       "links": {
         "GitHub": "https://github.com/luxinlabs/ARIA",
@@ -367,12 +337,7 @@
       "subtitle": "Others",
       "name": "CHRONOS - Multi-Agent Collaboration Platform",
       "imagePath": "/projectImages/CHRONOS.png",
-      "tools": [
-        "Docker",
-        "Google Maps",
-        "Python",
-        "MongoDB"
-      ],
+      "tools": ["Docker", "Google Maps", "Python", "MongoDB"],
       "description": "CHRONOS is an open-source multi-agent collaboration platform that enables AI agents to discover each other by skills, share structured context safely, propose actions, debate decisions, and resolve conflicts through enforceable AI Court rulings",
       "links": {
         "GitHub": "https://github.com/luxinlabs/CHRONOS",
@@ -419,11 +384,7 @@
       "subtitle": "Others",
       "name": "BuildBench AI - Make housing affordable by bringing AI-powered cost transparency to construction",
       "imagePath": "/projectImages/BuildBench AI.png",
-      "tools": [
-        "Apify Actors",
-        "TypeScript",
-        "Groq LLM"
-      ],
+      "tools": ["Apify Actors", "TypeScript", "Groq LLM"],
       "description": "BuildBench AI's mission is to structurally lower the cost of housing by giving small and mid-size builders the same data and decision tools as the biggest developers—so every new home is designed and built at the lowest safe cost, not the highest guess.",
       "links": {
         "Production": "https://bench-build-ai.vercel.app/"
@@ -453,12 +414,7 @@
     "note": {
       "name": "Simple Note",
       "imagePath": "/projectImages/simpleNote.png",
-      "tools": [
-        "Python",
-        "Django",
-        "React",
-        "RestfulAPI"
-      ],
+      "tools": ["Python", "Django", "React", "RestfulAPI"],
       "description": "Developed a simple note full-stack web application using Django and React framework.",
       "links": {
         "GitHub": "https://github.com/luxinlabs/MyNotes_Django-React"
@@ -487,10 +443,7 @@
     "RNN-stock": {
       "name": "Neural Network to Predict Survival with Titantic",
       "imagePath": "/projectImages/Titanic-NN.png",
-      "tools": [
-        "Python",
-        "Neural Network"
-      ],
+      "tools": ["Python", "Neural Network"],
       "description": "Predicted the survival factors(passanger id, name, cabin, fare, etc.) of Titanic with Neural Network.",
       "links": {
         "report": "https://drive.google.com/file/d/1x0zYzKgLPDJEAKzT0iQLyS-uBEluCNqB/view?usp=sharing"
@@ -499,11 +452,7 @@
     "penalizedRegression": {
       "name": "Penalized Regression with the Ames Housing Data",
       "imagePath": "/projectImages/PenalizedRegression.png",
-      "tools": [
-        "LASSO model",
-        "Elastic Net model",
-        "Ridge Regression model"
-      ],
+      "tools": ["LASSO model", "Elastic Net model", "Ridge Regression model"],
       "description": "Found the best tuning parameter values through cross-validation and display these values and make prediction on the testing data, report the RMSE and the Coefficient of Determination R2",
       "links": {
         "report": "https://drive.google.com/file/d/18hBR2wvSPN-QXUtgmls4AY6DzyPB9sW7/view?usp=sharing"
@@ -512,10 +461,7 @@
     "randomForest": {
       "name": "Random Forest with the Spam Data",
       "imagePath": "/projectImages/RandomForest.png",
-      "tools": [
-        "R",
-        "Random Forest"
-      ],
+      "tools": ["R", "Random Forest"],
       "description": "Split the data randomly into training (75%) and testing (25%), first build the best random forest to predict Spam e-mails using the training data, then use the out-of-bag (OOB) data to measure its performance, and then use this random forest model to predict whether each e-mail in the testing data is Spam or not.",
       "links": {
         "report": "https://drive.google.com/file/d/19uhQIrPTgGVEX4_BxmxbecVloiPwaaI5/view?usp=sharing"
@@ -524,9 +470,7 @@
     "logisticRegression": {
       "name": "Logistic Regression",
       "imagePath": "/projectImages/LogisticRegression.png",
-      "tools": [
-        "R"
-      ],
+      "tools": ["R"],
       "description": "Used all the other 8 variables to predict the binary dependent variable 'diabetes' telling us whether the subject is diabetic or not (factor with 2 levels: neg and pos). You will split the data into 80% training and 20% testing.",
       "links": {
         "report": "https://drive.google.com/file/d/1E2WJEu9ZE_TlU_Adz49lVwNozIML8VFA/view?usp=sharing"
@@ -537,12 +481,7 @@
     "eceRISC": {
       "name": "RISC Game",
       "imagePath": "/projectImages/RISC.png",
-      "tools": [
-        "Java",
-        "JavaFX",
-        "Scene Builder",
-        "CI/CD"
-      ],
+      "tools": ["Java", "JavaFX", "Scene Builder", "CI/CD"],
       "description": "Built a full-stack strategy game that allows multiple players play together.",
       "links": {
         "GitLab": "https://gitlab.oit.duke.edu/lz211/ece651_riscgame",
@@ -552,12 +491,7 @@
     "battleship": {
       "name": "Battleship Game",
       "imagePath": "/projectImages/Battleship.png",
-      "tools": [
-        "Java",
-        "JavaFx",
-        "Unit test",
-        "S.O.L.I.D"
-      ],
+      "tools": ["Java", "JavaFx", "Unit test", "S.O.L.I.D"],
       "description": "Built a full-stack web application called Battleship Game, which allows two players and one server. Players can move, attack, and perform sonar scan.",
       "links": {
         "GitHub": "https://github.com/luxinlabs/Battleship_",
@@ -569,12 +503,7 @@
     "travelingapp": {
       "name": "Traveling App",
       "imagePath": "/projectImages/travelingApp.png",
-      "tools": [
-        "Python",
-        "Pandas",
-        "Matplotlib",
-        "scikit-learn"
-      ],
+      "tools": ["Python", "Pandas", "Matplotlib", "scikit-learn"],
       "description": "Built a traveling app that tested on IOS The advantage of this application is that it can give you all the recommendations for Restaurants, Attractions, and Hotels separately within one search each. (Search based on Google Map API)    ",
       "links": {
         "GitHub": "https://github.com/luxinlabs/traveling-app/tree/main"
@@ -585,11 +514,7 @@
     "capCup": {
       "name": "Ice-cream is Melting before Eating",
       "imagePath": "/projectImages/capCup.png",
-      "tools": [
-        "Human-centered Interaction",
-        "Prototype",
-        "Empathy Map"
-      ],
+      "tools": ["Human-centered Interaction", "Prototype", "Empathy Map"],
       "description": "This is a prototype built in EST106 to solve the problem of ice cream is easy to melt. This idea won the most vote at EST106 class.",
       "links": {
         "video": "https://www.youtube.com/watch?v=2Yta2X54TDI",
@@ -599,11 +524,7 @@
     "mobike": {
       "name": "Mobike User Portrait Analysis",
       "imagePath": "/projectImages/Mobike.png",
-      "tools": [
-        "Python",
-        "Pandas",
-        "Matplotlib"
-      ],
+      "tools": ["Python", "Pandas", "Matplotlib"],
       "description": "This is a Business Analysis Project for drawing the protrait of Mobike.",
       "links": {
         "report": "https://drive.google.com/drive/u/0/folders/1cnDHA6C8Ng7pIz0lzX02QeDEfcyWiET9"
