@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:house": "tsx --test tests/house.test.ts"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
@@ -28,10 +29,13 @@
     "react-dom": "18.2.0",
     "react-scroll": "^1.8.9",
     "tailwindcss": "3.3.2",
+    "three": "^0.180.0",
     "typescript": "5.1.3"
   },
   "devDependencies": {
-    "@types/gtag.js": "^0.0.12"
+    "@types/gtag.js": "^0.0.12",
+    "@types/three": "^0.180.0",
+    "tsx": "^4.20.6"
   },
   "engines": {
     "node": "22.x"

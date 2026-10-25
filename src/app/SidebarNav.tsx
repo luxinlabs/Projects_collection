@@ -8,6 +8,7 @@ import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 const navItems = [
   { href: "/", label: "Home" },
   { href: "/bio", label: "Bio" },
+  { href: "/research", label: "Research" },
   { href: "/projects", label: "Projects" },
   { href: "/open-source", label: "Open Source" },
   { href: "/articles", label: "Articles" },

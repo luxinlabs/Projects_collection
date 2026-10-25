@@ -38,16 +38,27 @@ export default function ArticlesPage() {
                 <span className="text-xs uppercase tracking-widest theme-muted">
                   {article.topic}
                 </span>
-                <span className="text-sm theme-muted">{article.readTime}</span>
+                {article.readTime && (
+                  <span className="text-sm theme-muted">{article.readTime}</span>
+                )}
               </div>
               <h2 className="text-2xl font-semibold mb-3">{article.title}</h2>
-              <p className="leading-relaxed mb-4">{article.summary}</p>
-              <Link
-                href={article.href}
-                className="theme-toggle inline-flex items-center rounded-lg px-3 py-1.5 font-semibold transition-colors"
-              >
-                Read More →
-              </Link>
+              {article.abstract ? (
+                <>
+                  <h3 className="font-semibold mb-2">Abstract</h3>
+                  <p className="leading-relaxed">{article.abstract}</p>
+                </>
+              ) : (
+                <p className="leading-relaxed mb-4">{article.summary}</p>
+              )}
+              {article.href && (
+                <Link
+                  href={article.href}
+                  className="theme-toggle inline-flex items-center rounded-lg px-3 py-1.5 font-semibold transition-colors"
+                >
+                  Read More →
+                </Link>
+              )}
             </article>
           ))}
         </div>
