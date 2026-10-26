@@ -1,5 +1,7 @@
 import { test, before, after } from "node:test";
 import assert from "node:assert/strict";
+import { readdirSync } from "node:fs";
+import { join, relative, resolve, sep } from "node:path";
 import {
   canWalk,
   findWalkPath,
@@ -16,10 +18,31 @@ import { answerFromWebsite } from "../src/app/house/knowledge";
 import { POST } from "../src/app/api/host/route";
 import { cottageRooms, isInsideHouse } from "../src/app/house/houseLayout";
 import { petHomes } from "../src/app/house/animals";
+import { judgeExperiences } from "../src/app/judge/experiences";
 
 const originalKey = process.env.OPENAI_API_KEY;
 before(() => {
   delete process.env.OPENAI_API_KEY;
+});
+
+test("project and judging assets match the exact case of files in public", () => {
+  const root = resolve("public");
+  const files = new Set<string>();
+  function visit(directory: string) {
+    for (const item of readdirSync(directory, { withFileTypes: true })) {
+      const path = join(directory, item.name);
+      if (item.isDirectory()) visit(path);
+      else files.add(relative(root, path).split(sep).join("/"));
+    }
+  }
+  visit(root);
+  for (const project of portfolioProjects)
+    assert.ok(
+      files.has(project.imagePath.slice(1)),
+      `${project.slug}: exact asset path ${project.imagePath}`,
+    );
+  for (const entry of judgeExperiences)
+    if (entry.image) assert.ok(files.has(entry.image.slice(1)), entry.title);
 });
 after(() => {
   if (originalKey === undefined) delete process.env.OPENAI_API_KEY;

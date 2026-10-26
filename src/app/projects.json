@@ -154,7 +154,7 @@
     "warden": {
       "subtitle": "Safety",
       "name": "Warden - Zero-Trust Runtime Security Firewall for Agentic AI",
-      "imagePath": "/projectImages/Warden.png",
+      "imagePath": "/projectImages/warden.png",
       "tools": [
         "FastAPI",
         "LangChain",
