@@ -28,6 +28,10 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 
 The homepage is an explorable 3D house and garden. The earlier homepage is preserved at `/classic`; all existing portfolio routes remain available.
 
+The cottage has a sleeping and reading nook, a central living room with a glowing stove, and a kitchen and dining room, with nearly twice the original floor area. A puppy wags its tail near the host, a tabby dozes on the sofa, and a duck with two ducklings swims in the garden pond. Little Luxin is a girl with long dark hair, a rose dress, a hair bow, and a matching illustrated chat portrait. Reduced-motion preferences pause decorative character, pet, and fire animations.
+
+All portfolio pages share the cottage’s parchment and sage palette, serif headings, navigation, project cards, and footer. Daylight/evening selection is saved across page navigation; the home’s lighting follows the same setting.
+
 - Click the ground to walk, use WASD / arrow keys, or use the phone’s **Walk around** controls. Walking follows the camera’s orientation; manual controls cancel an automatic route.
 - Click a labeled object to approach and inspect it. Press **E** near an object, or use the section buttons below the house for direct access.
 - Drag to change the view; use the zoom buttons to inspect the room. **Escape** closes the detail sheet.

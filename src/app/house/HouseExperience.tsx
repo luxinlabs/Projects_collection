@@ -7,30 +7,11 @@ import type { HouseSceneHandle } from "./HouseScene";
 import { houseSpots, type RoomSection } from "./houseContent";
 import { initialConversation } from "./HostChat";
 import RoomPanel from "./RoomPanel";
+import SidebarNav, { HouseMark } from "../SidebarNav";
+import { useSiteTheme } from "../useSiteTheme";
 import "./house.css";
 
 const HouseScene = dynamic(() => import("./HouseScene"), { ssr: false });
-
-function HouseMark() {
-  return (
-    <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
-      <path
-        d="m5 19 15-12 15 12M9 17v17h22V17M17 34V23h7v11"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M27 11V6h4v8M4 35h32"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-      />
-      <circle cx="20" cy="16" r="2" fill="currentColor" />
-    </svg>
-  );
-}
 
 export default function HouseExperience() {
   const scene = useRef<HouseSceneHandle>(null);
@@ -39,7 +20,7 @@ export default function HouseExperience() {
   const [ready, setReady] = useState(false);
   const [entered, setEntered] = useState(false);
   const [walking, setWalking] = useState(false);
-  const [evening, setEvening] = useState(false);
+  const { evening } = useSiteTheme();
   const [menu, setMenu] = useState(false);
   const [help, setHelp] = useState(false);
   const [dpad, setDpad] = useState(false);
@@ -68,33 +49,7 @@ export default function HouseExperience() {
       <a href="#house-rooms" className="world-skip-link">
         Skip to portfolio sections
       </a>
-      <header className="world-header">
-        <Link
-          href="/"
-          className="world-brand"
-          aria-label="Luxin Zhang’s little world, home"
-        >
-          <HouseMark />
-          <span>
-            LUXIN ZHANG<small>A LITTLE WORLD OF BIG IDEAS</small>
-          </span>
-        </Link>
-        <nav aria-label="Main navigation">
-          <Link href="/research">Research</Link>
-          <Link href="/bio">About me</Link>
-          <a href="mailto:philomela.zhang@gmail.com">
-            Let’s connect <span>↗</span>
-          </a>
-        </nav>
-        <button
-          className="world-day-switch"
-          onClick={() => setEvening((value) => !value)}
-          aria-label={evening ? "Switch to daylight" : "Switch to cozy evening"}
-          title={evening ? "Daylight" : "Cozy evening"}
-        >
-          {evening ? "☾" : "☼"}
-        </button>
-      </header>
+      <SidebarNav inHouse />
       <section
         className="world-stage"
         aria-label="Explore Luxin’s house and garden"

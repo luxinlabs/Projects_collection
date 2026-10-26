@@ -14,6 +14,8 @@ import {
 } from "../src/app/house/houseContent";
 import { answerFromWebsite } from "../src/app/house/knowledge";
 import { POST } from "../src/app/api/host/route";
+import { cottageRooms, isInsideHouse } from "../src/app/house/houseLayout";
+import { petHomes } from "../src/app/house/animals";
 
 const originalKey = process.env.OPENAI_API_KEY;
 before(() => {
@@ -48,6 +50,35 @@ test("walking follows the camera at different viewing angles", () => {
     walkDirection(new Set(["w", "s", "a", "d"]), [1, -1]),
     [0, 0],
   );
+});
+
+test("the expanded cottage has three walkable rooms and nearly twice the floor area", () => {
+  assert.equal(cottageRooms.length, 3);
+  const area = cottageRooms.reduce(
+    (sum, room) => sum + (room.maxX - room.minX) * (room.maxZ - room.minZ),
+    0,
+  );
+  assert.ok(area > 1.8 * 10.8 * 8.8);
+  for (const point of [
+    [-6, 2.8],
+    [0, 1],
+    [5.5, 1.5],
+  ] as [number, number][]) {
+    assert.ok(isInsideHouse(...point));
+    assert.ok(findWalkPath([0, 6.5], point).length);
+  }
+});
+
+test("the puppy and cat live inside, while the ducks stay in the garden", () => {
+  assert.equal(petHomes.filter((pet) => pet.indoors).length, 2);
+  assert.equal(petHomes.filter((pet) => !pet.indoors).length, 3);
+  for (const pet of petHomes)
+    assert.equal(isInsideHouse(pet.x, pet.z), pet.indoors);
+  assert.match(
+    answerFromWebsite("Tell me about the pets").text,
+    /virtual cottage/,
+  );
+  assert.match(answerFromWebsite("Is Luxin a girl?").text, /Luxin is a woman/);
 });
 
 test("chat history respects the byte limit even with multilingual messages", () => {
@@ -187,6 +218,10 @@ test("the host answers about both accepted papers, named projects, and judging",
   const judging = answerFromWebsite("Tell me about the judging work");
   assert.match(judging.text, /AAAI-UG/);
   assert.match(judging.text, /ASPPH27/);
+  assert.match(
+    answerFromWebsite("Tell me about Luxin’s Girl Innovation judging").text,
+    /Gold/,
+  );
   assert.ok(judging.sources.some((source) => source.href === "/judge"));
 });
 

@@ -21,7 +21,7 @@ export default function Home() {
   return (
     <div
       id="index_wrapper"
-      className="theme-page flex flex-col w-screen items-center pt-16 md:pt-0"
+      className="theme-page classic-page flex flex-col w-full items-center pt-16 md:pt-0"
     >
       <SidebarNav />
 
@@ -60,20 +60,20 @@ export default function Home() {
               href="https://www.linkedin.com/in/luxin-zhang-96777b192/"
               className="group relative"
             >
-              <div className="relative bg-gray-800/80 backdrop-blur-sm p-4 rounded-full border-2 border-gray-600 hover:border-gray-400 hover:bg-gray-700/80 transition-all duration-300 hover:scale-110 shadow-lg">
+              <div className="relative theme-social-button p-4 rounded-full  transition-all duration-300 hover:scale-110 shadow-lg">
                 <FontAwesomeIcon
                   icon={faLinkedin}
                   size="2x"
-                  className="text-white"
+                  className="theme-social-icon"
                 />
               </div>
             </a>
             <a href="https://github.com/luxinlabs" className="group relative">
-              <div className="relative bg-gray-800/80 backdrop-blur-sm p-4 rounded-full border-2 border-gray-600 hover:border-gray-400 hover:bg-gray-700/80 transition-all duration-300 hover:scale-110 shadow-lg">
+              <div className="relative theme-social-button p-4 rounded-full  transition-all duration-300 hover:scale-110 shadow-lg">
                 <FontAwesomeIcon
                   icon={faGithub}
                   size="2x"
-                  className="text-white"
+                  className="theme-social-icon"
                 />
               </div>
             </a>
@@ -81,20 +81,20 @@ export default function Home() {
               href="mailto:philomela.zhang@gmail.com"
               className="group relative"
             >
-              <div className="relative bg-gray-800/80 backdrop-blur-sm p-4 rounded-full border-2 border-gray-600 hover:border-gray-400 hover:bg-gray-700/80 transition-all duration-300 hover:scale-110 shadow-lg">
+              <div className="relative theme-social-button p-4 rounded-full  transition-all duration-300 hover:scale-110 shadow-lg">
                 <FontAwesomeIcon
                   icon={faEnvelope}
                   size="2x"
-                  className="text-white"
+                  className="theme-social-icon"
                 />
               </div>
             </a>
-            <a href="SDE_AI_20260414.pdf" className="group relative">
-              <div className="relative bg-gray-800/80 backdrop-blur-sm p-4 rounded-full border-2 border-gray-600 hover:border-gray-400 hover:bg-gray-700/80 transition-all duration-300 hover:scale-110 shadow-lg">
+            <a href="/SDE_AI_20260414.pdf" className="group relative">
+              <div className="relative theme-social-button p-4 rounded-full  transition-all duration-300 hover:scale-110 shadow-lg">
                 <FontAwesomeIcon
                   icon={faFile}
                   size="2x"
-                  className="text-white"
+                  className="theme-social-icon"
                 />
               </div>
             </a>
@@ -105,8 +105,8 @@ export default function Home() {
               href="#bio"
               className="group relative inline-flex items-center gap-3 px-8 py-4 text-lg font-semibold"
             >
-              <div className="absolute inset-0 bg-white rounded-xl blur group-hover:blur-lg transition duration-300 opacity-50" />
-              <div className="relative bg-white px-8 py-4 rounded-xl text-black border-2 border-white hover:bg-gray-100 transition-all duration-300 hover:scale-105 font-bold">
+              <div className="absolute inset-0 theme-surface-2 rounded-xl blur group-hover:blur-lg transition duration-300 opacity-50" />
+              <div className="relative theme-toggle px-8 py-4 rounded-xl border transition-all duration-300 hover:scale-105 font-bold">
                 Read My Bio
                 <span className="ml-2 inline-block transition-transform duration-300 group-hover:translate-x-1">
                   →
@@ -129,7 +129,7 @@ export default function Home() {
               src={profile_picture}
               alt="Profile Picture"
               priority={true}
-              className="rounded-2xl w-full h-auto object-cover border-2 border-emerald-400/60"
+              className="rounded-2xl w-full h-auto object-cover border-2 theme-border"
               width={320}
               height={380}
             />

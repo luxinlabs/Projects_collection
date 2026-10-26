@@ -78,82 +78,67 @@ export default function ProjectPage({ params }: ProjectPageProps) {
     notFound();
   }
 
-  const path = project.imagePath;
-
   return (
-    <div className="p-1 pt-16 md:pt-0">
+    <main className="theme-page project-detail-page min-h-screen">
       <SidebarNav />
-
-      <title>{project.name}</title>
-      <div className="max-w-[1200px] mx-auto px-4 pt-6">
-        <div className="flex items-center gap-3">
-          <Link
-            href="/"
-            className="inline-flex items-center justify-center h-9 w-9 rounded-full border border-slate-300 text-slate-700 hover:text-black hover:border-emerald-500 transition-colors"
-            aria-label="Back to home"
-          >
-            ←
-          </Link>
-          <Link
-            href="/projects"
-            className="text-emerald-600 hover:text-emerald-500 font-semibold"
-          >
-            Back to Projects
-          </Link>
-        </div>
-      </div>
-
-      <div id="title" className="flex flex-row justify-center p-10">
-        <h1 className="text-5xl">{project.name}</h1>
-      </div>
-      <div id="content-wrapper" className="flex flex-row justify-center">
-        <div
-          id="content"
-          className="flex flex-row w-screen justify-center flex-wrap max-w-[1200px]"
+      <div className="max-w-6xl mx-auto px-6 pt-6 flex items-center gap-4">
+        <Link
+          href="/"
+          className="theme-toggle inline-flex items-center justify-center h-10 w-10 rounded-full"
+          aria-label="Back to the little home"
         >
-          <div
-            id="picture"
-            className="rounded-2xl overflow-hidden flex flex-row justify-center relative xl:w-[500px] xl:h-[500px] w-[400px] max-w-[500px] h-[400px] mx-5"
-          >
-            <Image
-              src={path}
-              alt="Picture"
-              fill={true}
-              priority={true}
-              sizes="(min-width: 1280 px) 500px, 400px"
-              style={{ objectFit: "cover" }}
-            ></Image>
+          ⌂
+        </Link>
+        <Link href="/projects" className="theme-accent text-sm">
+          The project collection ↗
+        </Link>
+      </div>
+      <div id="title">
+        <p className="text-center text-xs uppercase tracking-widest theme-muted mb-4">
+          From an idea to something real
+        </p>
+        <h1>{project.name}</h1>
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 max-w-6xl mx-auto px-6 pb-8">
+        <div className="relative aspect-square w-full rounded-2xl overflow-hidden border theme-border theme-surface-2">
+          <Image
+            src={project.imagePath}
+            alt={project.name}
+            fill
+            priority
+            sizes="(min-width:1024px) 550px,90vw"
+            className="object-contain"
+          />
+        </div>
+        <section
+          id="information"
+          className="theme-surface rounded-2xl border theme-border p-6 md:p-8 flex flex-col"
+        >
+          {project.award && (
+            <p className="theme-award rounded-xl p-4 text-sm">
+              {project.award}
+            </p>
+          )}
+          <h2>Description</h2>
+          <p>{project.description}</p>
+          <h2>Made with</h2>
+          <div id="tools" className="flex flex-wrap">
+            {project.tools.map((tool) => (
+              <TechChip key={tool} name={tool} />
+            ))}
           </div>
-          <div
-            id="information"
-            className="max-w-[500px] flex flex-col justify-between mx-5"
-          >
-            {project.award && (
-              <div className="mb-4 flex justify-center">
-                <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg border border-yellow-300/50 inline-block">
-                  {project.award}
-                </div>
-              </div>
-            )}
-            <h2 className="text-center text-3xl pb-4">Description</h2>
-            <p className="px-2">{project.description}</p>
-            <h2 className="text-center text-3xl py-2">Tools Used</h2>
-            <div id="tools" className="flex flex-row flex-wrap">
-              {project.tools.map((tool: string) => (
-                <TechChip key={tool} name={tool} />
-              ))}
-            </div>
-            <h2 className="text-center text-3xl py-2">Links</h2>
-            <div id="tools" className="flex flex-row flex-wrap justify-around">
-              {Object.entries(project.links).map(([linkName, link]) => (
-                <a key={linkName} href={link} target="_blank">
-                  <LinkChip name={linkName} />
+          <h2>Take a closer look</h2>
+          <div className="flex flex-wrap gap-2">
+            {Object.entries(project.links)
+              .filter(([, href]) => href)
+              .map(([name, href]) => (
+                <a key={name} href={href} target="_blank" rel="noreferrer">
+                  <LinkChip name={name} />
                 </a>
               ))}
-            </div>
           </div>
-        </div>
+        </section>
       </div>
-    </div>
+    </main>
   );
 }

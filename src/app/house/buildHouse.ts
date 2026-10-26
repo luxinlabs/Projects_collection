@@ -1,6 +1,9 @@
 import * as THREE from "three";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
 import { batchStaticGeometry } from "./batchGeometry";
+import { addCottageDetails } from "./cottageDetails";
+import { createLuxin, createVisitor } from "./characters";
+import { addAnimals } from "./animals";
 import { houseSpots, type RoomSection } from "./houseContent";
 
 export function buildHouse(scene: THREE.Scene) {
@@ -128,8 +131,8 @@ export function buildHouse(scene: THREE.Scene) {
   }
 
   // A little island, with the room sliced open like an architectural dollhouse.
-  box(18.4, 0.65, 15.2, "#c7bea2", 0, -0.42, 0.8, world, 0.25);
-  box(18.3, 0.18, 15.1, "#b8c497", 0, -0.05, 0.8, world, 0.08);
+  box(30.4, 0.65, 18.8, "#c7bea2", 0.7, -0.42, 0.8, world, 0.25);
+  box(30.3, 0.18, 18.7, "#b8c497", 0.7, -0.05, 0.8, world, 0.08);
   box(10.8, 0.48, 8.8, "#8b6549", 0, 0.17, 0, world, 0.08);
   const plankColors = ["#d4b58d", "#d9bd97", "#d0ac80", "#d9b78e"];
   for (let i = 0; i < 20; i++)
@@ -147,11 +150,11 @@ export function buildHouse(scene: THREE.Scene) {
       );
     }
   box(10.8, 4.15, 0.25, cream, 0, 2.4, -4.32);
-  box(0.25, 4.15, 8.65, "#e1d8be", -5.3, 2.4, 0);
+  box(0.19, 4.15, 1.05, "#e1d8be", -5.3, 2.4, -3.78);
   box(10.9, 0.2, 0.42, wood, 0, 4.52, -4.32);
   box(0.4, 0.2, 8.75, wood, -5.3, 4.52, 0);
   box(10.6, 0.22, 0.1, wood, 0, 0.62, -4.12);
-  box(0.1, 0.22, 8.45, wood, -5.12, 0.62, 0);
+
   for (const x of [-5.15, 0.35, 5.15])
     box(0.15, 4, 0.18, "#c4aa84", x, 2.4, -4.12);
   // Low edges leave the visitor's view open; front steps lead into the house.
@@ -380,7 +383,7 @@ export function buildHouse(scene: THREE.Scene) {
   interactive(judging, "judge");
 
   // Books, a comfortable sofa, a sleeping cat, and a reading lamp.
-  const shelf = groupAt(-4.65, 0.5, -1.35);
+  const shelf = groupAt(-9.45, 0.5, 1.35);
   box(0.74, 2.6, 2.5, wood, 0, 1.3, 0, shelf);
   box(0.06, 2.4, 2.28, "#765b40", 0.4, 1.3, 0, shelf);
   const bookColors = [
@@ -426,6 +429,9 @@ export function buildHouse(scene: THREE.Scene) {
     box(1.45, 0.7, 0.3, "#b97e63", 0, 0.88, z, sofa, 0.1);
   for (const z of [-0.73, 0.73])
     box(1.15, 0.22, 1.16, "#d09b7c", 0.1, 0.85, z, sofa, 0.1);
+  for (const x of [-0.5, 0.5])
+    for (const z of [-1.25, 1.25])
+      box(0.12, 0.3, 0.12, darkWood, x, 0.15, z, sofa);
   const pillow = box(
     0.28,
     0.58,
@@ -438,20 +444,6 @@ export function buildHouse(scene: THREE.Scene) {
     0.09,
   );
   pillow.rotation.z = -0.22;
-  const cat = ball(0.22, "#e9cf9e", 0.1, 1.08, 0.65, sofa);
-  cat.scale.set(1.5, 0.65, 1);
-  ball(0.14, "#e9cf9e", 0.35, 1.12, 0.6, sofa);
-  for (const z of [0.52, 0.68]) {
-    const ear = mesh(
-      new THREE.ConeGeometry(0.065, 0.13, 3),
-      "#d4af80",
-      0.36,
-      1.25,
-      z,
-      sofa,
-    );
-    ear.rotation.x = 0.15;
-  }
   cylinder(0.18, 0.24, 0.07, brass, -3.3, 0.54, -0.65);
   cylinder(0.025, 0.025, 2.35, brass, -3.3, 1.72, -0.65);
   cylinder(0.24, 0.43, 0.5, "#f3dab0", -3.3, 2.9, -0.65);
@@ -491,82 +483,14 @@ export function buildHouse(scene: THREE.Scene) {
   box(0.4, 0.07, 0.3, "#6d8977", -0.5, 0.76, 0.12, coffee);
   interactive(coffee, "travel");
 
-  // A recognizable miniature host, and a smaller visitor with a backpack.
-  function person(color: string, isHost: boolean) {
-    const group = new THREE.Group();
-    const legs: THREE.Object3D[] = [],
-      arms: THREE.Object3D[] = [];
-    cylinder(0.17, 0.21, 0.42, color, 0, 0.66, 0, group);
-    ball(0.26, "#e1b28e", 0, 1.06, 0, group);
-    const hair = mesh(
-      new THREE.SphereGeometry(
-        0.275,
-        20,
-        14,
-        0,
-        Math.PI * 2,
-        0,
-        Math.PI * 0.44,
-      ),
-      "#45382f",
-      0,
-      1.1,
-      -0.015,
-      group,
-    );
-    if (isHost) {
-      ball(0.13, "#45382f", 0, 1.17, -0.21, group);
-      for (const x of [-0.1, 0.1]) {
-        const glasses = mesh(
-          new THREE.TorusGeometry(0.075, 0.012, 6, 18),
-          "#5a4536",
-          x,
-          1.08,
-          0.232,
-          group,
-        );
-        glasses.scale.y = 0.8;
-      }
-      box(0.04, 0.015, 0.02, "#5a4536", 0, 1.08, 0.25, group);
-    } else {
-      hair.rotation.x = -0.15;
-      box(0.28, 0.35, 0.15, "#b28d55", 0, 0.69, -0.2, group, 0.06);
-      for (const x of [-0.13, 0.13])
-        box(0.045, 0.36, 0.04, "#b28d55", x, 0.72, 0.15, group);
-    }
-    for (const x of [-0.1, 0.1]) {
-      ball(0.023, "#3c332d", x, 1.08, 0.235, group);
-      const leg = new THREE.Group();
-      leg.position.set(x, 0.47, 0);
-      group.add(leg);
-      cylinder(0.065, 0.06, 0.3, "#4d615b", 0, -0.15, 0, leg);
-      box(0.14, 0.08, 0.22, "#514537", 0, -0.33, 0.035, leg);
-      legs.push(leg);
-      const arm = new THREE.Group();
-      arm.position.set(x * 2.3, 0.8, 0);
-      group.add(arm);
-      cylinder(0.065, 0.06, 0.3, color, 0, -0.12, 0, arm);
-      ball(0.065, "#e1b28e", 0, -0.28, 0, arm);
-      arms.push(arm);
-    }
-    // A small smile.
-    const smile = mesh(
-      new THREE.TorusGeometry(0.045, 0.009, 5, 12, Math.PI),
-      "#a56e59",
-      0,
-      0.99,
-      0.242,
-      group,
-    );
-    smile.rotation.z = Math.PI;
-    return { group, legs, arms };
-  }
-  const host = person("#7e9476", true);
+  const kit = { world, box, ball, cylinder, mesh, rod, groupAt, plant, mat };
+  const host = createLuxin(kit);
   host.group.position.set(0.1, 0.5, -0.1);
+  host.group.scale.setScalar(1.12);
   host.group.rotation.y = 0.4;
   world.add(host.group);
   interactive(host.group, "about");
-  const visitor = person("#cf956f", false);
+  const visitor = createVisitor(kit);
   visitor.group.scale.setScalar(0.72);
   visitor.group.position.set(0, 0.12, 6.5);
   visitor.group.rotation.y = Math.PI;
@@ -638,24 +562,24 @@ export function buildHouse(scene: THREE.Scene) {
       crown.rotation.y = a;
     }
   }
-  tree(-7.5, -3.8, 1.15);
-  tree(7.5, -3.8, 0.95);
-  tree(7.6, 4.8, 0.85);
-  const garden = groupAt(-7, 0.12, 3.8);
+  tree(-12.7, -4.3, 1.15);
+  tree(13.2, -4.5, 1.0);
+  tree(11.6, 6.8, 0.9);
+  const garden = groupAt(-12, 0.12, 3.8);
   for (let i = 0; i < 4; i++)
     box(1.55, 0.08, 0.16, wood, 0, 0.61, -0.36 + i * 0.22, garden);
   for (const x of [-0.6, 0.6])
     box(0.1, 0.58, 0.6, darkWood, x, 0.29, 0, garden);
   box(1.55, 0.3, 0.09, wood, 0, 0.97, -0.46, garden);
   interactive(garden, "garden");
-  const pond = cylinder(1, 1, 0.045, "#97b6ad", 6.9, 0.09, 0);
+  const pond = cylinder(1.35, 1.35, 0.045, "#97b6ad", 12.8, 0.09, 0.3);
   pond.scale.z = 1.3;
   const pondEdge = mesh(
-    new THREE.TorusGeometry(1.04, 0.1, 7, 36),
+    new THREE.TorusGeometry(1.4, 0.1, 7, 48),
     "#c4bea4",
-    6.9,
+    12.8,
     0.11,
-    0,
+    0.3,
   );
   pondEdge.rotation.x = Math.PI / 2;
   pondEdge.scale.y = 1.3;
@@ -665,9 +589,9 @@ export function buildHouse(scene: THREE.Scene) {
       0.17,
       0.012,
       "#859e72",
-      6.7 + Math.sin(i * 2) * 0.4,
+      12.8 + Math.sin(i * 2) * 0.8,
       0.13,
-      Math.cos(i * 2) * 0.6,
+      0.3 + Math.cos(i * 2) * 0.85,
     );
     pad.rotation.y = i;
   }
@@ -683,16 +607,16 @@ export function buildHouse(scene: THREE.Scene) {
     );
     stone.scale.z = 0.65;
   }
-  for (let i = 0; i < 15; i++) {
-    const x = -8.7 + i * 1.24;
+  for (let i = 0; i < 25; i++) {
+    const x = -14.2 + i * 1.24;
     box(0.13, 0.8, 0.14, "#efead5", x, 0.45, -5.9);
-    if (i < 14)
+    if (i < 24)
       for (const y of [0.3, 0.64])
         box(1.25, 0.08, 0.07, "#efead5", x + 0.6, y, -5.9);
   }
   for (let i = 0; i < 55; i++) {
     const a = i * 2.399;
-    const x = i < 28 ? -7 + Math.sin(a) * 1.45 : 6.9 + Math.sin(a) * 1.25;
+    const x = i < 28 ? -12.4 + Math.sin(a) * 1.25 : 8.8 + Math.sin(a) * 1.25;
     const z = i < 28 ? 0.2 + Math.cos(a) * 1.5 : 5.8 + Math.cos(a) * 0.8;
     rod(
       new THREE.Vector3(x, 0.1, z),
@@ -731,16 +655,16 @@ export function buildHouse(scene: THREE.Scene) {
   );
   destination.rotation.x = -Math.PI / 2;
   destination.visible = false;
-  const ambient = new THREE.HemisphereLight("#fff6df", "#b0a68d", 2.6);
+  const ambient = new THREE.HemisphereLight("#fff6df", "#b0a68d", 2.15);
   scene.add(ambient);
-  const sun = new THREE.DirectionalLight("#fff0cf", 3.5);
-  sun.position.set(-6, 16, 10);
+  const sun = new THREE.DirectionalLight("#fff0cf", 3.0);
+  sun.position.set(-8, 21, 13);
   sun.castShadow = true;
   sun.shadow.mapSize.set(2048, 2048);
-  sun.shadow.camera.left = -15;
-  sun.shadow.camera.right = 15;
-  sun.shadow.camera.top = 14;
-  sun.shadow.camera.bottom = -14;
+  sun.shadow.camera.left = -22;
+  sun.shadow.camera.right = 22;
+  sun.shadow.camera.top = 18;
+  sun.shadow.camera.bottom = -18;
   sun.shadow.normalBias = 0.045;
   sun.shadow.bias = -0.0003;
   scene.add(sun);
@@ -751,12 +675,17 @@ export function buildHouse(scene: THREE.Scene) {
     houseSpots.map((spot) => [spot.id, new THREE.Vector3(...spot.position)]),
   ) as Record<RoomSection, THREE.Vector3>;
 
+  const cottage = addCottageDetails(kit);
+  const animals = addAnimals(kit);
+
   interactables.push(
     ...batchStaticGeometry(world, [
       host.group,
       visitor.group,
       globe,
       destination,
+      ...cottage.flames,
+      ...animals.groups,
     ]),
   );
 
@@ -771,5 +700,7 @@ export function buildHouse(scene: THREE.Scene) {
     ambient,
     lampLight,
     globe,
+    cottage,
+    animals,
   };
 }

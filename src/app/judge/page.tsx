@@ -46,7 +46,7 @@ export default function JudgePage() {
                 >
                   {/* Image or PDF */}
                   {experience.image && (
-                    <div className="relative h-64 bg-gray-100 dark:bg-gray-800">
+                    <div className="relative h-64 theme-surface-2">
                       {isPDF ? (
                         <a
                           href={experience.image}

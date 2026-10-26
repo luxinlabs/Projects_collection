@@ -1,8 +1,8 @@
 .little-world {
-  --world-paper: #f5f1e7;
-  --world-ink: #514837;
-  --world-muted: #8a8170;
-  --world-line: #dfd8c9;
+  --world-paper: var(--app-bg);
+  --world-ink: var(--app-text);
+  --world-muted: var(--app-muted);
+  --world-line: var(--app-border);
   --world-leaf: #75856b;
   --world-accent: #b58155;
   position: relative;
@@ -19,10 +19,10 @@
     color 0.8s;
 }
 .little-world-evening {
-  --world-paper: #e5d9c8;
-  --world-ink: #4e4034;
-  --world-muted: #7f7162;
-  --world-line: #cbbda8;
+  --world-paper: var(--app-bg);
+  --world-ink: var(--app-text);
+  --world-muted: var(--app-muted);
+  --world-line: var(--app-border);
 }
 .little-world button,
 .little-world a,
@@ -1715,4 +1715,17 @@
     transition: none !important;
     scroll-behavior: auto !important;
   }
+}
+
+.host-avatar-portrait {
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  border: 0;
+  background: transparent;
+}
+.world-host-miniature {
+  width: 25px;
+  height: 25px;
+  overflow: visible;
 }

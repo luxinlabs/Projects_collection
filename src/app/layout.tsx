@@ -2,6 +2,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import { Metadata } from "next";
 import Script from "next/script";
+import SiteFooter from "./SiteFooter";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -41,7 +42,10 @@ export default function RootLayout({
           gtag('config', 'G-SXQD77EZKP');
         `}
       </Script>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        {children}
+        <SiteFooter />
+      </body>
     </html>
   );
 }

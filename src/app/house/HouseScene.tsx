@@ -12,6 +12,8 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { buildHouse } from "./buildHouse";
 import { houseSpots, type RoomSection } from "./houseContent";
 import { canWalk, findWalkPath, walkDirection } from "./navigation";
+import { isInsideHouse } from "./houseLayout";
+import LuxinAvatar from "./LuxinAvatar";
 
 export interface HouseSceneHandle {
   visit: (section: RoomSection) => void;
@@ -89,15 +91,15 @@ export default function HouseScene(props: Props) {
     renderer.setClearColor(0x000000, 0);
     renderer.domElement.setAttribute(
       "aria-label",
-      "Interactive 3D house. Click objects to explore, click the ground to walk, or use WASD and arrow keys.",
+      "Interactive 3D cottage with a sleeping and reading nook, living room, kitchen and dining room. Meet little Luxin, a girl in a rose dress, a puppy and a cat inside, and three ducks in the garden pond. Click objects to explore or use WASD and arrow keys to walk.",
     );
     renderer.domElement.setAttribute("role", "img");
     renderer.domElement.tabIndex = 0;
     element.prepend(renderer.domElement);
     const scene = new THREE.Scene();
     const camera = new THREE.OrthographicCamera(-12, 12, 9, -9, 0.1, 120);
-    const homeTarget = new THREE.Vector3(0, 0.7, 0.8);
-    const homePosition = new THREE.Vector3(18, 19, 23);
+    const homeTarget = new THREE.Vector3(0.5, 0.7, 0.8);
+    const homePosition = new THREE.Vector3(24, 25, 31);
     camera.position.copy(homePosition);
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.target.copy(homeTarget);
@@ -111,11 +113,13 @@ export default function HouseScene(props: Props) {
     controls.maxAzimuthAngle = 1.3;
     const house = buildHouse(scene);
     lightSwitch.current = (evening) => {
-      house.sun.intensity = evening ? 1.5 : 3.5;
+      house.sun.intensity = evening ? 1.35 : 3.0;
       house.sun.color.set(evening ? "#ffc589" : "#fff0cf");
-      house.ambient.intensity = evening ? 1.8 : 2.6;
+      house.ambient.intensity = evening ? 1.45 : 2.15;
       house.ambient.color.set(evening ? "#e7d6ce" : "#fff6df");
       house.lampLight.intensity = evening ? 6 : 2.5;
+      house.cottage.fireLight.intensity = evening ? 4 : 2.3;
+      house.cottage.bedroomLamp.intensity = evening ? 3.5 : 1.8;
     };
     lightSwitch.current(handlers.current.evening);
     const target = new THREE.Vector3();
@@ -150,11 +154,7 @@ export default function HouseScene(props: Props) {
         [x, z],
       );
       pending = section;
-      house.destination.position.set(
-        x,
-        x > -5.2 && x < 5.3 && z > -4.3 && z < 4.4 ? 0.52 : 0.13,
-        z,
-      );
+      house.destination.position.set(x, isInsideHouse(x, z) ? 0.52 : 0.13, z);
       house.destination.visible = path.length > 0;
       if (!path.length && pending) {
         focus(pending);
@@ -165,7 +165,7 @@ export default function HouseScene(props: Props) {
       const spot = houseSpots.find((item) => item.id === id)!;
       // Keep the selected object to the left of the detail sheet.
       desiredCameraTarget.set(spot.approach[0] + 1.4, 1.2, spot.approach[1]);
-      desiredZoom = window.innerWidth < 760 ? 1.15 : 1.35;
+      desiredZoom = window.innerWidth < 760 ? 1.35 : 1.65;
       handlers.current.onReach(id);
     }
     function manualMovement(direction: string, pressed: boolean) {
@@ -292,12 +292,12 @@ export default function HouseScene(props: Props) {
       const aspect = width / Math.max(height, 1);
       const halfHeight =
         window.innerWidth < 760
-          ? 13.5 / aspect
+          ? 18 / aspect
           : aspect < 0.8
             ? 13.8
             : aspect < 1.2
-              ? 11.3
-              : 8.9;
+              ? 13.5
+              : 11.3;
       camera.left = -halfHeight * aspect;
       camera.right = halfHeight * aspect;
       camera.top = halfHeight;
@@ -378,11 +378,7 @@ export default function HouseScene(props: Props) {
           }
         }
       }
-      const indoor =
-        visitor.position.x > -5.2 &&
-        visitor.position.x < 5.3 &&
-        visitor.position.z > -4.3 &&
-        visitor.position.z < 4.4;
+      const indoor = isInsideHouse(visitor.position.x, visitor.position.z);
       visitor.position.y = THREE.MathUtils.lerp(
         visitor.position.y,
         indoor ? 0.51 : 0.13,
@@ -406,10 +402,14 @@ export default function HouseScene(props: Props) {
             : 0;
       });
       if (!reduceMotion) {
-        house.host.arms[1].rotation.z = -0.35 + Math.sin(time * 0.002) * 0.18;
-        house.host.group.scale.y = 1 + Math.sin(time * 0.0018) * 0.012;
+        house.host.arms[1].rotation.z = 2.4 + Math.sin(time * 0.002) * 0.18;
+        house.host.group.scale.y = 1.12 + Math.sin(time * 0.0018) * 0.012;
         house.globe.rotation.y += delta * 0.08;
+        house.cottage.flames.forEach((flame, index) => {
+          flame.scale.y = 1.6 + Math.sin(time * 0.004 + index) * 0.3;
+        });
       }
+      house.animals.update(time, visitor.position, reduceMotion);
       let nearestDistance = 1.7;
       let nextNearest: RoomSection | null = null;
       houseSpots.forEach((spot) => {
@@ -462,7 +462,7 @@ export default function HouseScene(props: Props) {
           .project(camera);
         visitorLabel.current.style.transform = `translate(-50%, -100%) translate(${(scratch.x * 0.5 + 0.5) * element.clientWidth}px, ${(-scratch.y * 0.5 + 0.5) * element.clientHeight}px)`;
       }
-      if (walking && time - lastShadow > 80) {
+      if ((walking || !reduceMotion) && time - lastShadow > 160) {
         renderer.shadowMap.needsUpdate = true;
         lastShadow = time;
       }
@@ -497,7 +497,8 @@ export default function HouseScene(props: Props) {
             ? item.material
             : [item.material]) {
             materials.add(material);
-            if (material.map) textures.add(material.map);
+            for (const value of Object.values(material))
+              if (value instanceof THREE.Texture) textures.add(value);
           }
         }
       });
@@ -537,7 +538,13 @@ export default function HouseScene(props: Props) {
               onClick={() => api.current?.visit(spot.id)}
               aria-label={`Explore ${spot.object}`}
             >
-              <span className="object-dot">{spot.icon}</span>
+              <span className="object-dot">
+                {spot.id === "about" ? (
+                  <LuxinAvatar className="world-host-miniature" />
+                ) : (
+                  spot.icon
+                )}
+              </span>
               <span className="object-caption">{spot.object}</span>
             </button>
           ))}

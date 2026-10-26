@@ -51,15 +51,15 @@ export const houseSpots: HouseSpot[] = [
     object: "Open source",
     icon: "↗",
     position: [2.8, 4.1, -4.2],
-    approach: [1.2, -3.5],
+    approach: [1.6, -3.65],
   },
   {
     id: "research",
     title: "The reading corner",
     object: "Research",
     icon: "▤",
-    position: [-4.7, 3.3, -0.9],
-    approach: [-3.5, -1.4],
+    position: [-9.4, 3.3, 1.35],
+    approach: [-8.1, 1.5],
   },
   {
     id: "travel",
@@ -82,8 +82,8 @@ export const houseSpots: HouseSpot[] = [
     title: "Room to grow",
     object: "The garden",
     icon: "❋",
-    position: [-7, 1.6, 3.8],
-    approach: [-6.2, 4.5],
+    position: [-12, 1.6, 3.8],
+    approach: [-11.4, 4.8],
   },
 ];
 

@@ -33,7 +33,7 @@ const focus =
 export function websiteKnowledge() {
   return JSON.stringify({
     identity:
-      "You are little Luxin, a virtual website guide representing Luxin Zhang, not the person herself.",
+      "You are little Luxin, a virtual website guide representing Luxin Zhang, a woman, not the person herself.",
     introduction: intro,
     focus,
     contact: {
@@ -53,7 +53,7 @@ export function websiteKnowledge() {
     judging: judgeExperiences,
     places: storyPlaces,
     house:
-      "Awards on the wall; projects on the computer; judging at the balance scale on the side table; open source at the window; research on the bookshelf; life and work locations at the globe; a garden bench for connecting. Walk with WASD or arrow keys, click to walk, click an object to approach it, or use Explore the house. E inspects a nearby object. Escape closes a detail sheet.",
+      "The virtual cottage has a sleeping and reading nook, a central living room with a fireplace, and a kitchen and dining room. Luxin’s avatar is a girl with long dark hair, a rose dress, and a bow. A puppy and a curled-up cat live inside this fictional cottage; three ducks swim in the garden pond. These are scene characters, not claims about Luxin’s real pets. Awards on the wall; projects on the computer; judging at the balance scale on the side table; open source at the window; research on the bookshelf; life and work locations at the globe; a garden bench for connecting. Walk with WASD or arrow keys, click to walk, click an object to approach it, or use Explore the house. E inspects a nearby object. Escape closes a detail sheet.",
     travelNote:
       "Only life/work/education/community locations documented in the bio are currently included. No personal travel photographs or additional trip destinations have been supplied. Do not invent them.",
   });
@@ -90,6 +90,20 @@ export function answerFromWebsite(
     sources,
     mode: "guide",
   });
+  if (/\b(puppy|dog|cat|duck|duckling|pets?)\b|小狗|猫|鸭/.test(q))
+    return answer(
+      "There’s a friendly puppy in the living room, a sleepy tabby on the sofa, and a duck with two ducklings in the garden pond. They’re little characters in this virtual cottage. Come closer and you might catch a wagging tail, a dozing cat, or ducks drifting by!",
+      [link("Explore the little home", "/")],
+    );
+  if (
+    /\b(girl|woman|guy|gender|female|male|boy)\b/.test(q) &&
+    /\b(luxin|you|your|she)\b/.test(q) &&
+    !/innovation|judg|award|hackathon/.test(q)
+  )
+    return answer(
+      "Luxin is a woman. The little host represents her with long dark hair, a rose outfit, and a friendly wave.",
+      [link("Meet Luxin", "/bio")],
+    );
   const namedProject = portfolioProjects.find((project) => {
     const name = normalize(project.name.split(/\s[-–]\s/)[0]);
     return (

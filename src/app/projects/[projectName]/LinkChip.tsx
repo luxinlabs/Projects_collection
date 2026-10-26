@@ -47,7 +47,7 @@ interface LinkChipProps {
 
 export default function LinkChip({ name }: LinkChipProps) {
   return (
-    <div className="border-emerald-400 underline flex flex-row my-1 justify-between items-center hover:opacity-50 transition p-3 border-2 rounded-xl w-fit h-fit">
+    <div className="theme-toggle underline flex flex-row my-1 justify-between items-center hover:opacity-50 transition p-3 border-2 rounded-xl w-fit h-fit">
       {name}
       <FontAwesomeIcon
         size="lg"

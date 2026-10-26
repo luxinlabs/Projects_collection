@@ -1,70 +1,98 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+import { useSiteTheme } from "./useSiteTheme";
 
 const navItems = [
-  { href: "/", label: "Home" },
-  { href: "/bio", label: "Bio" },
+  { href: "/", label: "Little home" },
+  { href: "/bio", label: "About me" },
   { href: "/research", label: "Research" },
   { href: "/projects", label: "Projects" },
-  { href: "/open-source", label: "Open Source" },
+  { href: "/open-source", label: "Open source" },
   { href: "/articles", label: "Articles" },
-  { href: "/judge", label: "Judge" },
+  { href: "/judge", label: "Judging" },
 ];
 
-export default function SidebarNav() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    const dark = savedTheme === "dark";
-    setIsDarkMode(dark);
-    document.documentElement.setAttribute(
-      "data-theme",
-      dark ? "dark" : "light",
-    );
-    setMounted(true);
-  }, []);
-
-  const toggleTheme = () => {
-    const nextDark = !isDarkMode;
-    setIsDarkMode(nextDark);
-    localStorage.setItem("theme", nextDark ? "dark" : "light");
-    document.documentElement.setAttribute(
-      "data-theme",
-      nextDark ? "dark" : "light",
-    );
-  };
-
-  if (!mounted) {
-    return null;
-  }
-
+export function HouseMark() {
   return (
-    <div className="fixed top-4 right-6 z-40 flex items-center gap-2 max-w-[calc(100vw-2rem)]">
-      <button
-        onClick={toggleTheme}
-        className="theme-toggle inline-flex items-center justify-center h-10 w-10 rounded-lg text-sm font-semibold transition-colors"
-        aria-label="Toggle theme"
-      >
-        <FontAwesomeIcon icon={isDarkMode ? faSun : faMoon} />
-      </button>
+    <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+      <path
+        d="m5 19 15-12 15 12M9 17v17h22V17M17 34V23h7v11"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M27 11V6h4v8M4 35h32"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+      />
+      <circle cx="20" cy="16" r="2" fill="currentColor" />
+    </svg>
+  );
+}
 
-      <nav className="flex flex-wrap justify-end gap-2">
-        {navItems.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className="theme-nav-link px-3 py-2 rounded-lg text-xs md:text-sm font-semibold transition-colors"
-          >
-            {item.label}
-          </Link>
-        ))}
+export default function SidebarNav({ inHouse = false }: { inHouse?: boolean }) {
+  const pathname = usePathname();
+  const { evening, toggle, ready } = useSiteTheme();
+  const [menu, setMenu] = useState(false);
+  return (
+    <header className={`site-header ${inHouse ? "site-header-home" : ""}`}>
+      <Link
+        href="/"
+        className="site-brand"
+        aria-label="Luxin Zhang’s little world, home"
+      >
+        <HouseMark />
+        <span>
+          LUXIN ZHANG<small>A LITTLE WORLD OF BIG IDEAS</small>
+        </span>
+      </Link>
+      <button
+        className="site-menu-toggle"
+        disabled={!ready}
+        onClick={() => setMenu(!menu)}
+        aria-expanded={menu}
+        aria-controls="site-navigation"
+        aria-label={menu ? "Close navigation" : "Open navigation"}
+      >
+        {menu ? "×" : "☰"}
+      </button>
+      <nav
+        id="site-navigation"
+        className={menu ? "site-nav-open" : ""}
+        aria-label="Main navigation"
+      >
+        {navItems.map((item) => {
+          const current =
+            item.href === "/"
+              ? pathname === "/"
+              : pathname?.startsWith(item.href);
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              aria-current={current ? "page" : undefined}
+              onClick={() => setMenu(false)}
+            >
+              {item.label}
+            </Link>
+          );
+        })}
       </nav>
-    </div>
+      <button
+        className="site-theme-toggle"
+        disabled={!ready}
+        onClick={toggle}
+        aria-label={evening ? "Switch to daylight" : "Switch to cozy evening"}
+        title={evening ? "Daylight" : "Cozy evening"}
+      >
+        {evening ? "☾" : "☼"}
+      </button>
+    </header>
   );
 }

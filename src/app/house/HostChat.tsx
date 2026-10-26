@@ -11,6 +11,7 @@ import {
 import Link from "next/link";
 import type { GuideSource } from "./knowledge";
 import { requestGuideReply } from "./guideClient";
+import LuxinAvatar from "./LuxinAvatar";
 
 export interface ChatTurn {
   role: "user" | "assistant";
@@ -113,7 +114,7 @@ export default function HostChat({
   return (
     <div className="host-chat">
       <div className="host-chat-person">
-        <span className="host-avatar">☺</span>
+        <LuxinAvatar className="host-avatar host-avatar-portrait" />
         <div>
           <strong>Little Luxin</strong>
           <span>

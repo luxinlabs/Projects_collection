@@ -39,9 +39,7 @@ export default function BioPage() {
             />
           </div>
           <h1 className="text-5xl font-bold mb-4">Luxin Zhang</h1>
-          <p className="text-xl theme-muted mb-6">
-            Software / AI Engineer
-          </p>
+          <p className="text-xl theme-muted mb-6">Software / AI Engineer</p>
 
           {/* Social Links */}
           <div className="flex gap-4 mb-8">
@@ -50,11 +48,11 @@ export default function BioPage() {
               target="_blank"
               className="group relative"
             >
-              <div className="relative bg-gray-800/80 backdrop-blur-sm p-3 rounded-full border-2 border-gray-600 hover:border-gray-400 hover:bg-gray-700/80 transition-all duration-300 hover:scale-110 shadow-lg">
+              <div className="relative theme-social-button p-3 rounded-full  transition-all duration-300 hover:scale-110 shadow-lg">
                 <FontAwesomeIcon
                   icon={faGithub}
                   size="lg"
-                  className="text-white"
+                  className="theme-social-icon"
                 />
               </div>
             </a>
@@ -63,29 +61,29 @@ export default function BioPage() {
               target="_blank"
               className="group relative"
             >
-              <div className="relative bg-gray-800/80 backdrop-blur-sm p-3 rounded-full border-2 border-gray-600 hover:border-gray-400 hover:bg-gray-700/80 transition-all duration-300 hover:scale-110 shadow-lg">
+              <div className="relative theme-social-button p-3 rounded-full  transition-all duration-300 hover:scale-110 shadow-lg">
                 <FontAwesomeIcon
                   icon={faLinkedin}
                   size="lg"
-                  className="text-white"
+                  className="theme-social-icon"
                 />
               </div>
             </a>
             <a href="mailto:luxin.zhang@duke.edu" className="group relative">
-              <div className="relative bg-gray-800/80 backdrop-blur-sm p-3 rounded-full border-2 border-gray-600 hover:border-gray-400 hover:bg-gray-700/80 transition-all duration-300 hover:scale-110 shadow-lg">
+              <div className="relative theme-social-button p-3 rounded-full  transition-all duration-300 hover:scale-110 shadow-lg">
                 <FontAwesomeIcon
                   icon={faEnvelope}
                   size="lg"
-                  className="text-white"
+                  className="theme-social-icon"
                 />
               </div>
             </a>
-            <a href="SDE_AI_20260414.pdf" className="group relative">
-              <div className="relative bg-gray-800/80 backdrop-blur-sm p-3 rounded-full border-2 border-gray-600 hover:border-gray-400 hover:bg-gray-700/80 transition-all duration-300 hover:scale-110 shadow-lg">
+            <a href="/SDE_AI_20260414.pdf" className="group relative">
+              <div className="relative theme-social-button p-3 rounded-full  transition-all duration-300 hover:scale-110 shadow-lg">
                 <FontAwesomeIcon
                   icon={faFile}
                   size="lg"
-                  className="text-white"
+                  className="theme-social-icon"
                 />
               </div>
             </a>

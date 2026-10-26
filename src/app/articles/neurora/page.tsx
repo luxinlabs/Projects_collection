@@ -34,11 +34,9 @@ export default function NeuroraArticlePage() {
         </header>
 
         <section className="prose prose-lg max-w-none leading-relaxed [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:mt-12 [&_h2]:mb-4 [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:mt-8 [&_h3]:mb-3 [&_p]:mb-4 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-4">
-          <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 mb-8 text-gray-900 dark:text-gray-100">
-            <h2 className="!mt-0 !mb-4 text-gray-900 dark:text-white">
-              Abstract
-            </h2>
-            <p className="!mb-0 text-gray-800 dark:text-gray-200">
+          <div className="theme-surface-2 rounded-xl p-6 mb-8 ">
+            <h2 className="!mt-0 !mb-4 ">Abstract</h2>
+            <p className="!mb-0 theme-muted">
               Parkinson&apos;s disease (PD) and Alzheimer&apos;s disease (AD)
               together affect more than 60 million individuals worldwide, both
               characterized by long preclinical phases in which subtle motor,
@@ -60,7 +58,7 @@ export default function NeuroraArticlePage() {
               paradigm for early neurodegenerative monitoring that treats
               creative expression and clinical measurement as a unified act.
             </p>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mt-4 !mb-0">
+            <p className="text-sm theme-muted mt-4 !mb-0">
               <strong>Keywords:</strong> digital phenotyping · Parkinson&apos;s
               disease · Alzheimer&apos;s disease · mandala geometry · Apple
               Pencil · kinematics · machine learning · biomarkers
@@ -135,7 +133,7 @@ export default function NeuroraArticlePage() {
               height={800}
               className="w-full h-auto"
             />
-            <p className="text-sm theme-muted p-4 bg-gray-50 dark:bg-gray-900">
+            <p className="text-sm theme-muted p-4 theme-surface-2">
               <strong>Figure 1.</strong> Left: Mandala Gallery — templates
               organized by difficulty tier (Easy, Medium, Hard) with radial
               sector previews and community engagement counts. Right: Active
@@ -197,7 +195,7 @@ export default function NeuroraArticlePage() {
               height={800}
               className="w-full h-auto"
             />
-            <p className="text-sm theme-muted p-4 bg-gray-50 dark:bg-gray-900">
+            <p className="text-sm theme-muted p-4 theme-surface-2">
               <strong>Figure 2.</strong> Left: Creative Canvas — free drawing
               mode capturing unconstrained motor baseline. Right: Community
               Events — group mandala sessions, mindful color workshops, and
@@ -235,7 +233,7 @@ export default function NeuroraArticlePage() {
               height={800}
               className="w-full h-auto"
             />
-            <p className="text-sm theme-muted p-4 bg-gray-50 dark:bg-gray-900">
+            <p className="text-sm theme-muted p-4 theme-surface-2">
               <strong>Figure 3.</strong> Left: Therapist Connect — certified art
               therapists review longitudinal data and book consultations within
               the app. Right: Wellness Trends — daily NEURORA Score with four
@@ -273,12 +271,12 @@ export default function NeuroraArticlePage() {
             their own longitudinal trajectory.
           </p>
 
-          <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-6 my-8 border-l-4 border-blue-500 text-gray-900 dark:text-gray-100">
-            <h4 className="font-bold mb-2 text-gray-900 dark:text-white">
+          <div className="bg-blue-50 dark:bg-blue-950 rounded-xl p-6 my-8 border-l-4 border-blue-500 ">
+            <h4 className="font-bold mb-2 ">
               Design Principle: Participant Experience as Scientific
               Infrastructure
             </h4>
-            <p className="!mb-0 text-gray-800 dark:text-gray-200">
+            <p className="!mb-0 theme-muted">
               NEURORA&apos;s engagement modules — Community, Therapist Connect,
               and Wellness Trends — are not peripheral features added to make a
               clinical tool more palatable. They are core scientific
@@ -308,7 +306,7 @@ export default function NeuroraArticlePage() {
             mandala center (x<sub>c</sub>, y<sub>c</sub>). Each canvas point p =
             (x, y) maps to polar coordinates:
           </p>
-          <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg my-4 font-mono text-sm overflow-x-auto text-gray-900 dark:text-gray-100">
+          <div className="theme-surface-2 p-4 rounded-lg my-4 font-mono text-sm overflow-x-auto ">
             r = √[(x−x<sub>c</sub>)² + (y−y<sub>c</sub>)²] <br />φ = atan2(y−y
             <sub>c</sub>, x−x<sub>c</sub>) ∈ [−π, π]
           </div>
@@ -328,7 +326,7 @@ export default function NeuroraArticlePage() {
             count N<sub>r</sub>, minimum region area A<sub>min</sub>, and mean
             boundary curvature κ:
           </p>
-          <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg my-4 font-mono text-sm text-gray-900 dark:text-gray-100">
+          <div className="theme-surface-2 p-4 rounded-lg my-4 font-mono text-sm ">
             Difficulty = 0.3·N<sub>r</sub> + 0.5·(1/A<sub>min</sub>) + 0.2·κ
           </div>
 
@@ -648,11 +646,9 @@ export default function NeuroraArticlePage() {
             the heart of it.
           </p>
 
-          <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 mt-12 text-gray-900 dark:text-gray-100">
-            <h3 className="!mt-0 text-gray-900 dark:text-white">
-              About the Author
-            </h3>
-            <p className="!mb-0 text-gray-800 dark:text-gray-200">
+          <div className="theme-surface-2 rounded-xl p-6 mt-12 ">
+            <h3 className="!mt-0 ">About the Author</h3>
+            <p className="!mb-0 theme-muted">
               <strong>Luxin Zhang</strong> is a software engineer and
               founder-minded builder focused on transforming ambitious AI ideas
               into production-ready systems. She is the creator of NEURORA, an

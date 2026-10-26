@@ -36,6 +36,7 @@ export default function CategoryPage() {
   if (!projects) {
     return (
       <div className="theme-page min-h-screen flex items-center justify-center">
+        <SidebarNav />
         <div className="text-center">
           <h1 className="text-4xl font-bold mb-4">Category Not Found</h1>
           <Link href="/" className="underline">
@@ -51,7 +52,7 @@ export default function CategoryPage() {
       <SidebarNav />
 
       {/* Header */}
-      <div className="theme-surface sticky top-0 z-30 shadow-lg">
+      <div className="theme-surface border-b theme-border">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="mb-4">
             <Link
