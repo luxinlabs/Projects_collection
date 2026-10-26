@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import type { HouseKit } from "./cottageDetails";
+import type { HouseKit } from "./housePrimitives";
 
 export function createLuxin({ box, ball, cylinder, mesh }: HouseKit) {
   const group = new THREE.Group();

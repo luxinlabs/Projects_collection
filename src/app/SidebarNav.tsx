@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useSiteTheme } from "./useSiteTheme";
 
 const navItems = [
-  { href: "/", label: "Little home" },
+  { href: "/", label: "Little castle" },
   { href: "/bio", label: "About me" },
   { href: "/research", label: "Research" },
   { href: "/projects", label: "Projects" },
@@ -19,19 +19,18 @@ export function HouseMark() {
   return (
     <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
       <path
-        d="m5 19 15-12 15 12M9 17v17h22V17M17 34V23h7v11"
+        d="M4 35V8h4v4h3V8h4v27M25 35V8h4v4h3V8h4v27M15 20h10M3 35h34M18 35v-8a2 2 0 0 1 4 0v8"
         stroke="currentColor"
         strokeWidth="1.6"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
-        d="M27 11V6h4v8M4 35h32"
+        d="M8 19v4M11 19v4M29 19v4M32 19v4M17 18v-3h6v3"
         stroke="currentColor"
         strokeWidth="1.6"
         strokeLinecap="round"
       />
-      <circle cx="20" cy="16" r="2" fill="currentColor" />
     </svg>
   );
 }
@@ -45,11 +44,11 @@ export default function SidebarNav({ inHouse = false }: { inHouse?: boolean }) {
       <Link
         href="/"
         className="site-brand"
-        aria-label="Luxin Zhang’s little world, home"
+        aria-label="Luxin Zhang’s little castle, home"
       >
         <HouseMark />
         <span>
-          LUXIN ZHANG<small>A LITTLE WORLD OF BIG IDEAS</small>
+          LUXIN ZHANG<small>A LITTLE CASTLE OF BIG IDEAS</small>
         </span>
       </Link>
       <button

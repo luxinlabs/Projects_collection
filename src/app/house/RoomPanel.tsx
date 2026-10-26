@@ -331,7 +331,7 @@ export default function RoomPanel({
                 id="chat-tab"
                 onClick={() => setAboutTab("chat")}
               >
-                Have a little chat
+                Quick questions
               </button>
               <button
                 role="tab"

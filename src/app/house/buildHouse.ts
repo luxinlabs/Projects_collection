@@ -1,127 +1,18 @@
 import * as THREE from "three";
-import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
+import { createHouseKit } from "./housePrimitives";
 import { batchStaticGeometry } from "./batchGeometry";
-import { addCottageDetails } from "./cottageDetails";
+import { addCastleArchitecture } from "./castleArchitecture";
 import { createLuxin, createVisitor } from "./characters";
 import { addAnimals } from "./animals";
 import { houseSpots, type RoomSection } from "./houseContent";
 
 export function buildHouse(scene: THREE.Scene) {
-  const world = new THREE.Group();
-  scene.add(world);
-  const materials = new Map<string, THREE.MeshStandardMaterial>();
-  const mat = (color: string, metal = false) => {
-    const key = color + metal;
-    if (!materials.has(key))
-      materials.set(
-        key,
-        new THREE.MeshStandardMaterial({
-          color,
-          roughness: metal ? 0.35 : 0.85,
-          metalness: metal ? 0.65 : 0,
-        }),
-      );
-    return materials.get(key)!;
-  };
+  const kit = createHouseKit(scene);
+  const { world, box, ball, cylinder, mesh, rod, groupAt, plant } = kit;
   const wood = "#99704b",
     darkWood = "#694c37",
-    cream = "#eee4ce",
     brass = "#c39952";
-  function mesh(
-    geo: THREE.BufferGeometry,
-    color: string,
-    x: number,
-    y: number,
-    z: number,
-    parent: THREE.Object3D = world,
-    metal = false,
-  ) {
-    const object = new THREE.Mesh(geo, mat(color, metal));
-    object.position.set(x, y, z);
-    object.castShadow = true;
-    object.receiveShadow = true;
-    parent.add(object);
-    return object;
-  }
-  function box(
-    w: number,
-    h: number,
-    d: number,
-    color: string,
-    x: number,
-    y: number,
-    z: number,
-    parent: THREE.Object3D = world,
-    radius = 0.04,
-  ) {
-    return mesh(
-      new RoundedBoxGeometry(w, h, d, 2, Math.min(radius, w / 4, h / 4, d / 4)),
-      color,
-      x,
-      y,
-      z,
-      parent,
-    );
-  }
-  function ball(
-    r: number,
-    color: string,
-    x: number,
-    y: number,
-    z: number,
-    parent: THREE.Object3D = world,
-  ) {
-    return mesh(new THREE.SphereGeometry(r, 16, 12), color, x, y, z, parent);
-  }
-  function cylinder(
-    rt: number,
-    rb: number,
-    h: number,
-    color: string,
-    x: number,
-    y: number,
-    z: number,
-    parent: THREE.Object3D = world,
-  ) {
-    return mesh(
-      new THREE.CylinderGeometry(rt, rb, h, 20),
-      color,
-      x,
-      y,
-      z,
-      parent,
-    );
-  }
-  function rod(
-    from: THREE.Vector3,
-    to: THREE.Vector3,
-    radius: number,
-    color: string,
-    parent: THREE.Object3D = world,
-  ) {
-    const middle = from.clone().add(to).multiplyScalar(0.5);
-    const item = cylinder(
-      radius,
-      radius,
-      from.distanceTo(to),
-      color,
-      middle.x,
-      middle.y,
-      middle.z,
-      parent,
-    );
-    item.quaternion.setFromUnitVectors(
-      new THREE.Vector3(0, 1, 0),
-      to.clone().sub(from).normalize(),
-    );
-    return item;
-  }
-  const groupAt = (x: number, y: number, z: number) => {
-    const group = new THREE.Group();
-    group.position.set(x, y, z);
-    world.add(group);
-    return group;
-  };
+  const castle = addCastleArchitecture(kit);
   const interactables: THREE.Object3D[] = [];
   function interactive(object: THREE.Object3D, id: RoomSection) {
     object.traverse((child) => {
@@ -129,56 +20,37 @@ export function buildHouse(scene: THREE.Scene) {
     });
     interactables.push(object);
   }
-
-  // A little island, with the room sliced open like an architectural dollhouse.
-  box(30.4, 0.65, 18.8, "#c7bea2", 0.7, -0.42, 0.8, world, 0.25);
-  box(30.3, 0.18, 18.7, "#b8c497", 0.7, -0.05, 0.8, world, 0.08);
-  box(10.8, 0.48, 8.8, "#8b6549", 0, 0.17, 0, world, 0.08);
-  const plankColors = ["#d4b58d", "#d9bd97", "#d0ac80", "#d9b78e"];
-  for (let i = 0; i < 20; i++)
-    for (let j = 0; j < 4; j++) {
-      box(
-        0.505,
-        0.07,
-        2.08,
-        plankColors[(i + j * 3) % 4],
-        -4.94 + i * 0.52,
-        0.44,
-        -3.15 + j * 2.1,
-        world,
-        0.008,
-      );
-    }
-  box(10.8, 4.15, 0.25, cream, 0, 2.4, -4.32);
-  box(0.19, 4.15, 1.05, "#e1d8be", -5.3, 2.4, -3.78);
-  box(10.9, 0.2, 0.42, wood, 0, 4.52, -4.32);
-  box(0.4, 0.2, 8.75, wood, -5.3, 4.52, 0);
-  box(10.6, 0.22, 0.1, wood, 0, 0.62, -4.12);
-
-  for (const x of [-5.15, 0.35, 5.15])
-    box(0.15, 4, 0.18, "#c4aa84", x, 2.4, -4.12);
-  // Low edges leave the visitor's view open; front steps lead into the house.
-  box(3.9, 0.35, 0.18, wood, -3.25, 0.6, 4.25);
-  box(3.9, 0.35, 0.18, wood, 3.25, 0.6, 4.25);
-  box(2.5, 0.18, 0.7, "#b79b78", 0, 0.16, 4.65);
-  box(3.1, 0.13, 0.6, "#c5b18e", 0, 0.07, 5.12);
-
-  // A woven oval rug and a few tiny stitches.
-  const rug = cylinder(2.22, 2.22, 0.025, "#e9dcc0", -0.2, 0.505, 0.75);
-  rug.scale.z = 0.76;
-  const rugBorder = mesh(
-    new THREE.TorusGeometry(2.06, 0.022, 5, 80),
-    "#bd8f68",
-    -0.2,
-    0.53,
-    0.75,
-  );
-  rugBorder.rotation.x = Math.PI / 2;
-  rugBorder.scale.y = 0.76;
-  for (let i = 0; i < 11; i++)
-    box(0.025, 0.012, 0.16, "#bd8f68", -1.2 + i * 0.2, 0.53, 2.18);
-
-  // Framed awards, a trophy shelf, and small brass cups.
+  function label(
+    parent: THREE.Object3D,
+    text: string,
+    x: number,
+    y: number,
+    z: number,
+    width = 2.6,
+    height = 0.32,
+  ) {
+    const canvas = document.createElement("canvas");
+    canvas.width = 1024;
+    canvas.height = 128;
+    const ctx = canvas.getContext("2d")!;
+    ctx.fillStyle = "#e3d9c2";
+    ctx.fillRect(0, 0, 1024, 128);
+    ctx.fillStyle = "#7e6947";
+    ctx.font = "46px Georgia";
+    ctx.textAlign = "center";
+    ctx.fillText(text, 512, 82);
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.colorSpace = THREE.SRGBColorSpace;
+    const plaque = new THREE.Mesh(
+      new THREE.PlaneGeometry(width, height),
+      new THREE.MeshBasicMaterial({ map: texture }),
+    );
+    plaque.position.set(x, y, z);
+    parent.add(plaque);
+  }
+  label(world, "RESEARCH GALLERY", -7.75, 2.92, -4.13, 3.6, 0.34);
+  label(world, "THE GRAND HALL", 0.1, 5.82, -4.12, 4, 0.36);
+  label(world, "PROJECT GALLERY", 8.2, 2.92, -4.13, 3.7, 0.34);
   const awardWall = groupAt(-2.45, 0, -4.02);
   function frame(x: number, y: number, w: number, h: number, number: string) {
     box(w, h, 0.12, brass, x, y, 0, awardWall);
@@ -241,51 +113,13 @@ export function buildHouse(scene: THREE.Scene) {
   }
   interactive(awardWall, "awards");
 
-  // The open-source window has a blue view, cream curtains, and a window box.
-  const windowGroup = groupAt(2.9, 2.8, -4.1);
-  box(2.65, 2.25, 0.2, wood, 0, 0, 0, windowGroup);
-  box(2.4, 2.02, 0.08, "#accbc7", 0, 0, 0.13, windowGroup);
-  const sky = box(2.3, 0.8, 0.02, "#cfdfd1", 0, 0.56, 0.18, windowGroup);
-  sky.castShadow = false;
-  for (const x of [-0.8, 0, 0.7]) {
-    const cloud = ball(0.21, "#edf0df", x, 0.66, 0.22, windowGroup);
-    cloud.scale.set(1.7, 0.6, 0.2);
-  }
-  box(0.08, 2, 0.1, "#f6ebd2", 0, 0, 0.22, windowGroup);
-  box(2.4, 0.08, 0.1, "#f6ebd2", 0, 0, 0.22, windowGroup);
-  box(3, 0.12, 0.55, "#bf9c73", 0, -1.15, 0.22, windowGroup);
-  rod(
-    new THREE.Vector3(-1.7, 1.3, 0.2),
-    new THREE.Vector3(1.7, 1.3, 0.2),
-    0.04,
-    brass,
-    windowGroup,
-  );
-  for (const side of [-1, 1])
-    for (let j = 0; j < 3; j++) {
-      const curtain = box(
-        0.18,
-        2.4,
-        0.17,
-        j % 2 ? "#d6b384" : "#e5c698",
-        side * (1.3 + j * 0.13),
-        -0.02,
-        0.2,
-        windowGroup,
-      );
-      curtain.rotation.z = side * -0.055;
-    }
-  interactive(windowGroup, "open-source");
-
-  // The computer is deliberately a real model, with a tiny drawn IDE on screen.
-  const desk = groupAt(3.1, 0.47, -2.6);
-  box(2.6, 0.16, 1.25, wood, 0, 1.15, 0, desk);
-  for (const x of [-1.08, 1.08])
-    for (const z of [-0.44, 0.44])
-      box(0.12, 1.12, 0.12, darkWood, x, 0.56, z, desk);
-  box(1.3, 0.88, 0.1, "#444c44", 0, 1.9, -0.23, desk);
-  box(0.08, 0.3, 0.09, "#444c44", 0, 1.37, -0.23, desk);
-  box(0.5, 0.045, 0.3, "#444c44", 0, 1.26, -0.15, desk);
+  const sourceWindow = castle.archWindow(2.9, 2.55, -4.12, 2.05, 2.95);
+  interactive(sourceWindow, "open-source");
+  const desk = groupAt(8.1, 0.5, -2.4);
+  box(1.6, 1.1, 1.1, "#c9bea7", 0, 0.55, 0, desk);
+  box(1.85, 0.14, 1.25, "#e3d9c2", 0, 1.16, 0, desk);
+  box(1.45, 1.03, 0.13, "#53635d", 0, 1.91, -0.23, desk, 0.06);
+  box(0.1, 0.3, 0.1, brass, 0, 1.35, -0.23, desk);
   const codeCanvas = document.createElement("canvas");
   codeCanvas.width = 512;
   codeCanvas.height = 320;
@@ -312,36 +146,12 @@ export function buildHouse(scene: THREE.Scene) {
     new THREE.PlaneGeometry(1.18, 0.75),
     new THREE.MeshBasicMaterial({ map: codeTexture }),
   );
-  screen.position.set(0, 1.9, -0.17);
+  screen.position.set(0, 1.9, -0.15);
   desk.add(screen);
-  box(0.9, 0.04, 0.3, "#e1d8c6", 0, 1.26, 0.33, desk);
-  for (let i = 0; i < 10; i++)
-    box(0.045, 0.008, 0.19, "#b2a591", -0.36 + i * 0.08, 1.285, 0.33, desk);
-  cylinder(0.1, 0.085, 0.19, "#d7b17a", 0.9, 1.33, 0.28, desk);
-  const mugHandle = mesh(
-    new THREE.TorusGeometry(0.065, 0.018, 6, 12),
-    "#d7b17a",
-    1.01,
-    1.34,
-    0.28,
-    desk,
-  );
-  mugHandle.rotation.y = Math.PI / 2;
-  const chair = groupAt(3.1, 0.48, -1.35);
-  box(0.75, 0.12, 0.7, "#83917b", 0, 0.65, 0, chair);
-  box(0.75, 0.65, 0.12, "#83917b", 0, 0.96, 0.3, chair);
-  for (const x of [-0.27, 0.27])
-    for (const z of [-0.25, 0.25])
-      box(0.07, 0.62, 0.07, wood, x, 0.31, z, chair);
   interactive(desk, "projects");
-  interactive(chair, "projects");
-
-  // A proper brass balance scale on a little side table.
   const judging = groupAt(3.65, 0.47, 1.8);
-  box(1.5, 0.15, 1.2, "#a47b53", 0, 0.95, 0, judging);
-  for (const x of [-0.58, 0.58])
-    for (const z of [-0.42, 0.42])
-      box(0.09, 0.9, 0.09, wood, x, 0.45, z, judging);
+  box(1.3, 0.94, 1.05, "#c9bea7", 0, 0.47, 0, judging);
+  box(1.5, 0.14, 1.2, "#e3d9c2", 0, 1, 0, judging);
   cylinder(0.24, 0.28, 0.06, brass, 0, 1.08, 0, judging);
   cylinder(0.04, 0.07, 0.84, brass, 0, 1.53, 0, judging);
   ball(0.075, brass, 0, 1.99, 0, judging);
@@ -382,7 +192,6 @@ export function buildHouse(scene: THREE.Scene) {
   }
   interactive(judging, "judge");
 
-  // Books, a comfortable sofa, a sleeping cat, and a reading lamp.
   const shelf = groupAt(-9.45, 0.5, 1.35);
   box(0.74, 2.6, 2.5, wood, 0, 1.3, 0, shelf);
   box(0.06, 2.4, 2.28, "#765b40", 0.4, 1.3, 0, shelf);
@@ -422,68 +231,106 @@ export function buildHouse(scene: THREE.Scene) {
     }
   }
   interactive(shelf, "research");
-  const sofa = groupAt(-3.45, 0.5, 1.35);
-  box(1.42, 0.45, 3.15, "#bc8468", 0, 0.53, 0, sofa, 0.12);
-  box(0.3, 0.92, 3.15, "#aa745c", -0.64, 0.86, 0, sofa, 0.12);
-  for (const z of [-1.4, 1.4])
-    box(1.45, 0.7, 0.3, "#b97e63", 0, 0.88, z, sofa, 0.1);
-  for (const z of [-0.73, 0.73])
-    box(1.15, 0.22, 1.16, "#d09b7c", 0.1, 0.85, z, sofa, 0.1);
-  for (const x of [-0.5, 0.5])
-    for (const z of [-1.25, 1.25])
-      box(0.12, 0.3, 0.12, darkWood, x, 0.15, z, sofa);
-  const pillow = box(
-    0.28,
-    0.58,
-    0.56,
-    "#dcc899",
-    -0.25,
-    1.17,
-    -0.75,
-    sofa,
-    0.09,
-  );
-  pillow.rotation.z = -0.22;
-  cylinder(0.18, 0.24, 0.07, brass, -3.3, 0.54, -0.65);
-  cylinder(0.025, 0.025, 2.35, brass, -3.3, 1.72, -0.65);
-  cylinder(0.24, 0.43, 0.5, "#f3dab0", -3.3, 2.9, -0.65);
-  const lampLight = new THREE.PointLight("#ffce89", 2.5, 5);
-  lampLight.position.set(-3.3, 2.6, -0.65);
-  world.add(lampLight);
 
-  // Coffee table and the little physical globe.
+  function manuscript(x: number, z: number, title: string) {
+    const display = groupAt(x, 0.5, z);
+    box(2, 0.84, 1.15, "#c9bea7", 0, 0.42, 0, display);
+    box(2.18, 0.12, 1.3, "#e3d9c2", 0, 0.9, 0, display);
+    const glass = box(2.03, 0.45, 1.15, "#b8d0cf", 0, 1.17, 0, display);
+    const glassMaterial = glass.material as THREE.MeshStandardMaterial;
+    glassMaterial.transparent = true;
+    glassMaterial.opacity = 0.18;
+    glassMaterial.depthWrite = false;
+    glass.castShadow = false;
+    box(1.5, 0.025, 0.85, "#f5ead5", 0, 0.99, 0, display);
+    for (let row = 0; row < 6; row++)
+      box(
+        1.15 - (row % 3) * 0.14,
+        0.008,
+        0.015,
+        "#baac8e",
+        0,
+        1.008,
+        -0.3 + row * 0.11,
+        display,
+      );
+    label(display, title, 0, 0.58, 0.59, 1.7, 0.2);
+    interactive(display, "research");
+  }
+  manuscript(-7.3, -1.65, "SCOPEAWARE");
+  manuscript(-6.8, 1.6, "STABLEHLO");
+  // Sculptural project exhibits flank the interactive computer terminal.
+  for (const [x, title] of [
+    [6.4, "WARDEN"],
+    [9.8, "HYPOTHESIS ATLAS"],
+  ] as [number, string][]) {
+    const exhibit = groupAt(x, 0.5, 1.9);
+    cylinder(0.55, 0.64, 1.05, "#c9bea7", 0, 0.525, 0, exhibit);
+    cylinder(0.62, 0.62, 0.1, "#e3d9c2", 0, 1.1, 0, exhibit);
+    label(exhibit, title, 0, 0.65, 0.58, 1.05, 0.15);
+    const ring = mesh(
+      new THREE.TorusGeometry(0.4, 0.035, 8, 40),
+      brass,
+      0,
+      1.7,
+      0,
+      exhibit,
+    );
+    ring.rotation.y = 0.4;
+    for (let i = 0; i < 5; i++) {
+      const a = (i * Math.PI * 2) / 5;
+      ball(
+        0.065,
+        "#829d91",
+        Math.cos(a) * 0.3,
+        1.7 + Math.sin(a) * 0.3,
+        0,
+        exhibit,
+      );
+      rod(
+        new THREE.Vector3(0, 1.7, 0),
+        new THREE.Vector3(Math.cos(a) * 0.3, 1.7 + Math.sin(a) * 0.3, 0),
+        0.012,
+        brass,
+        exhibit,
+      );
+    }
+    interactive(exhibit, "projects");
+  }
+  // A museum bench gives the little cat a comfortable place in the hall.
+  const bench = groupAt(-3.45, 0.5, 1.35);
+  box(1.2, 0.18, 3.05, "#ac7b86", 0, 0.84, 0, bench, 0.07);
+  box(1.25, 0.1, 3.1, brass, 0, 0.7, 0, bench);
+  for (const x of [-0.45, 0.45])
+    for (const z of [-1.25, 1.25])
+      box(0.09, 0.68, 0.09, "#a18c61", x, 0.34, z, bench);
+  // The globe is a freestanding gallery exhibit, not a coffee table.
   const coffee = groupAt(-0.7, 0.5, 2.35);
-  box(1.8, 0.12, 1.2, "#b78c60", 0, 0.65, 0, coffee, 0.12);
-  for (const x of [-0.66, 0.66])
-    for (const z of [-0.35, 0.35])
-      box(0.08, 0.65, 0.08, darkWood, x, 0.32, z, coffee);
-  cylinder(0.23, 0.26, 0.05, brass, 0.15, 0.76, 0, coffee);
-  cylinder(0.035, 0.04, 0.2, brass, 0.15, 0.86, 0, coffee);
-  const globe = ball(0.35, "#82aaa4", 0.15, 1.28, 0, coffee);
+  cylinder(0.47, 0.6, 0.95, "#c9bea7", 0, 0.475, 0, coffee);
+  cylinder(0.62, 0.62, 0.12, "#e3d9c2", 0, 1.0, 0, coffee);
+  cylinder(0.23, 0.26, 0.05, brass, 0, 1.1, 0, coffee);
+  cylinder(0.035, 0.04, 0.2, brass, 0, 1.22, 0, coffee);
+  const globe = ball(0.35, "#82aaa4", 0, 1.55, 0, coffee);
   for (let i = 0; i < 7; i++) {
-    const patch = ball(0.15, "#aebc81", 0, 0, 0, globe);
-    const angle = i * 2.4;
+    const patch = ball(0.14, "#aebc81", 0, 0, 0, globe);
+    const a = i * 2.4;
     patch.position.set(
-      Math.sin(angle) * 0.3,
+      Math.sin(a) * 0.3,
       Math.sin(i * 3.7) * 0.2,
-      Math.cos(angle) * 0.3,
+      Math.cos(a) * 0.3,
     );
     patch.scale.set(0.8, 1, 0.35);
-    patch.lookAt(globe.position);
   }
   const globeRing = mesh(
     new THREE.TorusGeometry(0.4, 0.016, 6, 40),
     brass,
-    0.15,
-    1.28,
+    0,
+    1.55,
     0,
     coffee,
   );
   globeRing.rotation.z = 0.3;
-  box(0.4, 0.07, 0.3, "#6d8977", -0.5, 0.76, 0.12, coffee);
   interactive(coffee, "travel");
-
-  const kit = { world, box, ball, cylinder, mesh, rod, groupAt, plant, mat };
   const host = createLuxin(kit);
   host.group.position.set(0.1, 0.5, -0.1);
   host.group.scale.setScalar(1.12);
@@ -495,50 +342,6 @@ export function buildHouse(scene: THREE.Scene) {
   visitor.group.position.set(0, 0.12, 6.5);
   visitor.group.rotation.y = Math.PI;
   world.add(visitor.group);
-
-  // Clay pots with leaves are scattered through the room and garden.
-  function plant(
-    x: number,
-    y: number,
-    z: number,
-    size = 1,
-    parent: THREE.Object3D = world,
-  ) {
-    const group = new THREE.Group();
-    group.position.set(x, y, z);
-    group.scale.setScalar(size);
-    parent.add(group);
-    cylinder(0.23, 0.16, 0.4, "#bf8466", 0, 0.2, 0, group);
-    cylinder(0.24, 0.24, 0.06, "#ce9675", 0, 0.39, 0, group);
-    for (let i = 0; i < 7; i++) {
-      const a = (i * Math.PI * 2) / 7;
-      rod(
-        new THREE.Vector3(0, 0.4, 0),
-        new THREE.Vector3(
-          Math.sin(a) * 0.24,
-          0.8 + (i % 2) * 0.2,
-          Math.cos(a) * 0.24,
-        ),
-        0.013,
-        "#6f8260",
-        group,
-      );
-      const leaf = ball(
-        0.15,
-        i % 2 ? "#7e996c" : "#98ad7b",
-        Math.sin(a) * 0.25,
-        0.79 + (i % 2) * 0.2,
-        Math.cos(a) * 0.25,
-        group,
-      );
-      leaf.scale.set(0.7, 1.8, 0.65);
-      leaf.rotation.z = Math.sin(a) * -0.5;
-    }
-  }
-  plant(4.6, 0.5, -3.6, 1.1);
-  plant(-4.7, 0.5, 3.2, 1.15);
-  plant(3.7, 1.7, -3.75, 0.4);
-
   // Garden trees, pale picket fencing, wildflowers, a pond, and stepping stones.
   function tree(x: number, z: number, size = 1) {
     cylinder(
@@ -607,13 +410,9 @@ export function buildHouse(scene: THREE.Scene) {
     );
     stone.scale.z = 0.65;
   }
-  for (let i = 0; i < 25; i++) {
-    const x = -14.2 + i * 1.24;
-    box(0.13, 0.8, 0.14, "#efead5", x, 0.45, -5.9);
-    if (i < 24)
-      for (const y of [0.3, 0.64])
-        box(1.25, 0.08, 0.07, "#efead5", x + 0.6, y, -5.9);
-  }
+  box(30, 0.45, 0.3, "#c9bea7", 0.7, 0.3, -6.05);
+  for (let i = 0; i < 25; i++)
+    box(0.45, 0.35, 0.42, "#e3d9c2", -14.2 + i * 1.24, 0.65, -6.05);
   for (let i = 0; i < 55; i++) {
     const a = i * 2.399;
     const x = i < 28 ? -12.4 + Math.sin(a) * 1.25 : 8.8 + Math.sin(a) * 1.25;
@@ -633,19 +432,7 @@ export function buildHouse(scene: THREE.Scene) {
     );
     flower.scale.y = 0.65;
   }
-  // A small welcome sign and a brass ring identify the player.
-  box(0.12, 1.1, 0.12, wood, 2.3, 0.6, 6.3);
-  const sign = box(1.15, 0.55, 0.1, cream, 2.3, 1.1, 6.3);
-  sign.rotation.y = 0.1;
-  const ring = mesh(
-    new THREE.TorusGeometry(0.31, 0.018, 5, 40),
-    "#e4bc73",
-    0,
-    0.03,
-    0,
-    visitor.group,
-  );
-  ring.rotation.x = Math.PI / 2;
+
   const destination = mesh(
     new THREE.RingGeometry(0.15, 0.2, 32),
     "#b88b54",
@@ -655,40 +442,48 @@ export function buildHouse(scene: THREE.Scene) {
   );
   destination.rotation.x = -Math.PI / 2;
   destination.visible = false;
+  const ring = mesh(
+    new THREE.TorusGeometry(0.31, 0.018, 5, 40),
+    "#e4bc73",
+    0,
+    0.03,
+    0,
+    visitor.group,
+  );
+  ring.rotation.x = Math.PI / 2;
   const ambient = new THREE.HemisphereLight("#fff6df", "#b0a68d", 2.15);
   scene.add(ambient);
-  const sun = new THREE.DirectionalLight("#fff0cf", 3.0);
+  const sun = new THREE.DirectionalLight("#fff0cf", 3);
   sun.position.set(-8, 21, 13);
   sun.castShadow = true;
   sun.shadow.mapSize.set(2048, 2048);
   sun.shadow.camera.left = -22;
   sun.shadow.camera.right = 22;
-  sun.shadow.camera.top = 18;
-  sun.shadow.camera.bottom = -18;
+  sun.shadow.camera.top = 20;
+  sun.shadow.camera.bottom = -20;
   sun.shadow.normalBias = 0.045;
   sun.shadow.bias = -0.0003;
   scene.add(sun);
   const fill = new THREE.DirectionalLight("#e5ede4", 1.1);
   fill.position.set(8, 6, -5);
   scene.add(fill);
+  const lampLight = new THREE.PointLight("#ffd6a1", 2.5, 9);
+  lampLight.position.set(0.4, 4.9, 0.1);
+  world.add(lampLight);
+  const animals = addAnimals(kit);
   const anchors = Object.fromEntries(
     houseSpots.map((spot) => [spot.id, new THREE.Vector3(...spot.position)]),
   ) as Record<RoomSection, THREE.Vector3>;
-
-  const cottage = addCottageDetails(kit);
-  const animals = addAnimals(kit);
-
   interactables.push(
     ...batchStaticGeometry(world, [
       host.group,
       visitor.group,
       globe,
       destination,
-      ...cottage.flames,
+      ...castle.flames,
       ...animals.groups,
     ]),
   );
-
   return {
     world,
     host,
@@ -700,7 +495,7 @@ export function buildHouse(scene: THREE.Scene) {
     ambient,
     lampLight,
     globe,
-    cottage,
+    castle,
     animals,
   };
 }

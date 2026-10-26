@@ -1729,3 +1729,46 @@
   height: 25px;
   overflow: visible;
 }
+
+.host-preset-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0 9px;
+  font-size: 10px;
+  color: #968061;
+  flex-shrink: 0;
+}
+.host-preset-heading button {
+  font-size: 9px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.host-preset-questions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.host-preset-questions button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border: 1px solid #dcd1b9;
+  background: #f3eddf;
+  border-radius: 7px;
+  color: #806d4d;
+  padding: 10px 11px;
+  text-align: left;
+  font-size: 11px;
+  min-height: 42px;
+}
+.host-preset-questions button:hover {
+  background: #e8e8d7;
+  border-color: #a4af90;
+}
+.host-preset-questions button > span {
+  color: #a58b65;
+}

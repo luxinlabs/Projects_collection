@@ -12,7 +12,7 @@ export default function NotFound() {
       <h1 className="mb-5">This corner is still a mystery.</h1>
       <p className="theme-muted max-w-md mb-8">
         That page isn’t here, but there’s always a warm welcome back at the
-        little home.
+        little castle.
       </p>
       <Link href="/" className="theme-primary px-6 py-3 rounded-xl">
         Find your way home ↗

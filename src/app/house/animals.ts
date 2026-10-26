@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import type { HouseKit } from "./cottageDetails";
+import type { HouseKit } from "./housePrimitives";
 import { batchStaticGeometry } from "./batchGeometry";
 
 export const petHomes = [
@@ -14,7 +14,7 @@ export function addAnimals(kit: HouseKit) {
   const { world, ball, box, cylinder, mesh, rod } = kit;
   const groups: THREE.Group[] = [];
   const puppy = new THREE.Group();
-  puppy.name = "Puppy in the living room";
+  puppy.name = "Puppy in the Grand Hall";
   const body = ball(0.25, "#e6c394", 0, 0.32, 0, puppy);
   body.scale.set(0.85, 0.95, 1.4);
   for (const x of [-0.14, 0.14])
@@ -62,7 +62,7 @@ export function addAnimals(kit: HouseKit) {
   groups.push(puppy);
   // Her curled-up cat has tabby markings, ears, whiskers, and a soft tail.
   const cat = new THREE.Group();
-  cat.name = "Cat curled up on the sofa";
+  cat.name = "Cat curled up on the velvet bench";
   const catBody = ball(0.27, "#d6b58a", 0, 0.16, 0, cat);
   catBody.scale.set(1.45, 0.7, 1);
   const catHead = new THREE.Group();

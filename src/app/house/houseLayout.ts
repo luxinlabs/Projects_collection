@@ -1,28 +1,28 @@
-export const cottageRooms = [
+export const castleGalleries = [
   {
-    name: "Sleeping & reading nook",
+    name: "Research Gallery",
     minX: -10.2,
     maxX: -5.3,
     minZ: -4.4,
     maxZ: 4.4,
   },
   {
-    name: "Living room & studio",
+    name: "Grand Hall",
     minX: -5.3,
     maxX: 5.35,
     minZ: -4.4,
     maxZ: 4.4,
   },
   {
-    name: "Kitchen & dining room",
+    name: "Project Gallery",
     minX: 5.35,
     maxX: 11.2,
     minZ: -4.4,
     maxZ: 4.4,
   },
 ];
-export function isInsideHouse(x: number, z: number) {
-  return cottageRooms.some(
+export function isInsideCastle(x: number, z: number) {
+  return castleGalleries.some(
     (room) =>
       x >= room.minX && x <= room.maxX && z >= room.minZ && z <= room.maxZ,
   );

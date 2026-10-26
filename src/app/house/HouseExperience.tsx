@@ -52,7 +52,7 @@ export default function HouseExperience() {
       <SidebarNav inHouse />
       <section
         className="world-stage"
-        aria-label="Explore Luxin’s house and garden"
+        aria-label="Explore Luxin’s castle exhibition hall and garden"
       >
         <div className="world-scene-wrap">
           <HouseScene
@@ -67,14 +67,14 @@ export default function HouseExperience() {
         </div>
         <div className="world-welcome">
           <p className="world-eyebrow">
-            <span /> COME ON IN, STAY A WHILE
+            <span /> A LITTLE CASTLE OF BIG IDEAS
           </p>
           {entered ? (
             <>
               <h1>
-                Make yourself
+                Welcome to
                 <br />
-                at home<span>.</span>
+                the Grand Hall<span>.</span>
               </h1>
               <p>
                 Every little corner
@@ -85,15 +85,16 @@ export default function HouseExperience() {
           ) : (
             <>
               <h1>
-                Big ideas.
-                <br />A little home<span>.</span>
+                A castle
+                <br />
+                of ideas<span>.</span>
               </h1>
               <p>
                 I’m Luxin. Engineer, researcher,
                 <br />
                 and a builder of things that matter.
                 <br />
-                Welcome to my corner of the internet.
+                Welcome to my exhibition hall.
               </p>
               <button
                 className="world-enter-button"
@@ -103,11 +104,11 @@ export default function HouseExperience() {
                   scene.current?.visit("about");
                 }}
               >
-                {ready ? "Come on in" : "Opening the door…"}
+                {ready ? "Enter the hall" : "Opening the gates…"}
                 <span>↗</span>
               </button>
               <span className="world-welcome-note">
-                No shoes required. Just a little curiosity.
+                A little curiosity opens every door.
               </span>
             </>
           )}
@@ -119,7 +120,7 @@ export default function HouseExperience() {
         {!ready && (
           <div className="world-loading" role="status">
             <HouseMark />
-            <span>Putting the kettle on…</span>
+            <span>Opening the castle gates…</span>
           </div>
         )}
         <div className="world-location-status" aria-live="polite">
@@ -129,8 +130,8 @@ export default function HouseExperience() {
             : nearest
               ? `You’re near ${nearest.object.toLowerCase()}`
               : entered
-                ? "A little room for curiosity"
-                : "Somewhere between an idea & a cup of tea"}
+                ? "A grand hall for curious minds"
+                : "An invitation to explore a castle of ideas"}
           {nearest && !walking && (
             <button onClick={() => openDirect(nearest.id)}>
               Inspect <kbd>E</kbd>
@@ -171,7 +172,7 @@ export default function HouseExperience() {
             <p>
               Click the ground to move.
               <br />
-              Drag the room to look around.
+              Drag the hall to look around.
               <br />
               Click an object to walk over and inspect it.
             </p>
@@ -225,7 +226,7 @@ export default function HouseExperience() {
             aria-expanded={menu}
             aria-controls="house-room-menu"
           >
-            Explore the house <span>{menu ? "−" : "＋"}</span>
+            Explore the castle <span>{menu ? "−" : "＋"}</span>
           </button>
         </div>
         <nav
@@ -252,7 +253,7 @@ export default function HouseExperience() {
         <nav
           id="house-room-menu"
           className="world-room-menu"
-          aria-label="Explore the house"
+          aria-label="Explore the castle"
         >
           {houseSpots.map((spot) => (
             <button key={spot.id} onClick={() => openDirect(spot.id)}>
