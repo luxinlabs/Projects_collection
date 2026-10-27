@@ -10,6 +10,8 @@ import {
 } from "../src/app/house/navigation";
 import { houseSpots, portfolioProjects } from "../src/app/house/houseContent";
 import { castleGalleries, isInsideCastle } from "../src/app/house/houseLayout";
+import { companionActions } from "../src/app/house/companionContent";
+import { createPuppyFollower } from "../src/app/house/puppyFollower";
 import { petHomes } from "../src/app/house/animals";
 import { judgeExperiences } from "../src/app/judge/experiences";
 import { getPresetAnswer, presetQuestions } from "../src/app/house/faqContent";
@@ -125,9 +127,13 @@ test("walls and exhibits block walking, while a click on an exhibit finds a safe
   assert.ok(path.every((p) => canWalk(...p)));
 });
 
-test("the puppy and cat stay inside the hall and three ducks stay outside", () => {
-  assert.equal(petHomes.filter((p) => p.indoors).length, 2);
+test("the puppy and three distinct cats start in the hall, with three ducks outside", () => {
+  assert.equal(petHomes.filter((p) => p.indoors).length, 4);
   assert.equal(petHomes.filter((p) => !p.indoors).length, 3);
+  assert.equal(
+    new Set(petHomes.filter((p) => p.kind === "cat").map((p) => p.breed)).size,
+    3,
+  );
   for (const pet of petHomes)
     assert.equal(isInsideCastle(pet.x, pet.z), pet.indoors);
 });
@@ -175,4 +181,53 @@ test("preset answers are deterministic and never request a network or model", ()
     readFileSync("src/app/house/HostChat.tsx", "utf8"),
     /<input|<textarea/,
   );
+});
+
+test("the puppy waits, follows through the doorway and galleries, and stops nearby", () => {
+  const puppy = createPuppyFollower([1.45, 1.15]);
+  for (let i = 0; i < 60; i++) puppy.update([0, 6.5], false, 1 / 60);
+  assert.deepEqual(puppy.position, [1.45, 1.15]);
+  for (const destination of [
+    [0, 6.5],
+    [8.1, -0.6],
+    [-8.4, 1.5],
+    [0, 6.5],
+  ] as [number, number][]) {
+    for (let i = 0; i < 1800; i++) {
+      const before = [...puppy.position];
+      puppy.update(destination, i === 0, 1 / 60);
+      assert.ok(canWalk(...puppy.position), `collision at ${puppy.position}`);
+      assert.ok(
+        Math.hypot(
+          puppy.position[0] - before[0],
+          puppy.position[1] - before[1],
+        ) <=
+          3.9 / 60 + 1e-6,
+      );
+    }
+    const distance = Math.hypot(
+      puppy.position[0] - destination[0],
+      puppy.position[1] - destination[1],
+    );
+    assert.ok(
+      distance > 0.65 && distance < 1.5,
+      `stopped ${distance} from ${destination}`,
+    );
+    const stopped = [...puppy.position];
+    for (let i = 0; i < 120; i++) puppy.update(destination, false, 1 / 60);
+    assert.deepEqual(puppy.position, stopped);
+  }
+});
+
+test("all three cats and the chair have safe reachable interaction points", () => {
+  for (const action of companionActions) {
+    assert.ok(canWalk(...action.approach), action.id);
+    assert.ok(findWalkPath([0, 6.5], action.approach).length, action.id);
+    for (const other of companionActions)
+      if (action.id !== other.id)
+        assert.ok(
+          findWalkPath(action.approach, other.approach).length,
+          `${action.id} to ${other.id}`,
+        );
+  }
 });

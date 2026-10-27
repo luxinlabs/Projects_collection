@@ -1772,3 +1772,14 @@
 .host-preset-questions button > span {
   color: #a58b65;
 }
+
+/* Name tags remain readable on phones, where gallery captions are condensed. */
+.house-object-label.house-companion-label {
+  padding: 4px 8px;
+  gap: 4px;
+}
+.house-companion-label .object-dot { width: 18px; height: 18px; }
+.house-object-label.house-companion-label .object-caption { display: inline; }
+.house-companion-label[aria-pressed="true"] { background: #e8eedc; }
+
+.house-canvas { touch-action: none; }

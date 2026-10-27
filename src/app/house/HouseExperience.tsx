@@ -174,6 +174,12 @@ export default function HouseExperience() {
               <br />
               Drag the hall to look around.
               <br />
+              Scroll or pinch to zoom the 3D scene.
+              <br />
+              Click a cat’s name to pet her, or the chair to sit.
+              <br />
+              Walk again to stand up.
+              <br />
               Click an object to walk over and inspect it.
             </p>
             <p>

@@ -3,6 +3,7 @@ import { createHouseKit } from "./housePrimitives";
 import { batchStaticGeometry } from "./batchGeometry";
 import { addCastleArchitecture } from "./castleArchitecture";
 import { createLuxin, createVisitor } from "./characters";
+import { chair } from "./companionContent";
 import { addAnimals } from "./animals";
 import { houseSpots, type RoomSection } from "./houseContent";
 
@@ -297,13 +298,19 @@ export function buildHouse(scene: THREE.Scene) {
     }
     interactive(exhibit, "projects");
   }
-  // A museum bench gives the little cat a comfortable place in the hall.
-  const bench = groupAt(-3.45, 0.5, 1.35);
-  box(1.2, 0.18, 3.05, "#ac7b86", 0, 0.84, 0, bench, 0.07);
-  box(1.25, 0.1, 3.1, brass, 0, 0.7, 0, bench);
-  for (const x of [-0.45, 0.45])
-    for (const z of [-1.25, 1.25])
-      box(0.09, 0.68, 0.09, "#a18c61", x, 0.34, z, bench);
+  const seat = groupAt(chair.x, 0.51, chair.z);
+  seat.name = "A velvet gallery chair";
+  box(0.8, 0.14, 0.72, "#ac7b86", 0, 0.5, 0, seat, 0.06);
+  box(0.8, 0.78, 0.13, "#ac7b86", 0, 0.92, -0.3, seat, 0.05);
+  for (const x of [-0.3, 0.3]) {
+    box(0.09, 0.12, 0.65, brass, x * 1.3, 0.77, 0, seat);
+    for (const z of [-0.25, 0.25])
+      box(0.07, 0.48, 0.07, darkWood, x, 0.24, z, seat);
+  }
+  seat.traverse((child) => {
+    child.userData.action = "chair";
+  });
+  interactables.push(seat);
   // The globe is a freestanding gallery exhibit, not a coffee table.
   const coffee = groupAt(-0.7, 0.5, 2.35);
   cylinder(0.47, 0.6, 0.95, "#c9bea7", 0, 0.475, 0, coffee);
@@ -474,8 +481,10 @@ export function buildHouse(scene: THREE.Scene) {
   const anchors = Object.fromEntries(
     houseSpots.map((spot) => [spot.id, new THREE.Vector3(...spot.position)]),
   ) as Record<RoomSection, THREE.Vector3>;
+  interactables.push(...animals.interactables);
   interactables.push(
     ...batchStaticGeometry(world, [
+      seat,
       host.group,
       visitor.group,
       globe,

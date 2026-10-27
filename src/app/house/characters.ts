@@ -92,6 +92,7 @@ export function createLuxin({ box, ball, cylinder, mesh }: HouseKit) {
 
 export function createVisitor({ box, ball, cylinder, mesh }: HouseKit) {
   const group = new THREE.Group();
+  const knees: THREE.Object3D[] = [];
   const legs: THREE.Object3D[] = [],
     arms: THREE.Object3D[] = [];
   cylinder(0.17, 0.21, 0.42, "#cf956f", 0, 0.66, 0, group);
@@ -111,8 +112,13 @@ export function createVisitor({ box, ball, cylinder, mesh }: HouseKit) {
     const leg = new THREE.Group();
     leg.position.set(x, 0.47, 0);
     group.add(leg);
-    cylinder(0.065, 0.06, 0.38, "#4d615b", 0, -0.2, 0, leg);
-    box(0.14, 0.08, 0.22, "#514537", 0, -0.43, 0.035, leg);
+    cylinder(0.065, 0.06, 0.2, "#4d615b", 0, -0.1, 0, leg);
+    const knee = new THREE.Group();
+    knee.position.y = -0.2;
+    leg.add(knee);
+    cylinder(0.06, 0.06, 0.18, "#4d615b", 0, -0.09, 0, knee);
+    box(0.14, 0.08, 0.22, "#514537", 0, -0.23, 0.035, knee);
+    knees.push(knee);
     legs.push(leg);
     const arm = new THREE.Group();
     arm.position.set(x * 2.3, 0.8, 0);
@@ -121,5 +127,5 @@ export function createVisitor({ box, ball, cylinder, mesh }: HouseKit) {
     ball(0.065, "#e1b28e", 0, -0.28, 0, arm);
     arms.push(arm);
   }
-  return { group, legs, arms };
+  return { group, legs, knees, arms };
 }

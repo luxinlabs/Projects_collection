@@ -13,6 +13,7 @@ import { buildHouse } from "./buildHouse";
 import { houseSpots, type RoomSection } from "./houseContent";
 import { canWalk, findWalkPath, walkDirection } from "./navigation";
 import { isInsideCastle } from "./houseLayout";
+import { cats, chair, companionActions } from "./companionContent";
 import LuxinAvatar from "./LuxinAvatar";
 
 export interface HouseSceneHandle {
@@ -37,6 +38,9 @@ export default function HouseScene(props: Props) {
   const labels = useRef<Partial<Record<RoomSection, HTMLButtonElement | null>>>(
     {},
   );
+  const companionLabels = useRef<Record<string, HTMLButtonElement | null>>({});
+  const suppressClick = useRef(false);
+  const act = useRef<(id: string) => void>();
   const visitorLabel = useRef<HTMLSpanElement>(null);
   const handlers = useRef(props);
   const api = useRef<HouseSceneHandle>();
@@ -91,7 +95,7 @@ export default function HouseScene(props: Props) {
     renderer.setClearColor(0x000000, 0);
     renderer.domElement.setAttribute(
       "aria-label",
-      "Interactive 3D castle exhibition hall with towers, a dedicated Research Gallery, a Grand Hall, and a Project Gallery. Meet little Luxin, a girl in a rose dress, a puppy and a cat inside, and three ducks in the garden pond. Click objects to explore or use WASD and arrow keys to walk.",
+      "Interactive 3D castle exhibition hall with towers, a dedicated Research Gallery, a Grand Hall, and a Project Gallery. Meet little Luxin, a girl in a rose dress, a puppy and three cats sleeping in little beds inside, and three ducks in the garden pond. Click objects to explore or use WASD and arrow keys to walk.",
     );
     renderer.domElement.setAttribute("role", "img");
     renderer.domElement.tabIndex = 0;
@@ -128,6 +132,13 @@ export default function HouseScene(props: Props) {
     let desiredZoom = 1;
     let path: [number, number][] = [];
     let pending: RoomSection | null = null;
+    let pendingAction: string | null = null;
+    let pose: "standing" | "sitting" | "petting" = "standing";
+    let poseUntil = 0;
+    let currentAction: string | null = null;
+    const touches = new Map<number, THREE.Vector2>();
+    let pinchDistance = 0;
+    let gesture = false;
     let nearest: RoomSection | null = null;
     let wasWalking = false;
     let ready = false;
@@ -145,11 +156,59 @@ export default function HouseScene(props: Props) {
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
+    function standUp() {
+      if (pose === "sitting")
+        house.visitor.group.position.set(
+          ...([chair.approach[0], 0.51, chair.approach[1]] as [
+            number,
+            number,
+            number,
+          ]),
+        );
+      pose = "standing";
+      currentAction = null;
+      pendingAction = null;
+      house.visitor.group.rotation.x = 0;
+    }
+    function completeAction(id: string) {
+      currentAction = id;
+      if (id === "chair") {
+        pose = "sitting";
+        house.visitor.group.position.set(chair.x, 0.61, chair.z + 0.04);
+        house.visitor.group.rotation.y = 0;
+      } else {
+        const index = Number(id.slice(4));
+        const cat = cats[index];
+        pose = "petting";
+        poseUntil = previousTime + 4200;
+        house.visitor.group.rotation.y = Math.atan2(
+          cat.x - house.visitor.group.position.x,
+          cat.z - house.visitor.group.position.z,
+        );
+        house.animals.pet(index, previousTime);
+      }
+      renderer.shadowMap.needsUpdate = true;
+    }
+    act.current = (id) => {
+      if (handlers.current.active) return;
+      const action = companionActions.find((action) => action.id === id);
+      if (!action) return;
+      renderer.domElement.focus({ preventScroll: true });
+      desiredCameraTarget.set(action.x, 1, action.z);
+      desiredZoom = 1.8;
+      startWalk(...action.approach);
+      pendingAction = id;
+      if (!path.length) {
+        completeAction(id);
+        pendingAction = null;
+      }
+    };
     function startWalk(
       x: number,
       z: number,
       section: RoomSection | null = null,
     ) {
+      standUp();
       path = findWalkPath(
         [house.visitor.group.position.x, house.visitor.group.position.z],
         [x, z],
@@ -171,6 +230,7 @@ export default function HouseScene(props: Props) {
     }
     function manualMovement(direction: string, pressed: boolean) {
       if (pressed) {
+        standUp();
         keys.add(direction);
         path = [];
         pending = null;
@@ -189,6 +249,7 @@ export default function HouseScene(props: Props) {
         desiredCameraTarget.copy(homeTarget);
         path = [];
         pending = null;
+        pendingAction = null;
         house.destination.visible = false;
         // Preserve the current orbit to avoid a disorienting camera jump.
       },
@@ -207,12 +268,48 @@ export default function HouseScene(props: Props) {
       );
       raycaster.setFromCamera(pointer, camera);
     }
+    const onWheel = (event: WheelEvent) => {
+      if (handlers.current.active) return;
+      event.preventDefault();
+      const delta =
+        event.deltaY *
+        (event.deltaMode === 1
+          ? 16
+          : event.deltaMode === 2
+            ? element!.clientHeight
+            : 1);
+      desiredZoom = THREE.MathUtils.clamp(
+        desiredZoom * Math.exp(-delta * 0.002),
+        0.7,
+        2.4,
+      );
+    };
     const onDown = (event: PointerEvent) => {
+      if (event.pointerType !== "touch") suppressClick.current = false;
+      if (event.pointerType === "touch") {
+        if (!touches.size) {
+          gesture = false;
+          suppressClick.current = false;
+        }
+        touches.set(
+          event.pointerId,
+          new THREE.Vector2(event.clientX, event.clientY),
+        );
+        if (touches.size === 2) {
+          const points = Array.from(touches.values());
+          pinchDistance = points[0].distanceTo(points[1]);
+          gesture = true;
+          suppressClick.current = true;
+        }
+      }
       if (event.button !== 0 || !event.isPrimary) return;
       pointerStart.set(event.clientX, event.clientY);
     };
     const onUp = (event: PointerEvent) => {
+      touches.delete(event.pointerId);
       if (
+        gesture ||
+        !!(event.target as HTMLElement).closest("button") ||
         handlers.current.active ||
         event.button !== 0 ||
         !event.isPrimary ||
@@ -224,6 +321,11 @@ export default function HouseScene(props: Props) {
       setPointer(event);
       const objects = raycaster.intersectObjects(house.interactables, true);
       if (objects.length) {
+        const action = objects[0].object.userData.action as string | undefined;
+        if (action) {
+          act.current?.(action);
+          return;
+        }
         const section = objects[0].object.userData.section as RoomSection;
         api.current?.visit(section);
         return;
@@ -235,10 +337,27 @@ export default function HouseScene(props: Props) {
         startWalk(target.x, target.z);
     };
     const onMove = (event: PointerEvent) => {
+      if (touches.has(event.pointerId)) {
+        touches.set(
+          event.pointerId,
+          new THREE.Vector2(event.clientX, event.clientY),
+        );
+        if (touches.size === 2) {
+          const points = Array.from(touches.values());
+          const distance = points[0].distanceTo(points[1]);
+          if (pinchDistance > 0)
+            desiredZoom = THREE.MathUtils.clamp(
+              (desiredZoom * distance) / pinchDistance,
+              0.7,
+              2.4,
+            );
+          pinchDistance = distance;
+        }
+      }
       setPointer(event);
       const hits = raycaster.intersectObjects(house.interactables, true);
       hovered = hits.length ? hits[0].object.userData.section : null;
-      renderer.domElement.style.cursor = hovered ? "pointer" : "grab";
+      renderer.domElement.style.cursor = hits.length ? "pointer" : "grab";
     };
     const onKeyDown = (event: KeyboardEvent) => {
       if (
@@ -278,10 +397,32 @@ export default function HouseScene(props: Props) {
     };
     const onKeyUp = (event: KeyboardEvent) =>
       keys.delete(event.key.toLowerCase());
-    const clearKeys = () => keys.clear();
-    renderer.domElement.addEventListener("pointerdown", onDown);
-    renderer.domElement.addEventListener("pointerup", onUp);
-    renderer.domElement.addEventListener("pointermove", onMove);
+    const clearKeys = () => {
+      keys.clear();
+      touches.clear();
+      pinchDistance = 0;
+    };
+    const onCancel = (event: PointerEvent) => {
+      touches.delete(event.pointerId);
+      pinchDistance = 0;
+    };
+    let gestureZoom = 1;
+    const onGesture = (event: Event) => {
+      if (handlers.current.active) return;
+      event.preventDefault();
+      suppressClick.current = true;
+      if (event.type === "gesturestart") gestureZoom = desiredZoom;
+      const scale = (event as Event & { scale?: number }).scale;
+      if (event.type === "gesturechange" && scale)
+        desiredZoom = THREE.MathUtils.clamp(gestureZoom * scale, 0.7, 2.4);
+    };
+    element.addEventListener("wheel", onWheel, { passive: false });
+    element.addEventListener("gesturestart", onGesture, { passive: false });
+    element.addEventListener("gesturechange", onGesture, { passive: false });
+    renderer.domElement.addEventListener("pointercancel", onCancel);
+    element.addEventListener("pointerdown", onDown);
+    element.addEventListener("pointerup", onUp);
+    element.addEventListener("pointermove", onMove);
     renderer.domElement.addEventListener("webglcontextlost", (event) =>
       event.preventDefault(),
     );
@@ -376,13 +517,20 @@ export default function HouseScene(props: Props) {
               focus(pending);
               pending = null;
             }
+            if (pendingAction) {
+              completeAction(pendingAction);
+              pendingAction = null;
+            }
           }
         }
       }
+      if (pose === "petting" && time >= poseUntil) standUp();
+      renderer.domElement.dataset.pose = pose;
+      renderer.domElement.dataset.sceneZoom = camera.zoom.toFixed(3);
       const indoor = isInsideCastle(visitor.position.x, visitor.position.z);
       visitor.position.y = THREE.MathUtils.lerp(
         visitor.position.y,
-        indoor ? 0.51 : 0.13,
+        pose === "sitting" ? 0.61 : indoor ? 0.51 : 0.13,
         Math.min(delta * 12, 1),
       );
       if (walking !== wasWalking) {
@@ -392,15 +540,25 @@ export default function HouseScene(props: Props) {
       walkingPhase += walking ? delta * 13 : 0;
       house.visitor.legs.forEach((leg, i) => {
         leg.rotation.x =
-          walking && !reduceMotion
-            ? Math.sin(walkingPhase + i * Math.PI) * 0.6
-            : 0;
+          pose === "sitting"
+            ? -Math.PI / 2
+            : walking && !reduceMotion
+              ? Math.sin(walkingPhase + i * Math.PI) * 0.6
+              : 0;
       });
+      house.visitor.knees.forEach((knee) => {
+        knee.rotation.x = pose === "sitting" ? Math.PI / 2 : 0;
+      });
+      house.visitor.group.rotation.x = pose === "petting" ? 0.2 : 0;
       house.visitor.arms.forEach((arm, i) => {
         arm.rotation.x =
-          walking && !reduceMotion
-            ? Math.sin(walkingPhase + i * Math.PI) * -0.4
-            : 0;
+          pose === "petting" && i === 1
+            ? -1.3 + (reduceMotion ? 0 : Math.sin(time * 0.006) * 0.15)
+            : pose === "sitting"
+              ? -0.45
+              : walking && !reduceMotion
+                ? Math.sin(walkingPhase + i * Math.PI) * -0.4
+                : 0;
       });
       if (!reduceMotion) {
         house.host.arms[1].rotation.z = 2.4 + Math.sin(time * 0.002) * 0.18;
@@ -410,7 +568,13 @@ export default function HouseScene(props: Props) {
           flame.scale.y = 1.6 + Math.sin(time * 0.004 + index) * 0.3;
         });
       }
-      house.animals.update(time, visitor.position, reduceMotion);
+      const puppyMoving = house.animals.update(
+        time,
+        visitor.position,
+        reduceMotion,
+        delta,
+        walking,
+      );
       let nearestDistance = 1.7;
       let nextNearest: RoomSection | null = null;
       houseSpots.forEach((spot) => {
@@ -456,14 +620,33 @@ export default function HouseScene(props: Props) {
           nearest === spot.id || hovered === spot.id,
         );
       }
+      for (const action of companionActions) {
+        const button = companionLabels.current[action.id];
+        if (!button) continue;
+        scratch.set(action.x, action.y, action.z).project(camera);
+        button.style.transform = `translate(-50%, -100%) translate(${(scratch.x * 0.5 + 0.5) * element.clientWidth}px, ${(-scratch.y * 0.5 + 0.5) * element.clientHeight}px)`;
+        button.setAttribute(
+          "aria-pressed",
+          String(currentAction === action.id),
+        );
+      }
       if (visitorLabel.current) {
+        visitorLabel.current.firstChild!.textContent =
+          pose === "sitting"
+            ? "Taking a little rest "
+            : pose === "petting"
+              ? cats[Number(currentAction!.slice(4))].reaction + " "
+              : "you ";
         scratch
           .copy(visitor.position)
           .add(new THREE.Vector3(0, 1.22, 0))
           .project(camera);
         visitorLabel.current.style.transform = `translate(-50%, -100%) translate(${(scratch.x * 0.5 + 0.5) * element.clientWidth}px, ${(-scratch.y * 0.5 + 0.5) * element.clientHeight}px)`;
       }
-      if ((walking || !reduceMotion) && time - lastShadow > 160) {
+      if (
+        (walking || puppyMoving || !reduceMotion) &&
+        time - lastShadow > 160
+      ) {
         renderer.shadowMap.needsUpdate = true;
         lastShadow = time;
       }
@@ -481,13 +664,18 @@ export default function HouseScene(props: Props) {
       renderer.setAnimationLoop(null);
       observer.disconnect();
       controls.dispose();
+      act.current = undefined;
+      element.removeEventListener("wheel", onWheel);
+      element.removeEventListener("gesturestart", onGesture);
+      element.removeEventListener("gesturechange", onGesture);
+      renderer.domElement.removeEventListener("pointercancel", onCancel);
       window.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("keyup", onKeyUp);
       window.removeEventListener("blur", clearKeys);
       document.removeEventListener("visibilitychange", visibility);
-      renderer.domElement.removeEventListener("pointerdown", onDown);
-      renderer.domElement.removeEventListener("pointerup", onUp);
-      renderer.domElement.removeEventListener("pointermove", onMove);
+      element.removeEventListener("pointerdown", onDown);
+      element.removeEventListener("pointerup", onUp);
+      element.removeEventListener("pointermove", onMove);
       const geometries = new Set<THREE.BufferGeometry>(),
         materials = new Set<THREE.Material>(),
         textures = new Set<THREE.Texture>();
@@ -536,7 +724,10 @@ export default function HouseScene(props: Props) {
                 labels.current[spot.id] = node;
               }}
               className={`house-object-label label-${spot.id}`}
-              onClick={() => api.current?.visit(spot.id)}
+              onClick={(event) => {
+                if (!suppressClick.current || event.detail === 0)
+                  api.current?.visit(spot.id);
+              }}
               aria-label={`Explore ${spot.object}`}
             >
               <span className="object-dot">
@@ -547,6 +738,29 @@ export default function HouseScene(props: Props) {
                 )}
               </span>
               <span className="object-caption">{spot.object}</span>
+            </button>
+          ))}
+          {companionActions.map((action) => (
+            <button
+              key={action.id}
+              ref={(node) => {
+                companionLabels.current[action.id] = node;
+              }}
+              className="house-object-label house-companion-label"
+              title={
+                action.label +
+                (action.id.startsWith("cat-")
+                  ? " · " + cats[Number(action.id.slice(4))].breed
+                  : "")
+              }
+              aria-label={action.label}
+              onClick={(event) => {
+                if (!suppressClick.current || event.detail === 0)
+                  act.current?.(action.id);
+              }}
+            >
+              <span className="object-dot">{action.icon}</span>
+              <span className="object-caption">{action.caption}</span>
             </button>
           ))}
           <span ref={visitorLabel} className="house-visitor-label">

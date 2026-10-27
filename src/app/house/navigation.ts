@@ -1,14 +1,18 @@
+import { chair } from "./companionContent";
 import { walkBounds } from "./houseLayout";
 
 // Furniture footprints also feed pathfinding, so the visitor walks around objects.
 export const obstacles = [
+  { x: chair.x, z: chair.z, w: 0.8, d: 0.72 },
   { x: -10.2, z: 0, w: 0.3, d: 8.8 },
   { x: 0.5, z: -4.28, w: 21.4, d: 0.4 },
   { x: -5.75, z: 4.25, w: 8.9, d: 0.18 },
   { x: 6.25, z: 4.25, w: 9.9, d: 0.18 },
   { x: 8.1, z: -2.4, w: 1.9, d: 1.3 },
   { x: -9.4, z: 1.35, w: 0.9, d: 2.5 },
-  { x: -3.4, z: 1.4, w: 1.5, d: 3.2 },
+  { x: -3.8, z: 0.3, w: 1.1, d: 1.1 },
+  { x: -2.5, z: 1.15, w: 1.1, d: 1.1 },
+  { x: -3.8, z: 2.0, w: 1.1, d: 1.1 },
   { x: -0.7, z: 2.35, w: 1.25, d: 1.25 },
   { x: 3.65, z: 1.8, w: 1.45, d: 1.25 },
   { x: -7.3, z: -1.65, w: 2.2, d: 1.3 },
@@ -64,8 +68,10 @@ export function findWalkPath(
     ez = Math.round(end[1] / STEP);
   if (!canWalk(ex * STEP, ez * STEP)) {
     let nearest = Infinity;
-    for (let x = ex - 5; x <= ex + 5; x++)
-      for (let z = ez - 5; z <= ez + 5; z++) {
+    const centreX = ex,
+      centreZ = ez;
+    for (let x = centreX - 5; x <= centreX + 5; x++)
+      for (let z = centreZ - 5; z <= centreZ + 5; z++) {
         const distance = (x * STEP - end[0]) ** 2 + (z * STEP - end[1]) ** 2;
         if (canWalk(x * STEP, z * STEP) && distance < nearest) {
           nearest = distance;

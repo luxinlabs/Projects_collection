@@ -401,8 +401,8 @@ export default function RoomPanel({
               capabilities into products with global impact.
             </p>
             <p>
-              Have a bold idea, a question, or just a little hello? There’s room
-              on this bench.
+              Have a bold idea, a question, or just a little hello? You’re
+              always welcome in the hall.
             </p>
             <a href="mailto:philomela.zhang@gmail.com" className="room-button">
               Say hello ↗

@@ -1,10 +1,25 @@
 import * as THREE from "three";
 import type { HouseKit } from "./housePrimitives";
 import { batchStaticGeometry } from "./batchGeometry";
+import { createPuppyFollower } from "./puppyFollower";
+import { cats as catProfiles } from "./companionContent";
+import { isInsideCastle } from "./houseLayout";
 
-export const petHomes = [
+export const petHomes: {
+  kind: string;
+  x: number;
+  y: number;
+  z: number;
+  indoors: boolean;
+  breed?: string;
+}[] = [
   { kind: "puppy", x: 1.45, y: 0.51, z: 1.15, indoors: true },
-  { kind: "cat", x: -3.25, y: 1.48, z: 0.65, indoors: true },
+  ...catProfiles.map((cat) => ({
+    kind: "cat",
+    ...cat,
+    y: 0.68,
+    indoors: true,
+  })),
   { kind: "duck", x: 12.8, y: 0.15, z: 0.25, indoors: false },
   { kind: "duckling", x: 12.3, y: 0.15, z: 1.1, indoors: false },
   { kind: "duckling", x: 13.25, y: 0.15, z: 1.3, indoors: false },
@@ -17,10 +32,15 @@ export function addAnimals(kit: HouseKit) {
   puppy.name = "Puppy in the Grand Hall";
   const body = ball(0.25, "#e6c394", 0, 0.32, 0, puppy);
   body.scale.set(0.85, 0.95, 1.4);
+  const legs: THREE.Group[] = [];
   for (const x of [-0.14, 0.14])
     for (const z of [-0.2, 0.2]) {
-      cylinder(0.06, 0.065, 0.16, "#f1d6af", x, 0.13, z, puppy);
-      const paw = ball(0.075, "#f4dfbf", x, 0.055, z + 0.025, puppy);
+      const leg = new THREE.Group();
+      leg.position.set(x, 0.23, z);
+      puppy.add(leg);
+      legs.push(leg);
+      cylinder(0.06, 0.065, 0.16, "#f1d6af", 0, -0.1, 0, leg);
+      const paw = ball(0.075, "#f4dfbf", 0, -0.175, 0.025, leg);
       paw.scale.set(1, 0.6, 1.25);
     }
   const head = new THREE.Group();
@@ -55,89 +75,132 @@ export function addAnimals(kit: HouseKit) {
   const tailFur = ball(0.09, "#e8c494", 0, 0.14, -0.12, tail);
   tailFur.scale.set(0.6, 1.8, 0.7);
   tailFur.rotation.x = -0.6;
-  batchStaticGeometry(puppy, [head, tail]);
+  batchStaticGeometry(puppy, [head, tail, ...legs]);
+  const follower = createPuppyFollower([petHomes[0].x, petHomes[0].z]);
   puppy.position.set(petHomes[0].x, petHomes[0].y, petHomes[0].z);
   puppy.rotation.y = 0.5;
   world.add(puppy);
   groups.push(puppy);
-  // Her curled-up cat has tabby markings, ears, whiskers, and a soft tail.
-  const cat = new THREE.Group();
-  cat.name = "Cat curled up on the velvet bench";
-  const catBody = ball(0.27, "#d6b58a", 0, 0.16, 0, cat);
-  catBody.scale.set(1.45, 0.7, 1);
-  const catHead = new THREE.Group();
-  catHead.position.set(0.26, 0.22, 0.08);
-  cat.add(catHead);
-  ball(0.18, "#e9c99e", 0, 0, 0, catHead);
-  for (const side of [-1, 1]) {
-    const ear = mesh(
-      new THREE.ConeGeometry(0.075, 0.17, 3),
-      "#c9a176",
-      side * 0.115,
-      0.16,
+  const cats: {
+    group: THREE.Group;
+    head: THREE.Group;
+    tail: THREE.Mesh;
+    until: number;
+  }[] = [];
+  const interactables: THREE.Object3D[] = [];
+  const catHomes = petHomes.filter((home) => home.kind === "cat");
+  catHomes.forEach((home, index) => {
+    const coat = ["#a0a9b5", "#f4eadd", "#dfc9a5"][index];
+    const points = ["#77818f", "#8d8077", "#665045"][index];
+    const bed = new THREE.Group();
+    bed.name = `${home.breed} cat bed`;
+    bed.position.set(home.x, 0.51, home.z);
+    world.add(bed);
+    groups.push(bed);
+    interactables.push(bed);
+    const rim = mesh(
+      new THREE.TorusGeometry(0.48, 0.095, 8, 32),
+      ["#ac7b86", "#91a58d", "#a593bb"][index],
       0,
-      catHead,
+      0.12,
+      0,
+      bed,
     );
-    ear.rotation.z = side * -0.2;
-    const earInner = mesh(
-      new THREE.ConeGeometry(0.04, 0.1, 3),
-      "#d9aaa0",
-      side * 0.115,
-      0.17,
-      0.035,
-      catHead,
+    rim.rotation.x = Math.PI / 2;
+    cylinder(0.43, 0.46, 0.1, "#f0dfc6", 0, 0.1, 0, bed);
+    const cat = new THREE.Group();
+    cat.name = `${home.breed} sleeping in a small cat bed`;
+    const catBody = ball(0.27, coat, 0, 0.16, 0, cat);
+    catBody.scale.set(
+      index === 2 ? 1.35 : 1.45,
+      index === 0 ? 0.85 : 0.7,
+      index === 1 ? 1.15 : 1,
     );
-    earInner.rotation.z = side * -0.2;
-    const eye = mesh(
-      new THREE.TorusGeometry(0.035, 0.006, 5, 12, Math.PI),
-      "#6e533b",
-      side * 0.07,
-      0.02,
-      0.16,
-      catHead,
-    );
-    eye.scale.y = 0.45;
-    for (const row of [-1, 1])
-      rod(
-        new THREE.Vector3(side * 0.07, -0.045, 0.16),
-        new THREE.Vector3(side * 0.23, -0.04 + row * 0.03, 0.17),
-        0.004,
-        "#8a6e4d",
+    const catHead = new THREE.Group();
+    catHead.position.set(0.26, 0.22, 0.08);
+    cat.add(catHead);
+    ball(0.18, coat, 0, 0, 0, catHead);
+    for (const side of [-1, 1]) {
+      const ear = mesh(
+        new THREE.ConeGeometry(0.075, 0.17, 3),
+        points,
+        side * 0.115,
+        0.16,
+        0,
         catHead,
       );
-  }
-  ball(0.018, "#b6857c", 0, -0.025, 0.18, catHead);
-  const curve = new THREE.CatmullRomCurve3([
-    new THREE.Vector3(-0.3, 0.13, -0.1),
-    new THREE.Vector3(-0.4, 0.1, 0.2),
-    new THREE.Vector3(-0.1, 0.08, 0.3),
-    new THREE.Vector3(0.1, 0.1, 0.2),
-  ]);
-  mesh(
-    new THREE.TubeGeometry(curve, 20, 0.06, 8, false),
-    "#b18b60",
-    0,
-    0,
-    0,
-    cat,
-  );
-  for (let i = 0; i < 3; i++) {
-    const stripe = mesh(
-      new THREE.TorusGeometry(0.24, 0.022, 5, 16, Math.PI),
-      "#b08a5e",
-      -0.17 + i * 0.15,
-      0.13,
-      -0.02,
+      ear.rotation.z = side * -0.2;
+      const earInner = mesh(
+        new THREE.ConeGeometry(0.04, 0.1, 3),
+        "#d9aaa0",
+        side * 0.115,
+        0.17,
+        0.035,
+        catHead,
+      );
+      earInner.rotation.z = side * -0.2;
+      const eye = mesh(
+        new THREE.TorusGeometry(0.035, 0.006, 5, 12, Math.PI),
+        "#6e533b",
+        side * 0.07,
+        0.02,
+        0.16,
+        catHead,
+      );
+      eye.scale.y = 0.45;
+      for (const row of [-1, 1])
+        rod(
+          new THREE.Vector3(side * 0.07, -0.045, 0.16),
+          new THREE.Vector3(side * 0.23, -0.04 + row * 0.03, 0.17),
+          0.004,
+          "#8a6e4d",
+          catHead,
+        );
+    }
+    if (index > 0) {
+      const mask = ball(0.13, points, 0, -0.01, 0.08, catHead);
+      mask.scale.set(1.1, 0.85, 0.7);
+    }
+    ball(0.018, "#b6857c", 0, -0.025, 0.18, catHead);
+    const curve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(-0.3, 0.13, -0.1),
+      new THREE.Vector3(-0.4, 0.1, 0.2),
+      new THREE.Vector3(-0.1, 0.08, 0.3),
+      new THREE.Vector3(0.1, 0.1, 0.2),
+    ]);
+    const catTail = mesh(
+      new THREE.TubeGeometry(curve, 20, index === 1 ? 0.085 : 0.06, 8, false),
+      points,
+      0,
+      0,
+      0,
       cat,
     );
-    stripe.rotation.y = Math.PI / 2;
-    stripe.scale.y = 0.7;
-  }
-  batchStaticGeometry(cat, [catHead]);
-  cat.position.set(petHomes[1].x, petHomes[1].y, petHomes[1].z);
-  cat.rotation.y = 0.6;
-  world.add(cat);
-  groups.push(cat);
+    if (index === 0)
+      for (let i = 0; i < 3; i++) {
+        const stripe = mesh(
+          new THREE.TorusGeometry(0.24, 0.022, 5, 16, Math.PI),
+          points,
+          -0.17 + i * 0.15,
+          0.13,
+          -0.02,
+          cat,
+        );
+        stripe.rotation.y = Math.PI / 2;
+        stripe.scale.y = 0.7;
+      }
+    batchStaticGeometry(cat, [catHead, catTail]);
+    cat.position.set(home.x, home.y, home.z);
+    cat.rotation.y = 0.6;
+    world.add(cat);
+    groups.push(cat);
+    cats.push({ group: cat, head: catHead, tail: catTail, until: 0 });
+    for (const root of [bed, cat])
+      root.traverse((child) => {
+        child.userData.action = `cat-${index}`;
+      });
+    interactables.push(cat);
+  });
 
   const ducks: {
     group: THREE.Group;
@@ -179,7 +242,7 @@ export function addAnimals(kit: HouseKit) {
     batchStaticGeometry(duck, []);
     const scale = i ? 0.56 : 0.9;
     duck.scale.setScalar(scale);
-    const home = petHomes[i + 2];
+    const home = petHomes.filter((home) => !home.indoors)[i];
     duck.position.set(home.x, home.y, home.z);
     world.add(duck);
     groups.push(duck);
@@ -192,8 +255,48 @@ export function addAnimals(kit: HouseKit) {
   }
   return {
     groups,
-    update(time: number, visitor: THREE.Vector3, reduced: boolean) {
-      if (reduced) return;
+    interactables,
+    pet(index: number, time: number) {
+      if (cats[index]) cats[index].until = time + 4200;
+    },
+    update(
+      time: number,
+      visitor: THREE.Vector3,
+      reduced: boolean,
+      delta: number,
+      walking: boolean,
+    ) {
+      const oldX = puppy.position.x,
+        oldZ = puppy.position.z;
+      const moving = follower.update([visitor.x, visitor.z], walking, delta);
+      puppy.position.x = follower.position[0];
+      puppy.position.z = follower.position[1];
+      puppy.position.y = THREE.MathUtils.lerp(
+        puppy.position.y,
+        isInsideCastle(puppy.position.x, puppy.position.z) ? 0.51 : 0.13,
+        1 - Math.exp(-delta * 12),
+      );
+      if (moving) {
+        const heading = Math.atan2(
+          puppy.position.x - oldX,
+          puppy.position.z - oldZ,
+        );
+        puppy.rotation.y +=
+          Math.atan2(
+            Math.sin(heading - puppy.rotation.y),
+            Math.cos(heading - puppy.rotation.y),
+          ) *
+          (1 - Math.exp(-delta * 12));
+      }
+      legs.forEach((leg, index) => {
+        leg.rotation.x =
+          moving && !reduced
+            ? Math.sin(
+                time * 0.014 + (index === 0 || index === 3 ? 0 : Math.PI),
+              ) * 0.5
+            : 0;
+      });
+      if (reduced) return moving;
       const t = time / 1000;
       const nearby = visitor.distanceTo(puppy.position) < 3;
       tail.rotation.z = Math.sin(t * (nearby ? 9 : 4)) * (nearby ? 0.7 : 0.35);
@@ -202,11 +305,26 @@ export function addAnimals(kit: HouseKit) {
         visitor.x - puppy.position.x,
         visitor.z - puppy.position.z,
       );
-      if (nearby)
-        puppy.rotation.y = THREE.MathUtils.lerp(puppy.rotation.y, gaze, 0.025);
+      if (nearby && !moving)
+        puppy.rotation.y +=
+          Math.atan2(
+            Math.sin(gaze - puppy.rotation.y),
+            Math.cos(gaze - puppy.rotation.y),
+          ) *
+          (1 - Math.exp(-delta * 2));
       puppy.scale.y = 1 + Math.sin(t * 2) * 0.018;
-      cat.scale.y = 1 + Math.sin(t * 1.5) * 0.025;
-      catHead.rotation.z = Math.sin(t * 0.45) * 0.025;
+      cats.forEach(({ group, head, tail, until }, index) => {
+        const petted = time < until;
+        group.scale.y = 1 + Math.sin(t * 1.5 + index) * 0.025;
+        group.scale.z = petted && index === 1 ? 1 + Math.sin(t * 3) * 0.08 : 1;
+        head.rotation.z = petted
+          ? Math.sin(t * (index === 0 ? 4 : 2)) * 0.18
+          : Math.sin(t * 0.45 + index) * 0.025;
+        head.position.y = petted ? 0.28 + Math.sin(t * 3) * 0.025 : 0.22;
+        tail.rotation.y = petted
+          ? Math.sin(t * (index === 2 ? 6 : 3)) * 0.22
+          : 0;
+      });
       ducks.forEach(({ group, angle, radius, speed }, index) => {
         const a = t * speed + angle;
         group.position.set(
@@ -216,6 +334,7 @@ export function addAnimals(kit: HouseKit) {
         );
         group.rotation.y = -a;
       });
+      return moving;
     },
   };
 }
