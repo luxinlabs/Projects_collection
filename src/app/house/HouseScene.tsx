@@ -95,7 +95,7 @@ export default function HouseScene(props: Props) {
     renderer.setClearColor(0x000000, 0);
     renderer.domElement.setAttribute(
       "aria-label",
-      "Interactive 3D Golden Gate castle exhibition hall in San Francisco style, with a Golden Gate Bridge and bay panorama outside Victorian windows, pastel towers, a dedicated Research Gallery, a Grand Hall, and a Project Gallery. Meet little Luxin, a girl in a rose dress, a puppy and three cats sleeping in little beds inside, and three ducks in the garden pond. Click objects to explore or use WASD and arrow keys to walk.",
+      "Interactive 3D Golden Gate castle exhibition hall in San Francisco style, with a Golden Gate Bridge and bay panorama outside Victorian windows, pastel towers, a dedicated Research Gallery, a Grand Hall, and a Project Gallery. Meet little Luxin, a girl in a rose dress, a waving mint robot in the Project Gallery, a puppy and three cats sleeping in little beds inside, and three ducks in the garden pond. Click objects to explore or use WASD and arrow keys to walk.",
     );
     renderer.domElement.setAttribute("role", "img");
     renderer.domElement.tabIndex = 0;
@@ -562,6 +562,8 @@ export default function HouseScene(props: Props) {
                 : 0;
       });
       if (!reduceMotion) {
+        house.robot.arm.rotation.z = 1.9 + Math.sin(time * 0.0025) * 0.16;
+        house.robot.head.rotation.z = Math.sin(time * 0.0008) * 0.06;
         house.host.arms[1].rotation.z = 2.4 + Math.sin(time * 0.002) * 0.18;
         house.host.group.scale.y = 1.12 + Math.sin(time * 0.0018) * 0.012;
         house.globe.rotation.y += delta * 0.08;
@@ -625,7 +627,7 @@ export default function HouseScene(props: Props) {
         const button = companionLabels.current[action.id];
         if (!button) continue;
         scratch.set(action.x, action.y, action.z).project(camera);
-        button.style.transform = `translate(-50%, -100%) translate(${(scratch.x * 0.5 + 0.5) * element.clientWidth}px, ${(-scratch.y * 0.5 + 0.5) * element.clientHeight}px)`;
+        button.style.transform = `translate(-50%, ${action.id.startsWith("cat-") ? "-50%" : "-100%"}) translate(${(scratch.x * 0.5 + 0.5) * element.clientWidth}px, ${(-scratch.y * 0.5 + 0.5) * element.clientHeight}px)`;
         button.setAttribute(
           "aria-pressed",
           String(currentAction === action.id),
@@ -747,7 +749,7 @@ export default function HouseScene(props: Props) {
               ref={(node) => {
                 companionLabels.current[action.id] = node;
               }}
-              className="house-object-label house-companion-label"
+              className={`house-object-label house-companion-label ${action.id.startsWith("cat-") ? "house-cat-name" : ""}`}
               title={
                 action.label +
                 (action.id.startsWith("cat-")

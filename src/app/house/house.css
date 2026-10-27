@@ -412,9 +412,9 @@
   justify-content: space-between;
 }
 .world-footer-heading > span {
-  font-size: 7px;
+  font-size: 9px;
   letter-spacing: 2px;
-  color: #9c927e;
+  color: var(--world-muted);
 }
 .world-footer-heading > button {
   font-size: 10px;
@@ -425,37 +425,54 @@
   font-size: 13px;
 }
 .world-room-dock {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(16px, 4vw, 65px);
-  padding: 5px 0 17px;
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 10px;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 15px 0 20px;
 }
 .world-room-dock > button {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
-  min-width: 52px;
-  padding: 0 5px;
+  justify-content: center;
+  gap: 9px;
+  min-height: 98px;
+  padding: 12px 6px;
+  border: 1px solid var(--world-line);
+  border-radius: 18px 18px 10px 10px;
+  background: var(--app-surface);
+  color: var(--world-ink);
+  transition: transform 0.2s, border-color 0.2s, background 0.2s, box-shadow 0.2s;
 }
 .world-room-dock > button > span:first-child {
   display: grid;
   place-items: center;
-  width: 35px;
-  height: 35px;
-  font-size: 25px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--world-line);
+  background: var(--app-surface-2);
+  font-size: 29px;
   font-family: Georgia, serif;
-  color: #968365;
-  transition: transform 0.2s;
+  line-height: 1;
+  color: var(--app-accent);
+  transition: transform 0.2s, color 0.2s;
 }
-.world-room-dock > button:hover > span:first-child {
-  transform: translateY(-4px);
-  color: #728064;
+.world-room-dock > button:hover,
+.world-room-dock > button[aria-pressed="true"] {
+  border-color: var(--app-accent);
+  background: var(--app-surface-2);
+  box-shadow: 0 5px 14px #5148370b;
 }
+.world-room-dock > button:hover { transform: translateY(-3px); }
+.world-room-dock > button:hover > span:first-child { color: var(--app-leaf); }
 .world-room-dock > button > span:last-child {
-  font-size: 9px;
-  color: #897e6b;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--world-ink);
 }
 .world-footer-bottom {
   border-top: 1px solid var(--world-line);
@@ -481,7 +498,7 @@
 .world-room-menu {
   position: absolute;
   z-index: 8;
-  bottom: 155px;
+  bottom: 205px;
   right: 4%;
   width: 310px;
   background: #faf6ec;
@@ -1555,32 +1572,31 @@
     padding: 12px 5% 13px;
   }
   .world-footer-heading > span {
-    font-size: 6px;
-    letter-spacing: 1px;
+    font-size: 8px;
+    letter-spacing: 1.3px;
   }
   .world-footer-heading > button {
     font-size: 9px;
   }
   .world-room-dock {
-    gap: 0;
-    justify-content: space-between;
-    padding: 8px 0 14px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 7px;
+    padding: 11px 0 13px;
   }
   .world-room-dock > button {
     min-width: 0;
-    padding: 0 2px;
+    min-height: 76px;
+    padding: 8px 3px;
+    gap: 6px;
+    border-radius: 14px 14px 8px 8px;
   }
   .world-room-dock > button > span:first-child {
-    font-size: 22px;
-    width: 30px;
-    height: 30px;
+    font-size: 25px;
+    width: 34px;
+    height: 34px;
   }
   .world-room-dock > button > span:last-child {
-    font-size: 7px;
-  }
-  .world-room-dock > button:nth-child(4) > span:last-child {
-    max-width: 32px;
-    line-height: 1.1;
+    font-size: 10px;
   }
   .world-footer-bottom {
     font-size: 7px;
@@ -1652,11 +1668,11 @@
     grid-area: right;
   }
   .world-room-menu {
-    bottom: 142px;
+    bottom: 250px;
     right: 5%;
     left: 5%;
     width: auto;
-    max-height: calc(100dvh - 250px);
+    max-height: calc(100dvh - 340px);
     overflow-y: auto;
   }
   .world-help {
@@ -1783,3 +1799,32 @@
 .house-companion-label[aria-pressed="true"] { background: #e8eedc; }
 
 .house-canvas { touch-action: none; }
+
+/* Small names tucked beside the cats; invisible padding keeps them tappable. */
+.house-object-label.house-cat-name,
+.house-object-label.house-cat-name:hover,
+.house-object-label.house-cat-name[aria-pressed="true"] {
+  min-width: 28px;
+  min-height: 28px;
+  justify-content: center;
+  padding: 9px 6px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  box-shadow: none;
+  gap: 0;
+}
+.house-cat-name .object-dot { display: none; }
+.house-object-label.house-cat-name .object-caption {
+  font-family: Georgia, serif;
+  font-size: 7px;
+  line-height: 1;
+  color: var(--world-ink);
+  text-shadow: 0 1px 2px var(--world-paper);
+}
+@media (max-width: 760px) {
+  .house-object-label.house-cat-name .object-caption { font-size: 6px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .world-room-dock > button:hover { transform: none; }
+}

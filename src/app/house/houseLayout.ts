@@ -28,3 +28,5 @@ export function isInsideCastle(x: number, z: number) {
   );
 }
 export const walkBounds = { minX: -14, maxX: 14.5, minZ: -6.5, maxZ: 8.5 };
+
+export const robotHome = { x: 10, z: -0.8, width: 0.75, depth: 0.65 };

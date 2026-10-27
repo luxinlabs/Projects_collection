@@ -241,8 +241,13 @@ export default function HouseExperience() {
           aria-label="Portfolio rooms"
         >
           {houseSpots.map((spot) => (
-            <button key={spot.id} onClick={() => openDirect(spot.id)}>
-              <span>{spot.icon}</span>
+            <button
+              key={spot.id}
+              onClick={() => openDirect(spot.id)}
+              aria-pressed={active === spot.id}
+              title={spot.title}
+            >
+              <span aria-hidden="true">{spot.icon}</span>
               <span>{spot.object}</span>
             </button>
           ))}

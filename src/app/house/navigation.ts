@@ -1,8 +1,9 @@
 import { chair } from "./companionContent";
-import { walkBounds } from "./houseLayout";
+import { walkBounds, robotHome } from "./houseLayout";
 
 // Furniture footprints also feed pathfinding, so the visitor walks around objects.
 export const obstacles = [
+  { x: robotHome.x, z: robotHome.z, w: robotHome.width, d: robotHome.depth },
   { x: chair.x, z: chair.z, w: 0.8, d: 0.72 },
   { x: -10.2, z: 0, w: 0.3, d: 8.8 },
   { x: 0.5, z: -4.28, w: 21.4, d: 0.4 },

@@ -3,6 +3,7 @@ import { createHouseKit } from "./housePrimitives";
 import { batchStaticGeometry } from "./batchGeometry";
 import { addSanFranciscoBay } from "./sanFrancisco";
 import { addCastleArchitecture } from "./castleArchitecture";
+import { createProjectRobot } from "./projectRobot";
 import { createLuxin, createVisitor } from "./characters";
 import { chair } from "./companionContent";
 import { addAnimals } from "./animals";
@@ -152,6 +153,8 @@ export function buildHouse(scene: THREE.Scene) {
   screen.position.set(0, 1.9, -0.15);
   desk.add(screen);
   interactive(desk, "projects");
+  const robot = createProjectRobot(kit);
+  interactive(robot.group, "projects");
   const judging = groupAt(3.65, 0.47, 1.8);
   box(1.3, 0.94, 1.05, "#c9bea7", 0, 0.47, 0, judging);
   box(1.5, 0.14, 1.2, "#e3d9c2", 0, 1, 0, judging);
@@ -487,6 +490,7 @@ export function buildHouse(scene: THREE.Scene) {
   interactables.push(
     ...batchStaticGeometry(world, [
       seat,
+      robot.group,
       host.group,
       visitor.group,
       globe,
@@ -508,5 +512,6 @@ export function buildHouse(scene: THREE.Scene) {
     globe,
     castle,
     animals,
+    robot,
   };
 }

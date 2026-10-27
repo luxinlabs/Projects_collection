@@ -35,9 +35,9 @@ export const companionActions = [
     label: `Pet ${cat.name}`,
     caption: cat.name,
     icon: "♡",
-    x: cat.x,
-    y: 1.05,
-    z: cat.z,
+    x: cat.x - 0.32,
+    y: 0.72,
+    z: cat.z - 0.16,
     approach: [...cat.approach] as [number, number],
   })),
   {
