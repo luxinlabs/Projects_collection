@@ -21,7 +21,7 @@ export default function Home() {
   return (
     <div
       id="index_wrapper"
-      className="theme-page classic-page flex flex-col w-full items-center pt-16 md:pt-0"
+      className="theme-page classic-page flex flex-col w-full items-center"
     >
       <SidebarNav />
 

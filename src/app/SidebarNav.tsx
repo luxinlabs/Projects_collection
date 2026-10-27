@@ -48,9 +48,7 @@ export default function SidebarNav({ inHouse = false }: { inHouse?: boolean }) {
         aria-label="Luxin Zhang’s Golden Gate castle, home"
       >
         <HouseMark />
-        <span>
-          LUXIN ZHANG<small>A LITTLE CASTLE BY THE BAY</small>
-        </span>
+        <span>LUXIN ZHANG</span>
       </Link>
       <button
         className="site-menu-toggle"

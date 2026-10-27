@@ -34,11 +34,12 @@ body {
   color: var(--app-text);
 }
 .classic-page #hero_section {
-  min-height: 600px;
-  width: min(1200px, 92%);
-  margin: 0 auto 35px;
-  border: 1px solid var(--app-border);
-  border-radius: 26px;
+  min-height: 100vh;
+  min-height: 100svh;
+  width: 100%;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
 }
 .classic-page #hero_section h1 {
   font-size: clamp(3rem, 7vw, 6rem);
@@ -183,15 +184,7 @@ body :focus-visible {
     serif;
   letter-spacing: 2px;
 }
-.site-brand small {
-  display: block;
-  font:
-    8px Arial,
-    sans-serif;
-  letter-spacing: 1.8px;
-  color: var(--app-muted);
-  margin-top: 5px;
-}
+
 .site-header nav {
   margin-left: auto;
   display: flex;
@@ -353,9 +346,7 @@ body :focus-visible {
   .site-brand > span {
     font-size: 14px;
   }
-  .site-brand small {
-    font-size: 7px;
-  }
+
   .site-menu-toggle {
     display: block;
     margin-left: auto;
@@ -402,10 +393,7 @@ body :focus-visible {
     font-size: 12px;
     letter-spacing: 1.5px;
   }
-  .site-brand small {
-    font-size: 6px;
-    letter-spacing: 1.3px;
-  }
+
   .site-theme-toggle {
     width: 31px;
     height: 31px;
@@ -437,3 +425,6 @@ body :focus-visible {
     transition: none;
   }
 }
+
+/* The original homepage keeps its full-bleed bridge hero on every screen. */
+.theme-page.classic-page { padding-top: 0; }
