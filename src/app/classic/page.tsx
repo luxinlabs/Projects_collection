@@ -45,7 +45,7 @@ export default function Home() {
         </div>
 
         {/* Content Container */}
-        <div className="relative z-10 w-full max-w-5xl mx-auto px-6 py-20 text-center">
+        <div className="relative z-10 w-full max-w-5xl mx-auto px-6 pt-20 pb-40 text-center">
           <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-white mb-4 tracking-tight">
             Luxin Zhang
           </h1>
@@ -114,6 +114,12 @@ export default function Home() {
               </div>
             </a>
           </div>
+          <Link
+            href="/"
+            className="theme-toggle inline-flex items-center gap-2 rounded-full px-5 py-3 mt-5 text-sm font-semibold"
+          >
+            Explore the Golden Gate castle <span aria-hidden="true">↗</span>
+          </Link>
         </div>
 
         {/* Scroll Down Indicator */}

@@ -69,12 +69,47 @@ export function walkDirection(
 const STEP = 0.4;
 const key = (x: number, z: number) => `${x},${z}`;
 
+export function canWalkSegment(start: [number, number], end: [number, number]) {
+  if (!canWalk(...start)) return false;
+  const steps = Math.max(
+    1,
+    Math.ceil(Math.hypot(end[0] - start[0], end[1] - start[1]) / 0.025),
+  );
+  for (let i = 1; i <= steps; i++)
+    if (
+      !canWalk(
+        start[0] + ((end[0] - start[0]) * i) / steps,
+        start[1] + ((end[1] - start[1]) * i) / steps,
+      )
+    )
+      return false;
+  return true;
+}
+
 export function findWalkPath(
   start: [number, number],
   end: [number, number],
 ): [number, number][] {
-  const sx = Math.round(start[0] / STEP),
+  // An arbitrary keyboard position may round into furniture. Connect to a
+  // nearby safe grid centre before A*, so the first segment cannot cut a corner.
+  let sx = Math.round(start[0] / STEP),
     sz = Math.round(start[1] / STEP);
+  if (!canWalkSegment(start, [sx * STEP, sz * STEP])) {
+    let distance = Infinity;
+    const centreX = sx,
+      centreZ = sz;
+    for (let x = centreX - 2; x <= centreX + 2; x++)
+      for (let z = centreZ - 2; z <= centreZ + 2; z++) {
+        const point: [number, number] = [x * STEP, z * STEP];
+        const length = Math.hypot(point[0] - start[0], point[1] - start[1]);
+        if (length < distance && canWalkSegment(start, point)) {
+          sx = x;
+          sz = z;
+          distance = length;
+        }
+      }
+    if (!Number.isFinite(distance)) return [];
+  }
   let ex = Math.round(end[0] / STEP),
     ez = Math.round(end[1] / STEP);
   if (!canWalk(ex * STEP, ez * STEP)) {
@@ -108,6 +143,8 @@ export function findWalkPath(
         if (!previous) return [];
         point = previous;
       }
+      if (Math.hypot(start[0] - sx * STEP, start[1] - sz * STEP) > 0.001)
+        path.unshift([sx * STEP, sz * STEP]);
       return path;
     }
     for (const [dx, dz] of [

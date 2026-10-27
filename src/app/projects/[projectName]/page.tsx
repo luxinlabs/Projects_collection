@@ -1,3 +1,4 @@
+import { getProjectAwards } from "../../projectAwards";
 import Image from "next/image";
 
 import projectData from "../../projects.json" assert { type: "json" };
@@ -114,11 +115,14 @@ export default function ProjectPage({ params }: ProjectPageProps) {
           id="information"
           className="theme-surface rounded-2xl border theme-border p-6 md:p-8 flex flex-col"
         >
-          {project.award && (
-            <p className="theme-award rounded-xl p-4 text-sm">
-              {project.award}
+          {getProjectAwards(project).map((award) => (
+            <p
+              key={award}
+              className="theme-award rounded-xl p-4 text-lg font-semibold leading-relaxed"
+            >
+              {award}
             </p>
-          )}
+          ))}
           <h2>Description</h2>
           <p>{project.description}</p>
           <h2>Made with</h2>

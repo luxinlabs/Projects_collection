@@ -23,15 +23,6 @@ export function createPuppyFollower(start: Point) {
       ) {
         goal = [...visitor];
         route = findWalkPath(position, goal);
-        // Begin at the grid centre so the first diagonal cannot cut a corner.
-        const centre: Point = position.map(
-          (v) => Math.round(v / 0.4) * 0.4,
-        ) as Point;
-        if (
-          canWalk(...centre) &&
-          Math.hypot(centre[0] - position[0], centre[1] - position[1]) > 0.01
-        )
-          route.unshift(centre);
         cooldown = 0.4;
       }
       let remaining = 0;

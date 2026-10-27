@@ -24,10 +24,12 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Castle exhibition hall (`redesign` branch)
+## Golden Gate castle exhibition hall
 
-The homepage is a walkable castle exhibition hall with stone walls, towers, battlements, vaulted arches, banners, and gallery displays. The west wing is the dedicated Research Gallery; the center is the Grand Hall for awards and judging; the east wing is the Project Gallery with a computer terminal. There are no bedrooms, kitchens, or dining rooms. A puppy and a cat accompany the host inside, while a duck with two ducklings swims in the garden pond. Little Luxin remains a girl with long dark hair, a rose dress, and a bow.
+The homepage is a walkable castle exhibition hall with stone walls, towers, battlements, vaulted arches, banners, and gallery displays. The west wing is the dedicated Research Gallery; the center is the Grand Hall for awards and judging; the east wing is the Project Gallery with a computer terminal. There are no bedrooms, kitchens, or dining rooms. A following puppy and three named cats in their own beds accompany the host inside, while a duck with two ducklings swims in the garden pond. Little Luxin remains a girl with long dark hair, a rose dress, and a bow.
 
+- The castle overlooks a miniature Golden Gate Bridge and bay, with Victorian bay-window views, flower borders, and tall outer garden trees. A window-facing velvet chaise has an articulated seated pose, and a small robot welcomes visitors in the Project Gallery.
+- Click a cat or her name to pet her, or the chaise to sit. Walking stands the visitor up again. Scroll or pinch inside the scene to zoom the 3D camera.
 - Click the ground to walk, or use WASD / arrow keys and the phone’s walking controls. Walking follows the camera; manual controls cancel an automatic route.
 - Click a labeled exhibit to approach it, or press **E** near it. Direct section buttons below the castle also open the exhibits. **Escape** closes a detail sheet.
 - The awards wall opens awards; the computer opens projects; the balance scale opens judging; the arched window opens open source; the research displays open papers; the globe opens the atlas; and the garden bench opens contact details.
@@ -44,6 +46,8 @@ npx tsc --noEmit --incremental false
 npm run test:house
 npm run build
 ```
+
+When a development preview is already running, use `NEXT_DIST_DIR=.next-review npm run build` and `NEXT_DIST_DIR=.next-review npm run start` to keep its output separate.
 
 The scene uses Three.js. Geometry is batched, resources are disposed when leaving the page, and reduced-motion preferences pause decorative animation. Devices without WebGL can still use the section menu and classic portfolio.
 

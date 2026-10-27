@@ -10,6 +10,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import { getProjectAwards } from "../projectAwards";
 import AboutMeContent from "../AboutMeContent";
 import { judgeExperiences } from "../judge/experiences";
 import { openSourceProjects, researchArticles } from "../siteContent";
@@ -37,7 +38,7 @@ function ProjectCollection({ awards = false }: { awards?: boolean }) {
   const filtered = collection.filter(
     (project) =>
       (category === "All" || project.category === category) &&
-      `${project.name} ${project.description} ${project.tools.join(" ")} ${project.award || ""}`
+      `${project.name} ${project.description} ${project.tools.join(" ")} ${getProjectAwards(project).join(" ")}`
         .toLowerCase()
         .includes(search.toLowerCase()),
   );
@@ -86,7 +87,7 @@ function ProjectCollection({ awards = false }: { awards?: boolean }) {
         </div>
       )}
       <p className="room-result-count" aria-live="polite">
-        {filtered.length} {awards ? "recorded distinctions" : "projects"}
+        {filtered.length} {awards ? "award-winning projects" : "projects"}
       </p>
       <div className="room-projects">
         {filtered.map((project) => (
@@ -104,9 +105,11 @@ function ProjectCollection({ awards = false }: { awards?: boolean }) {
               />
             </Link>
             <div className="room-project-copy">
-              {project.award && (
-                <p className="project-award">{project.award}</p>
-              )}
+              {getProjectAwards(project).map((award) => (
+                <p key={award} className="project-award">
+                  {award}
+                </p>
+              ))}
               <h3>
                 <Link href={`/projects/${project.slug}`}>{project.name}</Link>
               </h3>

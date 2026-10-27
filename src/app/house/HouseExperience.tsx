@@ -254,7 +254,7 @@ export default function HouseExperience() {
         </nav>
         <div className="world-footer-bottom">
           <span>A personal space. An open invitation.</span>
-          <Link href="/classic">Prefer a simple portfolio? ↗</Link>
+          <Link href="/classic">Visit the classic homepage ↗</Link>
           <span>
             BUILT WITH A LITTLE WONDER <i>✧</i>
           </span>

@@ -874,10 +874,14 @@
   padding: 19px;
 }
 .project-award {
-  color: #9d7d45;
-  font-size: 9px;
-  line-height: 1.7;
-  margin-bottom: 9px;
+  color: var(--app-accent);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.5;
+  border-left: 3px solid var(--app-accent);
+  padding-left: 10px;
+  margin-bottom: 15px;
 }
 .room-project-copy h3 {
   font-family: Georgia, serif;

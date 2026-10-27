@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { getProjectAwards } from "./projectAwards";
 import type { Project } from "./Project";
 
 export default function ProjectCard({
@@ -25,9 +26,11 @@ export default function ProjectCard({
         />
       </Link>
       <div className="portfolio-card-copy">
-        {project.award && (
-          <p className="portfolio-card-award">{project.award}</p>
-        )}
+        {getProjectAwards(project).map((award) => (
+          <p key={award} className="portfolio-card-award">
+            {award}
+          </p>
+        ))}
         <h3>
           <Link href={href}>{project.name}</Link>
         </h3>

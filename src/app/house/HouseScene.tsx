@@ -343,6 +343,14 @@ export default function HouseScene(props: Props) {
         startWalk(target.x, target.z);
     };
     const onMove = (event: PointerEvent) => {
+      if (
+        event.isPrimary &&
+        (event.buttons === 1 || touches.has(event.pointerId)) &&
+        pointerStart.distanceTo(
+          new THREE.Vector2(event.clientX, event.clientY),
+        ) > 7
+      )
+        suppressClick.current = true;
       if (touches.has(event.pointerId)) {
         touches.set(
           event.pointerId,
@@ -425,13 +433,26 @@ export default function HouseScene(props: Props) {
     element.addEventListener("wheel", onWheel, { passive: false });
     element.addEventListener("gesturestart", onGesture, { passive: false });
     element.addEventListener("gesturechange", onGesture, { passive: false });
-    renderer.domElement.addEventListener("pointercancel", onCancel);
+    element.addEventListener("pointercancel", onCancel);
     element.addEventListener("pointerdown", onDown);
     element.addEventListener("pointerup", onUp);
     element.addEventListener("pointermove", onMove);
-    renderer.domElement.addEventListener("webglcontextlost", (event) =>
-      event.preventDefault(),
-    );
+    const onContextLost = (event: Event) => {
+      event.preventDefault();
+      renderer.setAnimationLoop(null);
+      renderer.domElement.style.display = "none";
+      clearKeys();
+      act.current = undefined;
+      api.current = {
+        visit: (id) => handlers.current.onReach(id),
+        reset: () => {},
+        zoom: () => {},
+        move: () => {},
+      };
+      setError(true);
+      handlers.current.onReady();
+    };
+    renderer.domElement.addEventListener("webglcontextlost", onContextLost);
     window.addEventListener("keydown", onKeyDown);
     window.addEventListener("keyup", onKeyUp);
     window.addEventListener("blur", clearKeys);
@@ -685,10 +706,14 @@ export default function HouseScene(props: Props) {
       observer.disconnect();
       controls.dispose();
       act.current = undefined;
+      renderer.domElement.removeEventListener(
+        "webglcontextlost",
+        onContextLost,
+      );
       element.removeEventListener("wheel", onWheel);
       element.removeEventListener("gesturestart", onGesture);
       element.removeEventListener("gesturechange", onGesture);
-      renderer.domElement.removeEventListener("pointercancel", onCancel);
+      element.removeEventListener("pointercancel", onCancel);
       window.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("keyup", onKeyUp);
       window.removeEventListener("blur", clearKeys);

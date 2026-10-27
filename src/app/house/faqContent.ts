@@ -1,3 +1,4 @@
+import { getProjectAwards } from "../projectAwards";
 import { judgeExperiences } from "../judge/experiences";
 import { researchArticles } from "../siteContent";
 import { awardedProjects } from "./houseContent";
@@ -47,7 +48,7 @@ export const presetQuestions: PresetQuestion[] = [
   {
     id: "awards",
     question: "Show me her awards",
-    answer: `Luxin reports 7 AI hackathon wins in the past year. The portfolio records these distinctions:\n\n${awardedProjects.map((project) => `${project.name.split(" - ")[0]}\n${project.award}`).join("\n\n")}\n\nThe awards gallery shows the recorded awards and recognitions, including track prizes and honorable mentions.`,
+    answer: `Luxin reports 7 AI hackathon wins in the past year. The portfolio records these distinctions:\n\n${awardedProjects.map((project) => `${project.name.split(" - ")[0]}\n${getProjectAwards(project).join("\n")}`).join("\n\n")}\n\nThe awards gallery shows the recorded awards and recognitions, including track prizes and honorable mentions.`,
     sources: [{ title: "Award-winning projects", href: "/projects" }],
   },
   {

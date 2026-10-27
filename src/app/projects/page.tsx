@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
+import { compareProjectAwards } from "../projectAwards";
 import ProjectCard from "../ProjectCard";
 import { Project } from "../Project";
 import projectData from "../projects.json";
@@ -173,9 +174,15 @@ export default function ProjectsPage() {
                           {subtitle}
                         </h3>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                          {groupedBySubtitle[subtitle].map(([id, project]) => (
-                            <ProjectCard key={id} id={id} project={project} />
-                          ))}
+                          {[...groupedBySubtitle[subtitle]]
+                            .sort((a, b) =>
+                              subtitle === "Award-winning"
+                                ? compareProjectAwards(a[1], b[1])
+                                : 0,
+                            )
+                            .map(([id, project]) => (
+                              <ProjectCard key={id} id={id} project={project} />
+                            ))}
                         </div>
                       </div>
                     ))}

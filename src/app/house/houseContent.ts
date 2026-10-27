@@ -1,3 +1,4 @@
+import { compareProjectAwards, getProjectAwards } from "../projectAwards";
 import projectsData from "../projects.json";
 import type { Project } from "../Project";
 
@@ -96,9 +97,9 @@ export const portfolioProjects = Object.entries(projectsData).flatMap(
     })),
 );
 
-export const awardedProjects = portfolioProjects.filter(
-  (project) => project.award,
-);
+export const awardedProjects = portfolioProjects
+  .filter((project) => getProjectAwards(project).length > 0)
+  .sort(compareProjectAwards);
 
 export interface PlacePhoto {
   src: string;

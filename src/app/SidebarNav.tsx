@@ -7,6 +7,7 @@ import { useSiteTheme } from "./useSiteTheme";
 
 const navItems = [
   { href: "/", label: "Golden Gate castle" },
+  { href: "/classic", label: "Classic home" },
   { href: "/bio", label: "About me" },
   { href: "/research", label: "Research" },
   { href: "/projects", label: "Projects" },

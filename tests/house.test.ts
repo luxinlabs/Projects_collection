@@ -8,7 +8,12 @@ import {
   obstacles,
   walkDirection,
 } from "../src/app/house/navigation";
-import { houseSpots, portfolioProjects } from "../src/app/house/houseContent";
+import { getProjectAwards } from "../src/app/projectAwards";
+import {
+  houseSpots,
+  portfolioProjects,
+  awardedProjects,
+} from "../src/app/house/houseContent";
 import { castleGalleries, isInsideCastle } from "../src/app/house/houseLayout";
 import * as THREE from "three";
 import { createVisitor } from "../src/app/house/characters";
@@ -291,4 +296,39 @@ test("the chaise faces the bridge window and supports the seated visitor's hips 
     );
   }
   assert.equal(visitor.group.rotation.x, 0, "the torso stays upright");
+});
+
+test("automatic walking from an exhibit edge never cuts through its corner", () => {
+  const start: [number, number] = [-0.1, 1.54];
+  assert.ok(canWalk(...start));
+  const path = findWalkPath(start, [8, 1.6]);
+  assert.ok(path.length);
+  let previous = start;
+  for (const point of path) {
+    const steps = Math.ceil(
+      Math.hypot(point[0] - previous[0], point[1] - previous[1]) / 0.02,
+    );
+    for (let i = 1; i <= steps; i++)
+      assert.ok(
+        canWalk(
+          previous[0] + ((point[0] - previous[0]) * i) / steps,
+          previous[1] + ((point[1] - previous[1]) * i) / steps,
+        ),
+        `blocked segment ${previous} → ${point}`,
+      );
+    previous = point;
+  }
+});
+
+test("awards follow Luxin's selected order and preserve both Hypothesis Atlas distinctions", () => {
+  assert.deepEqual(
+    awardedProjects.slice(0, 4).map((p) => p.slug),
+    ["ventured", "neurora", "Hypothesisatlas", "patchpilot"],
+  );
+  const atlas = awardedProjects.find((p) => p.slug === "Hypothesisatlas")!;
+  assert.deepEqual(getProjectAwards(atlas), [
+    "🏆 3rd Prize - Disrupt Bio",
+    "🏆 Qoder Hackathon - Neo4j 3rd Prize",
+  ]);
+  assert.match(getPresetAnswer("awards")!.answer, /Neo4j/);
 });

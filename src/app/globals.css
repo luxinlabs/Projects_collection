@@ -285,8 +285,13 @@ body :focus-visible {
 }
 .portfolio-card-award {
   color: var(--app-accent);
-  font-size: 10px;
-  margin-bottom: 11px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.5;
+  border-left: 3px solid var(--app-accent);
+  padding-left: 10px;
+  margin-bottom: 15px;
 }
 .portfolio-card-tools {
   display: flex;
@@ -335,7 +340,7 @@ body :focus-visible {
 .project-detail-page #tools > a {
   display: inline-flex;
 }
-@media (max-width: 1050px) {
+@media (max-width: 1180px) {
   .site-header {
     min-height: 78px;
     padding: 17px 5%;
