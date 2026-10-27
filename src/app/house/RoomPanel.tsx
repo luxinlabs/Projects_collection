@@ -12,6 +12,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { getProjectAwards } from "../projectAwards";
 import AboutMeContent from "../AboutMeContent";
+import AboutJudgingWork from "../judge/AboutJudgingWork";
 import { judgeExperiences } from "../judge/experiences";
 import { openSourceProjects, researchArticles } from "../siteContent";
 import {
@@ -181,10 +182,7 @@ function ResearchCollection() {
 function JudgingCollection() {
   return (
     <>
-      <p className="room-intro">
-        A seat on the other side of the table. Supporting thoughtful research,
-        original ideas, and the next generation of builders.
-      </p>
+      <AboutJudgingWork compact />
       {judgeExperiences.map((experience) => (
         <article key={experience.title} className="room-judge-card">
           <div className="judge-card-heading">
