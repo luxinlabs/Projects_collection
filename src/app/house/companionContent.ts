@@ -24,10 +24,21 @@ export const cats = [
     reaction: "Coco perks up and swishes her tail.",
   },
 ] as const;
+const chairX = 5.1,
+  chairZ = -1.1;
+const chairRotation = Math.atan2(2.9 - chairX, -4.12 - chairZ);
 export const chair = {
-  x: 5.1,
-  z: -1.35,
-  approach: [5.1, -0.35] as [number, number],
+  x: chairX,
+  z: chairZ,
+  rotation: chairRotation,
+  width: 2.6,
+  depth: 0.9,
+  floorY: 0.51,
+  seatTop: 0.4,
+  approach: [
+    chairX + Math.sin(chairRotation) * 1.8,
+    chairZ + Math.cos(chairRotation) * 1.8,
+  ] as [number, number],
 };
 export const companionActions = [
   ...cats.map((cat, index) => ({
@@ -43,10 +54,10 @@ export const companionActions = [
   {
     id: "chair",
     label: "Sit on the chair",
-    caption: "Take a seat",
+    caption: "A seat by the bay",
     icon: "♧",
     x: chair.x,
-    y: 1.65,
+    y: 1.45,
     z: chair.z,
     approach: chair.approach,
   },

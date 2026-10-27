@@ -127,33 +127,6 @@ export function addSanFranciscoBay(kit: HouseKit) {
     fog.scale.set(width, 0.2, 0.55);
     fog.castShadow = false;
   }
-  // Painted Lady miniatures beside the garden, with bay windows and gables.
-  for (let i = 0; i < 3; i++) {
-    const lady = groupAt(-13.7, 0.1, -3.4 + i * 1.6);
-    lady.rotation.y = Math.PI / 2;
-    const color = ["#c9a0a0", "#a2b8ac", "#d8bd88"][i];
-    box(1.15, 1.8, 0.7, color, 0, 0.9, 0, lady);
-    const gable = new THREE.Shape();
-    gable.moveTo(-0.67, 0);
-    gable.lineTo(0, 0.65);
-    gable.lineTo(0.67, 0);
-    gable.closePath();
-    mesh(
-      new THREE.ExtrudeGeometry(gable, { depth: 0.85, bevelEnabled: false }),
-      "#f4e4c9",
-      0,
-      1.8,
-      -0.4,
-      lady,
-    );
-    box(0.65, 1.2, 0.18, "#efdfc7", 0, 1.1, 0.43, lady);
-    for (const y of [0.85, 1.4])
-      for (const x of [-0.18, 0.18])
-        box(0.2, 0.34, 0.04, "#6d9699", x, y, 0.54, lady);
-    box(0.27, 0.46, 0.05, "#7b7764", 0, 0.25, 0.39, lady);
-    for (let y = 0.3; y < 1.8; y += 0.2)
-      box(1.13, 0.018, 0.015, "#e6d6bb", 0, y, 0.365, lady);
-  }
   return bay;
 }
 

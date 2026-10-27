@@ -1,10 +1,12 @@
 import * as THREE from "three";
 import { createHouseKit } from "./housePrimitives";
 import { batchStaticGeometry } from "./batchGeometry";
+import { addGardenBorders } from "./gardenBorders";
 import { addSanFranciscoBay } from "./sanFrancisco";
 import { addCastleArchitecture } from "./castleArchitecture";
 import { createProjectRobot } from "./projectRobot";
 import { createLuxin, createVisitor } from "./characters";
+import { visitorScale } from "./seating";
 import { chair } from "./companionContent";
 import { addAnimals } from "./animals";
 import { houseSpots, type RoomSection } from "./houseContent";
@@ -303,15 +305,64 @@ export function buildHouse(scene: THREE.Scene) {
     }
     interactive(exhibit, "projects");
   }
-  const seat = groupAt(chair.x, 0.51, chair.z);
-  seat.name = "A velvet gallery chair";
-  box(0.8, 0.14, 0.72, "#ac7b86", 0, 0.5, 0, seat, 0.06);
-  box(0.8, 0.78, 0.13, "#ac7b86", 0, 0.92, -0.3, seat, 0.05);
-  for (const x of [-0.3, 0.3]) {
-    box(0.09, 0.12, 0.65, brass, x * 1.3, 0.77, 0, seat);
-    for (const z of [-0.25, 0.25])
-      box(0.07, 0.48, 0.07, darkWood, x, 0.24, z, seat);
+  // A long, low velvet chaise faces the Golden Gate bay window.
+  const seat = groupAt(chair.x, chair.floorY, chair.z);
+  seat.name = "Window-facing velvet chaise with brass details";
+  seat.rotation.y = chair.rotation;
+  const velvet = "#819e95",
+    velvetLight = "#a7bdb0",
+    piping = "#d3bf90";
+  box(2.45, 0.12, 0.8, darkWood, 0, 0.25, 0, seat, 0.06);
+  box(2.5, 0.035, 0.85, brass, 0, 0.29, 0, seat, 0.025);
+  for (const x of [-0.61, 0.61]) {
+    box(1.18, 0.04, 0.78, piping, x, 0.335, 0.02, seat, 0.06);
+    box(1.16, 0.12, 0.76, velvet, x, 0.34, 0.02, seat, 0.055);
   }
+  box(2.35, 0.24, 0.16, velvet, 0, 0.51, -0.36, seat, 0.07);
+  box(2.32, 0.03, 0.18, piping, 0, 0.645, -0.36, seat, 0.014);
+  for (let i = 0; i < 9; i++) {
+    const tuft = ball(
+      0.025,
+      "#607e75",
+      -1 + i * 0.25,
+      0.49 + (i % 2) * 0.055,
+      -0.267,
+      seat,
+    );
+    tuft.scale.z = 0.35;
+  }
+  for (const side of [-1, 1]) {
+    box(0.17, 0.3, 0.75, velvet, side * 1.19, 0.43, 0, seat, 0.07);
+    const rolledArm = cylinder(
+      0.095,
+      0.095,
+      0.78,
+      velvetLight,
+      side * 1.2,
+      0.6,
+      0,
+      seat,
+    );
+    rolledArm.rotation.x = Math.PI / 2;
+    for (const z of [-0.29, 0.29]) {
+      const leg = cylinder(
+        0.035,
+        0.055,
+        0.22,
+        brass,
+        side * 1.06,
+        0.12,
+        z,
+        seat,
+      );
+      leg.rotation.z = -side * 0.12;
+      ball(0.045, darkWood, side * 1.07, 0.025, z, seat);
+    }
+  }
+  const pillow = box(0.4, 0.3, 0.14, "#c18e83", -0.85, 0.54, -0.15, seat, 0.06);
+  pillow.rotation.set(-0.18, 0, -0.22);
+  const pillowSeam = box(0.35, 0.012, 0.016, piping, -0.85, 0.55, -0.065, seat);
+  pillowSeam.rotation.z = -0.22;
   seat.traverse((child) => {
     child.userData.action = "chair";
   });
@@ -350,36 +401,11 @@ export function buildHouse(scene: THREE.Scene) {
   world.add(host.group);
   interactive(host.group, "about");
   const visitor = createVisitor(kit);
-  visitor.group.scale.setScalar(0.72);
+  visitor.group.scale.setScalar(visitorScale);
   visitor.group.position.set(0, 0.12, 6.5);
   visitor.group.rotation.y = Math.PI;
   world.add(visitor.group);
-  // Garden trees, pale picket fencing, wildflowers, a pond, and stepping stones.
-  function tree(x: number, z: number, size = 1) {
-    cylinder(
-      0.13 * size,
-      0.19 * size,
-      1.9 * size,
-      "#9a7853",
-      x,
-      0.95 * size,
-      z,
-    );
-    for (let i = 0; i < 5; i++) {
-      const a = i * 2.4;
-      const crown = mesh(
-        new THREE.IcosahedronGeometry(0.95 * size, 1),
-        i % 2 ? "#93aa76" : "#a5b985",
-        x + Math.sin(a) * 0.45 * size,
-        (2.1 + (i % 2) * 0.6) * size,
-        z + Math.cos(a) * 0.45 * size,
-      );
-      crown.rotation.y = a;
-    }
-  }
-  tree(-12.7, -4.3, 1.15);
-  tree(13.2, -4.5, 1.0);
-  tree(11.6, 6.8, 0.9);
+  addGardenBorders(kit);
   const garden = groupAt(-12, 0.12, 3.8);
   for (let i = 0; i < 4; i++)
     box(1.55, 0.08, 0.16, wood, 0, 0.61, -0.36 + i * 0.22, garden);

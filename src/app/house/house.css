@@ -1828,3 +1828,36 @@
 @media (prefers-reduced-motion: reduce) {
   .world-room-dock > button:hover { transform: none; }
 }
+
+/* Small exhibit markers: a round icon with its caption underneath. */
+.house-object-label.house-gallery-label,
+.house-object-label.house-gallery-label:hover,
+.house-object-label.house-gallery-label[data-near="true"] {
+  flex-direction: column;
+  gap: 3px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 3px 4px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  box-shadow: none;
+}
+.house-gallery-label .object-dot {
+  width: 27px;
+  height: 27px;
+  border: 1px solid var(--world-line);
+  background: var(--app-surface);
+  font-size: 18px;
+  color: var(--app-accent);
+  box-shadow: 0 2px 8px #5148370a;
+}
+.house-object-label.house-gallery-label .object-caption {
+  display: block;
+  font-size: 8px;
+  line-height: 1.15;
+  color: var(--world-ink);
+  text-shadow: 0 1px 3px var(--world-paper), 0 0 5px var(--world-paper);
+}
+.house-gallery-label:hover .object-dot,
+.house-gallery-label[data-near="true"] .object-dot { border-color: var(--app-accent); }

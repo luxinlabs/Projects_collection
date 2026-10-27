@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { visitorHipHeight } from "./seating";
 import type { HouseKit } from "./housePrimitives";
 
 export function createLuxin({ box, ball, cylinder, mesh }: HouseKit) {
@@ -110,7 +111,7 @@ export function createVisitor({ box, ball, cylinder, mesh }: HouseKit) {
     ball(0.023, "#3c332d", x, 1.08, 0.235, group);
     box(0.035, 0.36, 0.04, "#b28d55", x, 0.72, 0.15, group);
     const leg = new THREE.Group();
-    leg.position.set(x, 0.47, 0);
+    leg.position.set(x, visitorHipHeight, 0);
     group.add(leg);
     cylinder(0.065, 0.06, 0.2, "#4d615b", 0, -0.1, 0, leg);
     const knee = new THREE.Group();

@@ -10,7 +10,15 @@ import {
 } from "../src/app/house/navigation";
 import { houseSpots, portfolioProjects } from "../src/app/house/houseContent";
 import { castleGalleries, isInsideCastle } from "../src/app/house/houseLayout";
-import { companionActions } from "../src/app/house/companionContent";
+import * as THREE from "three";
+import { createVisitor } from "../src/app/house/characters";
+import { createHouseKit } from "../src/app/house/housePrimitives";
+import {
+  seatedPosition,
+  seatedLegAngles,
+  visitorScale,
+} from "../src/app/house/seating";
+import { companionActions, chair } from "../src/app/house/companionContent";
 import { createPuppyFollower } from "../src/app/house/puppyFollower";
 import { petHomes } from "../src/app/house/animals";
 import { judgeExperiences } from "../src/app/judge/experiences";
@@ -230,4 +238,57 @@ test("all three cats and the chair have safe reachable interaction points", () =
           `${action.id} to ${other.id}`,
         );
   }
+});
+
+test("the chaise faces the bridge window and supports the seated visitor's hips with bent calves", () => {
+  const forward = new THREE.Vector3(
+    Math.sin(chair.rotation),
+    0,
+    Math.cos(chair.rotation),
+  );
+  const windowDirection = new THREE.Vector3(
+    2.9 - chair.x,
+    0,
+    -4.12 - chair.z,
+  ).normalize();
+  assert.ok(forward.dot(windowDirection) > 0.999);
+  const visitor = createVisitor(createHouseKit(new THREE.Scene()));
+  visitor.group.scale.setScalar(visitorScale);
+  visitor.group.position.set(...seatedPosition());
+  visitor.group.rotation.y = chair.rotation;
+  visitor.legs.forEach((leg, i) => {
+    leg.rotation.x = seatedLegAngles(i).hip;
+  });
+  visitor.knees.forEach((knee, i) => {
+    knee.rotation.x = seatedLegAngles(i).knee;
+  });
+  visitor.group.updateMatrixWorld(true);
+  for (let i = 0; i < 2; i++) {
+    const hip = visitor.legs[i].getWorldPosition(new THREE.Vector3());
+    const knee = visitor.knees[i].getWorldPosition(new THREE.Vector3());
+    const shoe = visitor.knees[i].children[1].getWorldPosition(
+      new THREE.Vector3(),
+    );
+    assert.ok(
+      Math.abs(hip.y - (chair.floorY + chair.seatTop)) < 1e-6,
+      "hips rest on the cushion without sinking",
+    );
+    assert.ok(
+      knee.clone().sub(hip).dot(forward) > 0.1,
+      "thighs extend toward the window",
+    );
+    assert.ok(
+      shoe.clone().sub(knee).dot(forward) > 0.05,
+      "calves kick gently forward",
+    );
+    assert.ok(
+      shoe.y > hip.y,
+      "feet lift above the seat instead of hanging behind the backrest",
+    );
+    assert.ok(
+      Math.abs(shoe.y - knee.y) < 0.06 && shoe.y > chair.floorY,
+      "raised calves stay nearly level and feet clear the floor",
+    );
+  }
+  assert.equal(visitor.group.rotation.x, 0, "the torso stays upright");
 });

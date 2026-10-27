@@ -14,6 +14,7 @@ import { houseSpots, type RoomSection } from "./houseContent";
 import { canWalk, findWalkPath, walkDirection } from "./navigation";
 import { isInsideCastle } from "./houseLayout";
 import { cats, chair, companionActions } from "./companionContent";
+import { seatedPosition, seatedLegAngles } from "./seating";
 import LuxinAvatar from "./LuxinAvatar";
 
 export interface HouseSceneHandle {
@@ -136,6 +137,9 @@ export default function HouseScene(props: Props) {
     let pendingAction: string | null = null;
     let pose: "standing" | "sitting" | "petting" = "standing";
     let poseUntil = 0;
+    let sitProgress = 0;
+    const sitOrigin = new THREE.Vector3();
+    const sitTarget = new THREE.Vector3(...seatedPosition());
     let currentAction: string | null = null;
     const touches = new Map<number, THREE.Vector2>();
     let pinchDistance = 0;
@@ -175,8 +179,9 @@ export default function HouseScene(props: Props) {
       currentAction = id;
       if (id === "chair") {
         pose = "sitting";
-        house.visitor.group.position.set(chair.x, 0.61, chair.z + 0.04);
-        house.visitor.group.rotation.y = 0;
+        sitOrigin.copy(house.visitor.group.position);
+        sitProgress = reduceMotion ? 1 : 0;
+        house.visitor.group.rotation.y = chair.rotation;
       } else {
         const index = Number(id.slice(4));
         const cat = cats[index];
@@ -529,11 +534,22 @@ export default function HouseScene(props: Props) {
       renderer.domElement.dataset.pose = pose;
       renderer.domElement.dataset.sceneZoom = camera.zoom.toFixed(3);
       const indoor = isInsideCastle(visitor.position.x, visitor.position.z);
-      visitor.position.y = THREE.MathUtils.lerp(
-        visitor.position.y,
-        pose === "sitting" ? 0.61 : indoor ? 0.51 : 0.13,
-        Math.min(delta * 12, 1),
+      if (pose === "sitting") {
+        sitProgress = Math.min(1, sitProgress + delta / 0.5);
+        const ease = sitProgress * sitProgress * (3 - 2 * sitProgress);
+        visitor.position.lerpVectors(sitOrigin, sitTarget, ease);
+      } else {
+        sitProgress = 0;
+        visitor.position.y = THREE.MathUtils.lerp(
+          visitor.position.y,
+          indoor ? 0.51 : 0.13,
+          Math.min(delta * 12, 1),
+        );
+      }
+      renderer.domElement.dataset.seatSettled = String(
+        pose === "sitting" && sitProgress === 1,
       );
+      const seatBlend = sitProgress * sitProgress * (3 - 2 * sitProgress);
       if (walking !== wasWalking) {
         handlers.current.onWalking(walking);
         wasWalking = walking;
@@ -542,13 +558,14 @@ export default function HouseScene(props: Props) {
       house.visitor.legs.forEach((leg, i) => {
         leg.rotation.x =
           pose === "sitting"
-            ? -Math.PI / 2
+            ? seatedLegAngles(i).hip * seatBlend
             : walking && !reduceMotion
               ? Math.sin(walkingPhase + i * Math.PI) * 0.6
               : 0;
       });
-      house.visitor.knees.forEach((knee) => {
-        knee.rotation.x = pose === "sitting" ? Math.PI / 2 : 0;
+      house.visitor.knees.forEach((knee, i) => {
+        knee.rotation.x =
+          pose === "sitting" ? seatedLegAngles(i).knee * seatBlend : 0;
       });
       house.visitor.group.rotation.x = pose === "petting" ? 0.2 : 0;
       house.visitor.arms.forEach((arm, i) => {
@@ -556,7 +573,7 @@ export default function HouseScene(props: Props) {
           pose === "petting" && i === 1
             ? -1.3 + (reduceMotion ? 0 : Math.sin(time * 0.006) * 0.15)
             : pose === "sitting"
-              ? -0.45
+              ? -0.65 * seatBlend
               : walking && !reduceMotion
                 ? Math.sin(walkingPhase + i * Math.PI) * -0.4
                 : 0;
@@ -726,7 +743,7 @@ export default function HouseScene(props: Props) {
               ref={(node) => {
                 labels.current[spot.id] = node;
               }}
-              className={`house-object-label label-${spot.id}`}
+              className={`house-object-label house-gallery-label label-${spot.id}`}
               onClick={(event) => {
                 if (!suppressClick.current || event.detail === 0)
                   api.current?.visit(spot.id);
@@ -749,7 +766,7 @@ export default function HouseScene(props: Props) {
               ref={(node) => {
                 companionLabels.current[action.id] = node;
               }}
-              className={`house-object-label house-companion-label ${action.id.startsWith("cat-") ? "house-cat-name" : ""}`}
+              className={`house-object-label house-companion-label ${action.id.startsWith("cat-") ? "house-cat-name" : "house-gallery-label"}`}
               title={
                 action.label +
                 (action.id.startsWith("cat-")
