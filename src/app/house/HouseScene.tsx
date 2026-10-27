@@ -95,7 +95,7 @@ export default function HouseScene(props: Props) {
     renderer.setClearColor(0x000000, 0);
     renderer.domElement.setAttribute(
       "aria-label",
-      "Interactive 3D castle exhibition hall with towers, a dedicated Research Gallery, a Grand Hall, and a Project Gallery. Meet little Luxin, a girl in a rose dress, a puppy and three cats sleeping in little beds inside, and three ducks in the garden pond. Click objects to explore or use WASD and arrow keys to walk.",
+      "Interactive 3D Golden Gate castle exhibition hall in San Francisco style, with a Golden Gate Bridge and bay panorama outside Victorian windows, pastel towers, a dedicated Research Gallery, a Grand Hall, and a Project Gallery. Meet little Luxin, a girl in a rose dress, a puppy and three cats sleeping in little beds inside, and three ducks in the garden pond. Click objects to explore or use WASD and arrow keys to walk.",
     );
     renderer.domElement.setAttribute("role", "img");
     renderer.domElement.tabIndex = 0;
@@ -122,6 +122,7 @@ export default function HouseScene(props: Props) {
       house.ambient.intensity = evening ? 1.45 : 2.15;
       house.ambient.color.set(evening ? "#e7d6ce" : "#fff6df");
       house.lampLight.intensity = evening ? 6 : 2.5;
+      house.castle.windowMaterial.color.set(evening ? "#c0a5b5" : "#ffffff");
       house.castle.lights.forEach((light) => {
         light.intensity = evening ? 2.5 : 1.5;
       });

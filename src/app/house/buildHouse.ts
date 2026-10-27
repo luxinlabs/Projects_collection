@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { createHouseKit } from "./housePrimitives";
 import { batchStaticGeometry } from "./batchGeometry";
+import { addSanFranciscoBay } from "./sanFrancisco";
 import { addCastleArchitecture } from "./castleArchitecture";
 import { createLuxin, createVisitor } from "./characters";
 import { chair } from "./companionContent";
@@ -13,6 +14,7 @@ export function buildHouse(scene: THREE.Scene) {
   const wood = "#99704b",
     darkWood = "#694c37",
     brass = "#c39952";
+  addSanFranciscoBay(kit);
   const castle = addCastleArchitecture(kit);
   const interactables: THREE.Object3D[] = [];
   function interactive(object: THREE.Object3D, id: RoomSection) {
@@ -50,7 +52,7 @@ export function buildHouse(scene: THREE.Scene) {
     parent.add(plaque);
   }
   label(world, "RESEARCH GALLERY", -7.75, 2.92, -4.13, 3.6, 0.34);
-  label(world, "THE GRAND HALL", 0.1, 5.82, -4.12, 4, 0.36);
+  label(world, "GOLDEN GATE HALL", 0.1, 5.82, -4.12, 4, 0.36);
   label(world, "PROJECT GALLERY", 8.2, 2.92, -4.13, 3.7, 0.34);
   const awardWall = groupAt(-2.45, 0, -4.02);
   function frame(x: number, y: number, w: number, h: number, number: string) {
@@ -114,7 +116,7 @@ export function buildHouse(scene: THREE.Scene) {
   }
   interactive(awardWall, "awards");
 
-  const sourceWindow = castle.archWindow(2.9, 2.55, -4.12, 2.05, 2.95);
+  const sourceWindow = castle.archWindow(2.9, 2.55, -4.12, 3.4, 3.05);
   interactive(sourceWindow, "open-source");
   const desk = groupAt(8.1, 0.5, -2.4);
   box(1.6, 1.1, 1.1, "#c9bea7", 0, 0.55, 0, desk);

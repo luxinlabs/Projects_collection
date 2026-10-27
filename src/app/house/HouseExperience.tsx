@@ -52,7 +52,7 @@ export default function HouseExperience() {
       <SidebarNav inHouse />
       <section
         className="world-stage"
-        aria-label="Explore Luxin’s castle exhibition hall and garden"
+        aria-label="Explore Luxin’s Golden Gate castle, San Francisco bay views and cat garden"
       >
         <div className="world-scene-wrap">
           <HouseScene
@@ -67,14 +67,14 @@ export default function HouseExperience() {
         </div>
         <div className="world-welcome">
           <p className="world-eyebrow">
-            <span /> A LITTLE CASTLE OF BIG IDEAS
+            <span /> A SAN FRANCISCO CASTLE OF IDEAS
           </p>
           {entered ? (
             <>
               <h1>
                 Welcome to
                 <br />
-                the Grand Hall<span>.</span>
+                Golden Gate Hall<span>.</span>
               </h1>
               <p>
                 Every little corner
@@ -87,14 +87,14 @@ export default function HouseExperience() {
               <h1>
                 A castle
                 <br />
-                of ideas<span>.</span>
+                by the bay<span>.</span>
               </h1>
               <p>
                 I’m Luxin. Engineer, researcher,
                 <br />
                 and a builder of things that matter.
                 <br />
-                Welcome to my exhibition hall.
+                Welcome to my Golden Gate castle.
               </p>
               <button
                 className="world-enter-button"
@@ -114,8 +114,8 @@ export default function HouseExperience() {
           )}
         </div>
         <div className="world-side-note">
-          <span>EST. WITH CURIOSITY</span>
-          <i>made of ideas & a little sunshine</i>
+          <span>SAN FRANCISCO, IN SPIRIT</span>
+          <i>bay windows, big ideas & three little cats</i>
         </div>
         {!ready && (
           <div className="world-loading" role="status">
@@ -131,7 +131,7 @@ export default function HouseExperience() {
               ? `You’re near ${nearest.object.toLowerCase()}`
               : entered
                 ? "A grand hall for curious minds"
-                : "An invitation to explore a castle of ideas"}
+                : "Golden Gate views & a little curiosity"}
           {nearest && !walking && (
             <button onClick={() => openDirect(nearest.id)}>
               Inspect <kbd>E</kbd>

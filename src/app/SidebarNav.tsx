@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useSiteTheme } from "./useSiteTheme";
 
 const navItems = [
-  { href: "/", label: "Little castle" },
+  { href: "/", label: "Golden Gate castle" },
   { href: "/bio", label: "About me" },
   { href: "/research", label: "Research" },
   { href: "/projects", label: "Projects" },
@@ -44,11 +44,11 @@ export default function SidebarNav({ inHouse = false }: { inHouse?: boolean }) {
       <Link
         href="/"
         className="site-brand"
-        aria-label="Luxin Zhang’s little castle, home"
+        aria-label="Luxin Zhang’s Golden Gate castle, home"
       >
         <HouseMark />
         <span>
-          LUXIN ZHANG<small>A LITTLE CASTLE OF BIG IDEAS</small>
+          LUXIN ZHANG<small>A LITTLE CASTLE BY THE BAY</small>
         </span>
       </Link>
       <button

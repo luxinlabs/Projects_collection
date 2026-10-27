@@ -1,12 +1,14 @@
 import * as THREE from "three";
+import { createBayWindowMaterial } from "./sanFrancisco";
 import type { HouseKit } from "./housePrimitives";
 
 export function addCastleArchitecture(kit: HouseKit) {
   const { world, box, cylinder, mesh, ball, rod, groupAt, plant } = kit;
-  const stone = "#c9bea7",
-    pale = "#e3d9c2",
+  const stone = "#b7c4b4",
+    pale = "#f1e2c9",
     trim = "#a99877",
     gold = "#b99557";
+  const windowMaterial = createBayWindowMaterial();
   const flames: THREE.Mesh[] = [],
     lights: THREE.PointLight[] = [];
   box(30.4, 0.65, 18.8, "#b9b19b", 0.7, -0.42, 0.8, world, 0.2);
@@ -26,7 +28,7 @@ export function addCastleArchitecture(kit: HouseKit) {
         0.008,
       );
   box(21.6, 5.75, 0.38, stone, 0.5, 3.25, -4.4);
-  box(0.38, 5.75, 8.8, stone, -10.3, 3.25, 0);
+  box(0.38, 5.75, 8.8, "#cba8a1", -10.3, 3.25, 0);
   box(21.8, 0.22, 0.56, pale, 0.5, 6.15, -4.4);
   box(0.56, 0.22, 8.9, pale, -10.3, 6.15, 0);
   box(21.3, 0.18, 0.14, trim, 0.5, 0.65, -4.16);
@@ -34,11 +36,14 @@ export function addCastleArchitecture(kit: HouseKit) {
     box(0.47, 0.52, 0.53, pale, x, 6.48, -4.4);
   for (let z = -3.8; z <= 4; z += 0.9)
     box(0.53, 0.52, 0.47, pale, -10.3, 6.48, z);
-  // Fine masonry joints, cornices, and two vaulted openings between galleries.
-  for (let y = 1; y < 6; y += 0.65) {
-    box(21.1, 0.016, 0.012, "#b3a78f", 0.5, y, -4.195);
-    for (let x = -9.4 + (Math.round(y * 10) % 2) * 0.7; x < 11; x += 1.5)
-      box(0.015, 0.58, 0.014, "#b8ad94", x, y + 0.3, -4.192);
+  // Painted clapboard and carved cornices recall San Francisco Victorians.
+  for (let y = 0.9; y < 6; y += 0.26)
+    box(21.1, 0.018, 0.018, "#d2d8c5", 0.5, y, -4.195);
+  for (const x of [-9.6, -5.1, 0.7, 5.2, 10]) {
+    box(0.12, 5.1, 0.1, pale, x, 3.25, -4.12);
+    box(0.28, 0.18, 0.22, gold, x, 5.9, -4.02);
+    const corbel = box(0.1, 0.3, 0.2, pale, x, 5.65, -4.02);
+    corbel.rotation.x = -0.25;
   }
   for (const x of [-5.3, 5.35]) {
     for (const z of [-3.6, 3.6]) {
@@ -104,7 +109,7 @@ export function addCastleArchitecture(kit: HouseKit) {
     }
     const roof = mesh(
       new THREE.ConeGeometry(1.25, 2.35, 16),
-      "#7b8f9b",
+      "#748f91",
       0,
       7.95,
       0,
@@ -120,7 +125,7 @@ export function addCastleArchitecture(kit: HouseKit) {
     flag.closePath();
     mesh(
       new THREE.ExtrudeGeometry(flag, { depth: 0.025, bevelEnabled: false }),
-      "#b27c86",
+      "#c65d43",
       0.03,
       9.88,
       0,
@@ -157,17 +162,15 @@ export function addCastleArchitecture(kit: HouseKit) {
       0,
       window,
     );
-    const pane = mesh(
-      new THREE.ExtrudeGeometry(shape(width, height), {
-        depth: 0.035,
-        bevelEnabled: false,
-      }),
-      "#a6c4bc",
-      0,
-      0,
-      0.16,
-      window,
-    );
+    const viewGeometry = new THREE.ShapeGeometry(shape(width, height));
+    const vertices = viewGeometry.getAttribute("position");
+    const uv = viewGeometry.getAttribute("uv");
+    for (let i = 0; i < vertices.count; i++)
+      uv.setXY(i, vertices.getX(i) / width + 0.5, vertices.getY(i) / height);
+    const pane = new THREE.Mesh(viewGeometry, windowMaterial);
+    pane.name = "Golden Gate Bridge bay-window view";
+    pane.position.set(0, 0, 0.18);
+    window.add(pane);
     pane.castShadow = false;
     for (const side of [-1, 1])
       box(
@@ -181,20 +184,48 @@ export function addCastleArchitecture(kit: HouseKit) {
         window,
       );
     box(width, 0.055, 0.05, gold, 0, height - width / 2, 0.22, window);
-    const rose = mesh(
-      new THREE.TorusGeometry(width * 0.22, 0.025, 6, 32),
-      gold,
+    // A projecting sill, turned brackets and a pediment make a Victorian bay.
+    const pediment = new THREE.Shape();
+    pediment.moveTo(-width / 2 - 0.2, 0);
+    pediment.lineTo(0, 0.4);
+    pediment.lineTo(width / 2 + 0.2, 0);
+    pediment.closePath();
+    mesh(
+      new THREE.ExtrudeGeometry(pediment, { depth: 0.2, bevelEnabled: false }),
+      pale,
       0,
-      height - width / 2 + 0.08,
-      0.23,
+      height + 0.05,
+      0.03,
       window,
     );
-    rose.castShadow = false;
+    for (const side of [-1, 1]) {
+      box(
+        0.1,
+        height - width / 2,
+        0.18,
+        pale,
+        side * (width / 2 + 0.06),
+        (height - width / 2) / 2,
+        0.2,
+        window,
+      );
+      const bracket = box(
+        0.13,
+        0.35,
+        0.28,
+        gold,
+        side * width * 0.36,
+        -0.3,
+        0.08,
+        window,
+      );
+      bracket.rotation.x = -0.25;
+    }
     box(width + 0.4, 0.13, 0.45, trim, 0, -0.11, 0.1, window);
     return window;
   }
-  archWindow(-7.8, 3.2, -4.12, 1.8, 2.5);
-  archWindow(8.2, 3.2, -4.12, 1.8, 2.5);
+  archWindow(-7.8, 3.2, -4.12, 2.7, 2.5);
+  archWindow(8.2, 3.2, -4.12, 2.7, 2.5);
   // Heraldic banners frame the central hall, instead of domestic curtains.
   for (const [x, color] of [
     [-4.8, "#ac7b86"],
@@ -274,5 +305,5 @@ export function addCastleArchitecture(kit: HouseKit) {
   }
   plant(-6, 0.5, 3.5, 0.9);
   plant(10.5, 0.5, 3.6, 1);
-  return { archWindow, flames, lights };
+  return { archWindow, flames, lights, windowMaterial };
 }
