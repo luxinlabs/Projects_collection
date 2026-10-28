@@ -1865,3 +1865,145 @@
 }
 .house-gallery-label:hover .object-dot,
 .house-gallery-label[data-near="true"] .object-dot { border-color: var(--app-accent); }
+
+.world-scene-toolbar {
+  display: contents;
+}
+
+/* On phones, let the introduction, scene and room directory breathe in order. */
+@media (max-width: 760px) {
+  .little-world {
+    height: auto;
+    min-height: 100svh;
+  }
+  .world-stage {
+    display: flex;
+    flex: none;
+    flex-direction: column;
+  }
+  .world-welcome {
+    position: relative;
+    inset: auto;
+    order: 1;
+    max-width: none;
+    padding: 28px 6% 8px;
+  }
+  .world-welcome h1,
+  .little-world-entered .world-welcome h1 {
+    font-size: clamp(38px, 10vw, 46px);
+    line-height: 1.06;
+    letter-spacing: -1.5px;
+    margin-bottom: 16px;
+  }
+  .world-eyebrow {
+    font-size: 8px;
+    letter-spacing: 1.2px;
+    margin-bottom: 16px;
+  }
+  .world-welcome > p:not(.world-eyebrow) {
+    font-size: 12px;
+    line-height: 1.8;
+  }
+  .world-enter-button {
+    min-height: 44px;
+    margin: 18px 0 0;
+    padding: 12px 18px;
+    font-size: 12px;
+  }
+  .world-scene-wrap,
+  .little-world-entered .world-scene-wrap {
+    position: relative;
+    inset: auto;
+    order: 2;
+    flex: none;
+    width: 100%;
+    height: clamp(360px, 110vw, 480px);
+    margin-top: 12px;
+  }
+  .world-scene-toolbar {
+    display: flex;
+    order: 3;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 0 6% 22px;
+  }
+  .world-location-status {
+    position: static;
+    max-width: none;
+    flex: 1 1 100%;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .world-view-controls {
+    position: static;
+    gap: 8px;
+  }
+  .world-view-controls button {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    font-size: 20px;
+  }
+  .world-view-controls button:last-child {
+    display: block;
+  }
+  .world-mobile-walk {
+    z-index: 2;
+    top: 8px;
+    right: 6%;
+    min-height: 44px;
+    padding: 10px 14px;
+    font-size: 11px;
+    color: var(--world-ink);
+    background: var(--world-paper);
+  }
+  .world-dpad {
+    z-index: 2;
+    bottom: 16px;
+    left: 6%;
+    grid-template-columns: repeat(3, 44px);
+    grid-template-rows: repeat(2, 44px);
+    gap: 5px;
+  }
+  .world-dpad > button {
+    font-size: 20px;
+    border-radius: 10px;
+  }
+  .world-help {
+    bottom: 80px;
+    right: 6%;
+    max-width: 88%;
+    z-index: 6;
+  }
+  .world-footer {
+    padding: 20px 6% max(20px, env(safe-area-inset-bottom));
+  }
+  .world-footer-heading > button {
+    min-height: 44px;
+    font-size: 11px;
+  }
+  .world-footer-bottom {
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 10px;
+    line-height: 1.6;
+  }
+  .world-footer-bottom a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  .house-object-label.house-gallery-label {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .house-canvas[data-detail="true"] .house-gallery-label,
+  .house-object-label.house-gallery-label[data-near="true"],
+  .house-object-label.house-gallery-label:focus-visible,
+  .house-object-label.house-gallery-label[aria-pressed="true"] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}

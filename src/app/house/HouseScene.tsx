@@ -642,6 +642,9 @@ export default function HouseScene(props: Props) {
       camera.position.add(scratch);
       camera.zoom = THREE.MathUtils.lerp(camera.zoom, desiredZoom, lerp);
       camera.updateProjectionMatrix();
+      // Phones reveal exhibit markers on approach or after zooming in.
+      const detail = String(camera.zoom >= 1.35);
+      if (element.dataset.detail !== detail) element.dataset.detail = detail;
       controls.enabled = !handlers.current.active;
       controls.update();
       for (const spot of houseSpots) {

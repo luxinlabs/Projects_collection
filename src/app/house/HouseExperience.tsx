@@ -64,6 +64,45 @@ export default function HouseExperience() {
             onReady={onReady}
             onWalking={setWalking}
           />
+          {!ready && (
+            <div className="world-loading" role="status">
+              <HouseMark />
+              <span>Opening the castle gates…</span>
+            </div>
+          )}
+          <button
+            className="world-mobile-walk"
+            onClick={() => setDpad(!dpad)}
+            aria-expanded={dpad}
+          >
+            ♧ {dpad ? "Hide controls" : "Walk around"}
+          </button>
+          {dpad && (
+            <div className="world-dpad" aria-label="Walking controls">
+              {["arrowup", "arrowleft", "arrowdown", "arrowright"].map(
+                (direction, index) => (
+                  <button
+                    key={direction}
+                    className={`dpad-${direction}`}
+                    aria-label={`Walk ${["forward", "left", "backward", "right"][index]}`}
+                    onPointerDown={(event) => {
+                      event.currentTarget.setPointerCapture(event.pointerId);
+                      scene.current?.move(direction, true);
+                    }}
+                    onPointerUp={() => scene.current?.move(direction, false)}
+                    onPointerCancel={() =>
+                      scene.current?.move(direction, false)
+                    }
+                    onLostPointerCapture={() =>
+                      scene.current?.move(direction, false)
+                    }
+                  >
+                    {["↑", "←", "↓", "→"][index]}
+                  </button>
+                ),
+              )}
+            </div>
+          )}
         </div>
         <div className="world-welcome">
           <p className="world-eyebrow">
@@ -117,51 +156,51 @@ export default function HouseExperience() {
           <span>SAN FRANCISCO, IN SPIRIT</span>
           <i>bay windows, big ideas & three little cats</i>
         </div>
-        {!ready && (
-          <div className="world-loading" role="status">
-            <HouseMark />
-            <span>Opening the castle gates…</span>
+
+        <div className="world-scene-toolbar">
+          <div className="world-location-status" aria-live="polite">
+            <span className={`status-seed ${walking ? "is-walking" : ""}`} />
+            {walking
+              ? "A little wander…"
+              : nearest
+                ? `You’re near ${nearest.object.toLowerCase()}`
+                : entered
+                  ? "A grand hall for curious minds"
+                  : "Golden Gate views & a little curiosity"}
+            {nearest && !walking && (
+              <button onClick={() => openDirect(nearest.id)}>
+                Inspect <kbd>E</kbd>
+              </button>
+            )}
           </div>
-        )}
-        <div className="world-location-status" aria-live="polite">
-          <span className={`status-seed ${walking ? "is-walking" : ""}`} />
-          {walking
-            ? "A little wander…"
-            : nearest
-              ? `You’re near ${nearest.object.toLowerCase()}`
-              : entered
-                ? "A grand hall for curious minds"
-                : "Golden Gate views & a little curiosity"}
-          {nearest && !walking && (
-            <button onClick={() => openDirect(nearest.id)}>
-              Inspect <kbd>E</kbd>
+          <div className="world-view-controls" aria-label="View controls">
+            <button
+              onClick={() => scene.current?.zoom(0.2)}
+              aria-label="Zoom in"
+            >
+              ＋
             </button>
-          )}
-        </div>
-        <div className="world-view-controls" aria-label="View controls">
-          <button onClick={() => scene.current?.zoom(0.2)} aria-label="Zoom in">
-            ＋
-          </button>
-          <button
-            onClick={() => scene.current?.zoom(-0.2)}
-            aria-label="Zoom out"
-          >
-            −
-          </button>
-          <button
-            onClick={() => scene.current?.reset()}
-            aria-label="Reset camera view"
-          >
-            ⌂
-          </button>
-          <span />
-          <button
-            onClick={() => setHelp(!help)}
-            aria-label="Show exploration controls"
-            aria-expanded={help}
-          >
-            ?
-          </button>
+            <button
+              onClick={() => scene.current?.zoom(-0.2)}
+              aria-label="Zoom out"
+            >
+              −
+            </button>
+            <button
+              onClick={() => scene.current?.reset()}
+              aria-label="Reset camera view"
+            >
+              ⌂
+            </button>
+            <span />
+            <button
+              onClick={() => setHelp(!help)}
+              aria-label="Show exploration controls"
+              aria-expanded={help}
+            >
+              ?
+            </button>
+          </div>
         </div>
         {help && (
           <div className="world-help">
@@ -190,37 +229,6 @@ export default function HouseExperience() {
             <button onClick={() => setHelp(false)}>
               Got it, let’s wander ↗
             </button>
-          </div>
-        )}
-        <button
-          className="world-mobile-walk"
-          onClick={() => setDpad(!dpad)}
-          aria-expanded={dpad}
-        >
-          ♧ {dpad ? "Hide controls" : "Walk around"}
-        </button>
-        {dpad && (
-          <div className="world-dpad" aria-label="Walking controls">
-            {["arrowup", "arrowleft", "arrowdown", "arrowright"].map(
-              (direction, index) => (
-                <button
-                  key={direction}
-                  className={`dpad-${direction}`}
-                  aria-label={`Walk ${["forward", "left", "backward", "right"][index]}`}
-                  onPointerDown={(event) => {
-                    event.currentTarget.setPointerCapture(event.pointerId);
-                    scene.current?.move(direction, true);
-                  }}
-                  onPointerUp={() => scene.current?.move(direction, false)}
-                  onPointerCancel={() => scene.current?.move(direction, false)}
-                  onLostPointerCapture={() =>
-                    scene.current?.move(direction, false)
-                  }
-                >
-                  {["↑", "←", "↓", "→"][index]}
-                </button>
-              ),
-            )}
           </div>
         )}
       </section>
